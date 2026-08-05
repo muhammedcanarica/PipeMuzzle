@@ -5,6 +5,6 @@ namespace PipeMuzzle.Data
         North,
         East,
         South,
-        West
+        West         //Bunlar enum çünkü nesne falan oluşturulmuyor sabit bilgileri kullanıyor.
     }
 }
