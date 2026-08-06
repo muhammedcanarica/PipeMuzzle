@@ -1,3 +1,5 @@
+using PipeMuzzle.Data;
+
 namespace PipeMuzzle.Board
 {
     public class BoardState
@@ -28,7 +30,7 @@ namespace PipeMuzzle.Board
 
         public bool SetTile(TileState tile)
         {
-            if (tiles == null || !IsInside(tile.X, tile.Y))
+            if (tile == null || !IsInside(tile.X, tile.Y))
             {
                 return false;
             }
@@ -54,6 +56,41 @@ namespace PipeMuzzle.Board
         public void ResetMoveCount()
         {
             MoveCount = 0;
+        }
+
+        public bool TryRotateTile(int x, int y)
+        {
+            TileState tile = GetTile(x, y);
+
+            if (tile == null)
+            {
+                return false;
+            }
+
+            bool rotated = tile.RotateClockwise();
+            if (!rotated)
+            {
+                return false;
+            }
+            IncrementMoveCount();
+            return true;
+        }
+        public TileState FindTileByRole(TileRole role)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    TileState tile = tiles[x, y];
+
+                    if (tile != null && tile.Role == role)
+                    {
+                        return tile;
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }
