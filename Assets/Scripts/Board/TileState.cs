@@ -16,7 +16,7 @@ namespace PipeMuzzle.Board
         {
             get
             {
-                ConnectionMask connections = Shape.GetConnections();
+                ConnectionMask connections = Shape.GetBaseConnections();
 
                 for (int i = 0; i < Rotation; i++)
                 {
@@ -27,7 +27,7 @@ namespace PipeMuzzle.Board
         }
 
         public bool IsLocked { get; }
-        public bool isPowered { get; private set; }
+        public bool IsPowered { get; private set; }
 
         // alttaki constructor oluyor.
         public TileState(int x, int y, TileShape shape, TileRole role, int rotation, bool isLocked)
@@ -41,7 +41,7 @@ namespace PipeMuzzle.Board
             IsPowered = false;
         }
 
-        public bool RotateClockWise()
+        public bool RotateClockwise()
         {
             if (IsLocked || Shape == TileShape.Empty)
             {
@@ -56,3 +56,5 @@ namespace PipeMuzzle.Board
         }
     }
 }
+//Bu kodda TileState sınıfı, bir oyun tahtasındaki her bir karonun durumunu temsil eder. Karo, belirli bir şekle (TileShape) ve role (TileRole) sahiptir ve belirli bir konumda (X, Y) bulunur. 
+//Ayrıca, karonun döndürülme durumu (Rotation), kilitli olup olmadığı (IsLocked) ve güç durumunu (IsPowered) da içerir.
