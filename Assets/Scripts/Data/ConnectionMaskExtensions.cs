@@ -1,4 +1,4 @@
-namespace PipeMuzzle.Data;
+namespace PipeMuzzle.Data
 {
     public static class ConnectionMaskExtensions
     {
@@ -13,22 +13,22 @@ namespace PipeMuzzle.Data;
             
             if (mask.Has(ConnectionMask.North))
             {
-                rotated |ConnectionMask.East;
+                rotated |=ConnectionMask.East;
             }
-                                                        
+                                                         
             if (mask.Has(ConnectionMask.East))
             {
-                rotated | ConnectionMask.South;
+                rotated |= ConnectionMask.South;
             }
             
             if (mask.Has(ConnectionMask.South))
             {
-                rotated | ConnectionMask.West;
+                rotated |= ConnectionMask.West;
             }
             
             if (mask.Has(ConnectionMask.West))
             {
-                rotated | ConnectionMask.North;
+                rotated |= ConnectionMask.North;
             }
 
             return rotated;
