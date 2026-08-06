@@ -15,15 +15,30 @@ namespace PipeMuzzle.Board
         public bool IsLocked { get; }
         public bool isPowered { get; private set; }
 
+        // alttaki constructor oluyor.
         public TileState(int x, int y, TileShape shape, TileRole role, int rotation, bool isLocked)
         {
             X = x;
-            Y = y; 
+            Y = y;
             Shape = shape;
             Role = role;
             Rotation = rotation;
             IsLocked = isLocked;
-            isPowered = false;
+            IsPowered = false;
+        }
+
+        public bool RotateClockWise()
+        {
+            if (IsLocked || Shape == TileShape.Empty)
+            {
+                return false;
+            }
+            Rotation = (Rotation + 1) % 4;
+            return true;
+        }
+        public void SetPowered(bool powered)
+        {
+            IsPowered = powered;
         }
     }
 }
