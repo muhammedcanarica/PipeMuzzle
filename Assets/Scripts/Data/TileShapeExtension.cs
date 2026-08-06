@@ -16,8 +16,8 @@ namespace PipeMuzzle.Data
 
                 TileShape.Cross => ConnectionMask.North | ConnectionMask.East | ConnectionMask.South | ConnectionMask.West,
 
-                _ => ConnectionMask.None 
-            }
+                _ => ConnectionMask.None
+            };
         }
     }
 }
