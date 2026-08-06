@@ -12,6 +12,20 @@ namespace PipeMuzzle.Board
 
         public int Rotation { get; private set; }
 
+        public ConnectionMask Connections
+        {
+            get
+            {
+                ConnectionMask connections = Shape.GetConnections();
+
+                for (int i = 0; i < Rotation; i++)
+                {
+                    connections = connections.RotateClockwise();
+                }
+                return connections;
+            }
+        }
+
         public bool IsLocked { get; }
         public bool isPowered { get; private set; }
 
