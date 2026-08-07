@@ -1,17 +1,23 @@
 using PipeMuzzle.Board;
 using PipeMuzzle.Data;
+using PipeMuzzle.View;
 using UnityEngine;
 
 namespace PipeMuzzle.Gameplay
 {
     public class BoardLogicTester : MonoBehaviour
     {
+
+        [SerializeField]
+        private BoardView boardView;
+
         [SerializeField]
         private LevelDefinition level;
 
         private void Start()
         {
             BoardState board = BoardBuilder.Build(level);
+            boardView.Build(board);
 
             bool solvedBeforeRotation =
                 ConnectionChecker.Evaluate(board);

@@ -1,11 +1,15 @@
 using System;
 using PipeMuzzle.Board;
+using PipeMuzzle.Data;
 using UnityEngine;
 
 namespace PipeMuzzle.View
 {
     public class TileView : MonoBehaviour
     {
+        [SerializeField]
+        private SpriteRenderer spriteRenderer;
+
         private TileState tileState;
 
         public TileState State => tileState;
@@ -14,7 +18,7 @@ namespace PipeMuzzle.View
         {
             if (state == null)
             {
-                throw new ArgumentException(nameof(state));
+                throw new ArgumentNullException(nameof(state));
             }
 
             tileState = state;
@@ -28,11 +32,32 @@ namespace PipeMuzzle.View
             {
                 return;
             }
+
             transform.localRotation = Quaternion.Euler(
                 0f,
                 0f,
                 tileState.Rotation * -90f
             );
+
+            RefreshColor();
+        }
+
+        private void RefreshColor()
+        {
+            switch (tileState.Role)
+            {
+                case TileRole.Source:
+                    spriteRenderer.color = Color.green;
+                    break;
+
+                case TileRole.Target:
+                    spriteRenderer.color = Color.red;
+                    break;
+
+                default:
+                    spriteRenderer.color = Color.white;
+                    break;
+            }
         }
     }
 }

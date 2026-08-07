@@ -1,103 +1,173 @@
-# pipeMuzzle
+# PipeMuzzle
+
+> Unity ile geliştirilen, veri odaklı bir 2D mobil boru bulmaca oyunu prototipi.
+
+[![Unity](https://img.shields.io/badge/Unity-6000.3.9f1-black?logo=unity)](https://unity.com/)
+[![C%23](https://img.shields.io/badge/C%23-Game%20Logic-512BD4?logo=csharp)](https://learn.microsoft.com/dotnet/csharp/)
+[![Status](https://img.shields.io/badge/status-pre--alpha-orange)](https://github.com/muhammedcanarica/PipeMuzzle)
 
 ## Türkçe
 
-**pipeMuzzle**, Unity ile geliştirilen küçük bir mobil bulmaca oyunudur.
+### Oyun fikri
 
-Oyuncu, boru şeklindeki parçaları 90 derecelik adımlarla döndürerek kaynak ile namlu arasında kesintisiz bir yol oluşturur. Bağlantı tamamlandığında mermi oluşturulan hat boyunca ilerler ve hedefe ulaşır.
+Oyuncu, boru parçalarını 90 derecelik adımlarla döndürerek kaynak ile namlu arasında kesintisiz bir bağlantı kurar. Doğru rota tamamlandığında mermi bu hat boyunca ilerleyerek hedefe ulaşır.
 
-## Güncel durum
+Proje şu anda **pre-alpha / temel prototip** aşamasındadır. Oyun mantığı ve veri modeli oluşturulmuş; görsel tahta, sahne bağlantıları ve oyuncu etkileşimi geliştirilmektedir.
 
-### Tamamlananlar
+### Öne çıkan teknik özellikler
 
-- [x] Unity projesi ve klasör yapısı
-- [x] `Direction`, `TileShape`, `TileRole`
-- [x] Bit maskesi tabanlı `ConnectionMask`
-- [x] Extension metotları
-- [x] `TileState`
-- [x] `BoardState`
-- [x] BFS tabanlı `ConnectionChecker`
-- [x] 3x3 mantık testi
-- [x] Hamle sayacı
-- [x] `TileDefinition`
+- Bit maskeleriyle temsil edilen dört yönlü boru bağlantıları
+- Karo şekline ve dönüşüne göre dinamik bağlantı hesabı
+- Kilitli karoları destekleyen 90° saat yönü dönüş sistemi
+- Başarılı dönüşlerde güncellenen hamle sayacı
+- Kaynaktan hedefe ulaşılabilirliği kontrol eden BFS tabanlı bağlantı algoritması
+- `ScriptableObject` tabanlı, tekrar kullanılabilir bölüm tanımları
+- Bölüm verisini çalışma zamanı durumuna çeviren `BoardBuilder`
+- Oyun mantığını sunumdan ayıran temel `BoardView` / `TileView` katmanı
 
-### Doğrulanan test
+### Mimari
 
-```text
-Dönüşten önce çözüldü mü: False
-Parça döndü mü: True
-Dönüşten sonra çözüldü mü: True
-Hamle sayısı: 1
-```
+| Katman | Sorumluluk | Başlıca sınıflar |
+| --- | --- | --- |
+| `Data` | Yön, bağlantı, karo ve bölüm tanımları | `Direction`, `ConnectionMask`, `TileDefinition`, `LevelDefinition` |
+| `Board` | Çalışma zamanı tahta durumu ve oyun kuralları | `TileState`, `BoardState`, `BoardBuilder`, `ConnectionChecker` |
+| `View` | Tahtanın ve karoların Unity sahnesinde oluşturulması | `BoardView`, `TileView` |
+| `Gameplay` | Prototip akışının sahne üzerinden çalıştırılması | `BoardLogicTester` |
 
-### Sıradaki adım
+Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi birbirinden bağımsız geliştirilebilir.
 
-- [ ] `LevelDefinition` ScriptableObject yapısını oluşturmak
-- [ ] `Level_001` bölüm asset'ini hazırlamak
-- [ ] Bölüm verisinden `BoardState` üretmek
-- [ ] İlk görsel grid'i oluşturmak
+### Kullanılan teknolojiler
 
-## Sürüm planı
+- Unity `6000.3.9f1`
+- C#
+- Universal Render Pipeline (2D Renderer)
+- Unity Input System `1.18.0`
+- Unity Test Framework `1.6.0` *(test altyapısı mevcut, otomatik proje testleri henüz eklenmedi)*
 
-### V1
-Temel oynanabilir prototip, veri tabanlı bölüm yapısı, restart ve bölüm tamamlama.
+### Projeyi çalıştırma
 
-### V2
-15 elle hazırlanmış bölüm, bölüm seçimi, yıldız sistemi, ilerleme kaydı ve kilitli parçalar.
+1. Depoyu klonlayın:
 
-### V3
-Nihai görseller, mermi animasyonu, ses, titreşim, mobil uyumluluk ve Android yayın hazırlığı.
+   ```bash
+   git clone https://github.com/muhammedcanarica/PipeMuzzle.git
+   ```
 
-Proje kapsamı V3 ile tamamlanacaktır.
+2. Unity Hub üzerinden proje klasörünü ekleyin.
+3. Projeyi Unity `6000.3.9f1` veya uyumlu bir Unity 6 sürümüyle açın.
+4. Geliştirme sahnesi olarak `Assets/Scenes/Gameplay.unity` dosyasını açın.
+
+> **Not:** Oynanabilir döngü henüz tamamlanmadı. `Level_001` içeriği, prefab referansları ve Inspector bağlantıları geliştirme sürecindedir.
+
+### Güncel durum
+
+- [x] Temel veri modelleri ve bağlantı maskeleri
+- [x] Karo dönüşü, kilit kontrolü ve hamle sayacı
+- [x] BFS tabanlı kaynak-hedef bağlantı kontrolü
+- [x] `LevelDefinition` ve `TileDefinition` veri yapıları
+- [x] Bölüm verisinden `BoardState` oluşturma
+- [x] Temel `BoardView` ve `TileView` bileşenleri
+- [ ] İlk oynanabilir bölümün içerik ve sahne bağlantıları
+- [ ] Dokunma/tıklama ile karo döndürme
+- [ ] Bölüm tamamlama, yeniden başlatma ve UI akışı
+- [ ] Mermi animasyonu, ses ve titreşim geri bildirimi
+- [ ] Edit Mode / Play Mode otomatik testleri
+- [ ] Mobil cihaz doğrulaması ve Android build hazırlığı
+
+### Yol haritası
+
+#### V1 — Oynanabilir prototip
+
+Veri odaklı ilk bölüm, karo etkileşimi, çözüm kontrolü, yeniden başlatma ve bölüm tamamlama akışı.
+
+#### V2 — İçerik ve ilerleme
+
+15 elle hazırlanmış bölüm, bölüm seçimi, yıldız sistemi, kayıtlı ilerleme ve kilitli karolar.
+
+#### V3 — Sunum ve mobil yayın
+
+Nihai görseller, mermi animasyonu, ses, titreşim, mobil optimizasyon ve Android yayın hazırlığı.
 
 ---
 
-# English
+## English
 
-**pipeMuzzle** is a small mobile puzzle game built with Unity.
+### Game concept
 
-Players rotate pipe-shaped tiles in 90-degree steps to create a continuous route between a source and a muzzle.
+PipeMuzzle is a data-driven 2D mobile puzzle game prototype built with Unity. Players rotate pipe tiles in 90-degree steps to form a continuous connection between a source and a muzzle. Once the route is complete, a projectile travels through the connected path and reaches the target.
 
-## Current status
+The project is currently in **pre-alpha / core prototype** development. The domain model and connection logic are implemented, while the visual board, scene wiring, and player interaction are still in progress.
 
-### Completed
+### Technical highlights
 
-- [x] Unity project and folder structure
-- [x] `Direction`, `TileShape`, `TileRole`
-- [x] Bit-mask-based `ConnectionMask`
-- [x] Extension methods
-- [x] `TileState`
-- [x] `BoardState`
-- [x] BFS-based `ConnectionChecker`
-- [x] 3x3 logic test
-- [x] Move counter
-- [x] `TileDefinition`
+- Four-direction pipe connections represented with bit masks
+- Rotation-aware connection calculation for each tile shape
+- Clockwise 90° rotation with locked-tile support
+- Move counting for successful rotations
+- BFS-based source-to-target connectivity validation
+- Reusable, `ScriptableObject`-based level definitions
+- A `BoardBuilder` pipeline that creates runtime state from level data
+- A basic `BoardView` / `TileView` layer separated from game logic
 
-### Verified test
+### Architecture
 
-```text
-Solved before rotation: False
-Tile rotated: True
-Solved after rotation: True
-Move count: 1
-```
+| Layer | Responsibility | Main types |
+| --- | --- | --- |
+| `Data` | Direction, connection, tile, and level definitions | `Direction`, `ConnectionMask`, `TileDefinition`, `LevelDefinition` |
+| `Board` | Runtime board state and game rules | `TileState`, `BoardState`, `BoardBuilder`, `ConnectionChecker` |
+| `View` | Creating the board and tiles in the Unity scene | `BoardView`, `TileView` |
+| `Gameplay` | Running the prototype flow from the scene | `BoardLogicTester` |
 
-### Next step
+### Built with
 
-- [ ] Create the `LevelDefinition` ScriptableObject
-- [ ] Create the `Level_001` asset
-- [ ] Build a `BoardState` from level data
-- [ ] Create the first visual grid
+- Unity `6000.3.9f1`
+- C#
+- Universal Render Pipeline with the 2D Renderer
+- Unity Input System `1.18.0`
+- Unity Test Framework `1.6.0` *(available in the project; automated project tests are not implemented yet)*
 
-## Version plan
+### Getting started
 
-### V1
-Core playable prototype, data-driven levels, restart and level completion.
+1. Clone the repository:
 
-### V2
-15 handcrafted levels, level selection, star ratings, saved progression and locked tiles.
+   ```bash
+   git clone https://github.com/muhammedcanarica/PipeMuzzle.git
+   ```
 
-### V3
-Final visuals, projectile animation, audio, haptics, mobile support and Android release preparation.
+2. Add the project folder through Unity Hub.
+3. Open it with Unity `6000.3.9f1` or a compatible Unity 6 release.
+4. Open `Assets/Scenes/Gameplay.unity` as the development scene.
 
-The planned project scope ends with V3.
+> **Note:** The complete playable loop is not available yet. `Level_001` content, prefab references, and Inspector wiring are still being developed.
+
+### Development status
+
+- [x] Core data models and connection masks
+- [x] Tile rotation, lock handling, and move counting
+- [x] BFS-based source-to-target connectivity check
+- [x] `LevelDefinition` and `TileDefinition` data structures
+- [x] Runtime `BoardState` creation from level data
+- [x] Basic `BoardView` and `TileView` components
+- [ ] First playable level content and scene wiring
+- [ ] Touch/click tile rotation
+- [ ] Level completion, restart, and UI flow
+- [ ] Projectile animation, audio, and haptic feedback
+- [ ] Edit Mode / Play Mode automated tests
+- [ ] Mobile device validation and Android build preparation
+
+### Roadmap
+
+#### V1 — Playable prototype
+
+A data-driven first level, tile interaction, solution checks, restart, and level-completion flow.
+
+#### V2 — Content and progression
+
+15 handcrafted levels, level selection, star ratings, saved progression, and locked tiles.
+
+#### V3 — Presentation and mobile release
+
+Final visuals, projectile animation, audio, haptics, mobile optimization, and Android release preparation.
+
+## Repository
+
+[github.com/muhammedcanarica/PipeMuzzle](https://github.com/muhammedcanarica/PipeMuzzle)
