@@ -7,38 +7,60 @@ namespace PipeMuzzle.Gameplay
 {
     public class BoardLogicTester : MonoBehaviour
     {
-
         [SerializeField]
         private BoardView boardView;
 
         [SerializeField]
         private LevelDefinition level;
 
+        private BoardState board;
+
         private void Start()
         {
-            BoardState board = BoardBuilder.Build(level);
+            board = BoardBuilder.Build(level);
+
+            boardView.TileClicked += HandleTileClicked;
+
             boardView.Build(board);
 
-            bool solvedBeforeRotation =
-                ConnectionChecker.Evaluate(board);
+            bool solved = ConnectionChecker.Evaluate(board);
 
-            Debug.Log(
-                $"Dönüşten önce çözüldü mü: {solvedBeforeRotation}");
+            Debug.Log($"Başlangıçta çözüldü mü: {solved}");
+        }
 
-            bool rotationSucceeded =
-                board.TryRotateTile(1, 1);
+        private void HandleTileClicked(TileView tileView)
+        {
+            TileState tile = tileView.State;
 
-            bool solvedAfterRotation =
-                ConnectionChecker.Evaluate(board);
+            bool rotated = board.TryRotateTile(
+                tile.X,
+                tile.Y
+            );
 
-            Debug.Log(
-                $"Parça döndü mü: {rotationSucceeded}");
+            if (!rotated)
+            {
+                return;
+            }
 
-            Debug.Log(
-                $"Dönüşten sonra çözüldü mü: {solvedAfterRotation}");
+            tileView.Refresh();
 
-            Debug.Log(
-                $"Hamle sayısı: {board.MoveCount}");
+            bool solved = ConnectionChecker.Evaluate(board);
+
+            Debug.Log($"Hamle sayısı: {board.MoveCount}");
+            Debug.Log($"Çözüldü mü: {solved}");
+
+            if (solved)
+            {
+                Debug.Log("Bölüm tamamlandı!");
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (boardView != null)
+            {
+                boardView.TileClicked -= HandleTileClicked;
+            }
         }
     }
 }

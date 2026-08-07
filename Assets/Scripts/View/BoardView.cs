@@ -12,6 +12,8 @@ namespace PipeMuzzle.View
         [SerializeField]
         private float tileSpacing = 1f;
 
+        public event Action<TileView> TileClicked;
+
         public void Build(BoardState board)
         {
             if (board == null)
@@ -49,6 +51,13 @@ namespace PipeMuzzle.View
             );
 
             tileView.Initialize(tileState);
+
+            tileView.Clicked += HandleTileClicked;
+        }
+
+        private void HandleTileClicked(TileView tileView)
+        {
+            TileClicked?.Invoke(tileView);
         }
     }
 }

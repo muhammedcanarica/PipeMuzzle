@@ -12,7 +12,7 @@
 
 Oyuncu, boru parçalarını 90 derecelik adımlarla döndürerek kaynak ile namlu arasında kesintisiz bir bağlantı kurar. Doğru rota tamamlandığında mermi bu hat boyunca ilerleyerek hedefe ulaşır.
 
-Proje şu anda **pre-alpha / temel prototip** aşamasındadır. Oyun mantığı ve veri modeli oluşturulmuş; görsel tahta, sahne bağlantıları ve oyuncu etkileşimi geliştirilmektedir.
+Proje şu anda **pre-alpha / temel prototip** aşamasındadır. Oyun mantığı, veri modeli ve görsel tahta üretim hattı oluşturulmuş; ilk bölüm içeriği, sahne bağlantıları ve oyuncu etkileşimi geliştirilmektedir.
 
 ### Öne çıkan teknik özellikler
 
@@ -23,7 +23,8 @@ Proje şu anda **pre-alpha / temel prototip** aşamasındadır. Oyun mantığı 
 - Kaynaktan hedefe ulaşılabilirliği kontrol eden BFS tabanlı bağlantı algoritması
 - `ScriptableObject` tabanlı, tekrar kullanılabilir bölüm tanımları
 - Bölüm verisini çalışma zamanı durumuna çeviren `BoardBuilder`
-- Oyun mantığını sunumdan ayıran temel `BoardView` / `TileView` katmanı
+- Bölümdeki karoları prefab üzerinden koordinatlarına yerleştiren `BoardView`
+- Karo dönüşünü görsele uygulayan ve kaynak/hedef rollerini renkle ayıran `TileView`
 
 ### Mimari
 
@@ -31,7 +32,7 @@ Proje şu anda **pre-alpha / temel prototip** aşamasındadır. Oyun mantığı 
 | --- | --- | --- |
 | `Data` | Yön, bağlantı, karo ve bölüm tanımları | `Direction`, `ConnectionMask`, `TileDefinition`, `LevelDefinition` |
 | `Board` | Çalışma zamanı tahta durumu ve oyun kuralları | `TileState`, `BoardState`, `BoardBuilder`, `ConnectionChecker` |
-| `View` | Tahtanın ve karoların Unity sahnesinde oluşturulması | `BoardView`, `TileView` |
+| `View` | Karo prefablarının oluşturulması, konumlandırılması, döndürülmesi ve rol renkleri | `BoardView`, `TileView`, `TilePrefab` |
 | `Gameplay` | Prototip akışının sahne üzerinden çalıştırılması | `BoardLogicTester` |
 
 Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi birbirinden bağımsız geliştirilebilir.
@@ -56,7 +57,7 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 3. Projeyi Unity `6000.3.9f1` veya uyumlu bir Unity 6 sürümüyle açın.
 4. Geliştirme sahnesi olarak `Assets/Scenes/Gameplay.unity` dosyasını açın.
 
-> **Not:** Oynanabilir döngü henüz tamamlanmadı. `Level_001` içeriği, prefab referansları ve Inspector bağlantıları geliştirme sürecindedir.
+> **Not:** Oynanabilir döngü henüz tamamlanmadı. `Level_001` şu anda boş; `Gameplay` sahnesindeki `BoardView` ve Inspector bağlantıları tamamlanmadan Play Mode akışı çalışmayacaktır.
 
 ### Güncel durum
 
@@ -66,6 +67,7 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 - [x] `LevelDefinition` ve `TileDefinition` veri yapıları
 - [x] Bölüm verisinden `BoardState` oluşturma
 - [x] Temel `BoardView` ve `TileView` bileşenleri
+- [x] Sprite tabanlı `TilePrefab` ve kaynak/hedef rol renkleri
 - [ ] İlk oynanabilir bölümün içerik ve sahne bağlantıları
 - [ ] Dokunma/tıklama ile karo döndürme
 - [ ] Bölüm tamamlama, yeniden başlatma ve UI akışı
@@ -95,7 +97,7 @@ Nihai görseller, mermi animasyonu, ses, titreşim, mobil optimizasyon ve Androi
 
 PipeMuzzle is a data-driven 2D mobile puzzle game prototype built with Unity. Players rotate pipe tiles in 90-degree steps to form a continuous connection between a source and a muzzle. Once the route is complete, a projectile travels through the connected path and reaches the target.
 
-The project is currently in **pre-alpha / core prototype** development. The domain model and connection logic are implemented, while the visual board, scene wiring, and player interaction are still in progress.
+The project is currently in **pre-alpha / core prototype** development. The domain model, connection logic, and visual board pipeline are implemented, while the first level content, scene wiring, and player interaction are still in progress.
 
 ### Technical highlights
 
@@ -106,7 +108,8 @@ The project is currently in **pre-alpha / core prototype** development. The doma
 - BFS-based source-to-target connectivity validation
 - Reusable, `ScriptableObject`-based level definitions
 - A `BoardBuilder` pipeline that creates runtime state from level data
-- A basic `BoardView` / `TileView` layer separated from game logic
+- A `BoardView` that instantiates and positions prefab-based tiles
+- A `TileView` that applies rotation and color-codes source/target roles
 
 ### Architecture
 
@@ -114,7 +117,7 @@ The project is currently in **pre-alpha / core prototype** development. The doma
 | --- | --- | --- |
 | `Data` | Direction, connection, tile, and level definitions | `Direction`, `ConnectionMask`, `TileDefinition`, `LevelDefinition` |
 | `Board` | Runtime board state and game rules | `TileState`, `BoardState`, `BoardBuilder`, `ConnectionChecker` |
-| `View` | Creating the board and tiles in the Unity scene | `BoardView`, `TileView` |
+| `View` | Instantiating, positioning, rotating, and color-coding tile prefabs | `BoardView`, `TileView`, `TilePrefab` |
 | `Gameplay` | Running the prototype flow from the scene | `BoardLogicTester` |
 
 ### Built with
@@ -137,7 +140,7 @@ The project is currently in **pre-alpha / core prototype** development. The doma
 3. Open it with Unity `6000.3.9f1` or a compatible Unity 6 release.
 4. Open `Assets/Scenes/Gameplay.unity` as the development scene.
 
-> **Note:** The complete playable loop is not available yet. `Level_001` content, prefab references, and Inspector wiring are still being developed.
+> **Note:** The complete playable loop is not available yet. `Level_001` is currently empty, and the `BoardView` and Inspector references in the `Gameplay` scene must be completed before the Play Mode flow can run.
 
 ### Development status
 
@@ -147,6 +150,7 @@ The project is currently in **pre-alpha / core prototype** development. The doma
 - [x] `LevelDefinition` and `TileDefinition` data structures
 - [x] Runtime `BoardState` creation from level data
 - [x] Basic `BoardView` and `TileView` components
+- [x] Sprite-based `TilePrefab` with source/target role colors
 - [ ] First playable level content and scene wiring
 - [ ] Touch/click tile rotation
 - [ ] Level completion, restart, and UI flow

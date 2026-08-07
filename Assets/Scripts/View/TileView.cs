@@ -14,6 +14,8 @@ namespace PipeMuzzle.View
 
         public TileState State => tileState;
 
+        public event Action<TileView> Clicked;
+
         public void Initialize(TileState state)
         {
             if (state == null)
@@ -40,6 +42,11 @@ namespace PipeMuzzle.View
             );
 
             RefreshColor();
+        }
+
+        private void OnMouseDown()
+        {
+            Clicked?.Invoke(this);
         }
 
         private void RefreshColor()
