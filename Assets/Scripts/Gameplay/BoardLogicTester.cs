@@ -6,37 +6,12 @@ namespace PipeMuzzle.Gameplay
 {
     public class BoardLogicTester : MonoBehaviour
     {
+        [SerializeField]
+        private LevelDefinition level;
+
         private void Start()
         {
-            BoardState board = new BoardState(3, 3);
-
-            TileState source = new TileState(
-                x: 0,
-                y: 1,
-                shape: TileShape.Straight,
-                role: TileRole.Source,
-                rotation: 1,
-                isLocked: true);
-
-            TileState middle = new TileState(
-                x: 1,
-                y: 1,
-                shape: TileShape.Straight,
-                role: TileRole.Normal,
-                rotation: 0,
-                isLocked: false);
-
-            TileState target = new TileState(
-                x: 2,
-                y: 1,
-                shape: TileShape.Straight,
-                role: TileRole.Target,
-                rotation: 1,
-                isLocked: true);
-
-            board.SetTile(source);
-            board.SetTile(middle);
-            board.SetTile(target);
+            BoardState board = BoardBuilder.Build(level);
 
             bool solvedBeforeRotation =
                 ConnectionChecker.Evaluate(board);
