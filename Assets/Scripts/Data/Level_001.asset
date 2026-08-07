@@ -14,4 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.Data.LevelDefinition
   width: 3
   height: 3
-  tiles: []
+  tiles:
+  - x: 0
+    y: 1
+    shape: 1
+    role: 1
+    startRotation: 1
+    isLocked: 1
+  - x: 1
+    y: 1
+    shape: 1
+    role: 0
+    startRotation: 0
+    isLocked: 0
+  - x: 2
+    y: 1
+    shape: 1
+    role: 2
+    startRotation: 1
+    isLocked: 1

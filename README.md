@@ -12,7 +12,7 @@
 
 Oyuncu, boru parçalarını 90 derecelik adımlarla döndürerek kaynak ile namlu arasında kesintisiz bir bağlantı kurar. Doğru rota tamamlandığında mermi bu hat boyunca ilerleyerek hedefe ulaşır.
 
-Proje şu anda **pre-alpha / temel prototip** aşamasındadır. Oyun mantığı, veri modeli ve görsel tahta üretim hattı oluşturulmuş; ilk bölüm içeriği, sahne bağlantıları ve oyuncu etkileşimi geliştirilmektedir.
+Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. İlk veri odaklı bölüm, görsel tahta üretimi ve tıklayarak karo döndürme akışı hazırlanmıştır.
 
 ### Öne çıkan teknik özellikler
 
@@ -25,6 +25,8 @@ Proje şu anda **pre-alpha / temel prototip** aşamasındadır. Oyun mantığı,
 - Bölüm verisini çalışma zamanı durumuna çeviren `BoardBuilder`
 - Bölümdeki karoları prefab üzerinden koordinatlarına yerleştiren `BoardView`
 - Karo dönüşünü görsele uygulayan ve kaynak/hedef rollerini renkle ayıran `TileView`
+- `OnMouseDown` ve event zinciri üzerinden çalışan tıklama → döndürme → çözüm kontrolü akışı
+- `BoxCollider2D` destekli tile etkileşimi ve kilitli Source/Target kontrolü
 
 ### Mimari
 
@@ -56,8 +58,9 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 2. Unity Hub üzerinden proje klasörünü ekleyin.
 3. Projeyi Unity `6000.3.9f1` veya uyumlu bir Unity 6 sürümüyle açın.
 4. Geliştirme sahnesi olarak `Assets/Scenes/Gameplay.unity` dosyasını açın.
+5. Play Mode'u başlatın ve ortadaki beyaz karoya tıklayın.
 
-> **Not:** Oynanabilir döngü henüz tamamlanmadı. `Level_001` şu anda boş; `Gameplay` sahnesindeki `BoardView` ve Inspector bağlantıları tamamlanmadan Play Mode akışı çalışmayacaktır.
+> **Not:** `OnMouseDown` etkileşimi için `TilePrefab` üzerinde `BoxCollider2D` bulunur ve Active Input Handling ayarı `Both` olarak yapılandırılmıştır.
 
 ### Güncel durum
 
@@ -68,12 +71,25 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 - [x] Bölüm verisinden `BoardState` oluşturma
 - [x] Temel `BoardView` ve `TileView` bileşenleri
 - [x] Sprite tabanlı `TilePrefab` ve kaynak/hedef rol renkleri
-- [ ] İlk oynanabilir bölümün içerik ve sahne bağlantıları
-- [ ] Dokunma/tıklama ile karo döndürme
+- [x] İlk oynanabilir bölümün içerik ve sahne bağlantıları
+- [x] Tıklama ile karo döndürme ve yeniden çözüm kontrolü
 - [ ] Bölüm tamamlama, yeniden başlatma ve UI akışı
 - [ ] Mermi animasyonu, ses ve titreşim geri bildirimi
 - [ ] Edit Mode / Play Mode otomatik testleri
 - [ ] Mobil cihaz doğrulaması ve Android build hazırlığı
+
+### Hızlı doğrulama
+
+`Level_001`, yatay bir Source → Normal → Target hattı kullanır. Source ve Target kilitlidir. Ortadaki Normal karo başlangıçta dikeydir; ilk tıklamada saat yönünde 90° dönerek hattı tamamlar.
+
+Beklenen Console çıktısı:
+
+```text
+Başlangıçta çözüldü mü: False
+Hamle sayısı: 1
+Çözüldü mü: True
+Bölüm tamamlandı!
+```
 
 ### Yol haritası
 
@@ -97,7 +113,7 @@ Nihai görseller, mermi animasyonu, ses, titreşim, mobil optimizasyon ve Androi
 
 PipeMuzzle is a data-driven 2D mobile puzzle game prototype built with Unity. Players rotate pipe tiles in 90-degree steps to form a continuous connection between a source and a muzzle. Once the route is complete, a projectile travels through the connected path and reaches the target.
 
-The project is currently in **pre-alpha / core prototype** development. The domain model, connection logic, and visual board pipeline are implemented, while the first level content, scene wiring, and player interaction are still in progress.
+The project is currently in **pre-alpha / playable core prototype** development. The first data-driven level, visual board generation, and click-to-rotate interaction flow are now configured.
 
 ### Technical highlights
 
@@ -110,6 +126,8 @@ The project is currently in **pre-alpha / core prototype** development. The doma
 - A `BoardBuilder` pipeline that creates runtime state from level data
 - A `BoardView` that instantiates and positions prefab-based tiles
 - A `TileView` that applies rotation and color-codes source/target roles
+- A click → rotate → solution-check flow built with `OnMouseDown` and C# events
+- `BoxCollider2D`-based tile interaction with locked Source/Target handling
 
 ### Architecture
 
@@ -139,8 +157,9 @@ The project is currently in **pre-alpha / core prototype** development. The doma
 2. Add the project folder through Unity Hub.
 3. Open it with Unity `6000.3.9f1` or a compatible Unity 6 release.
 4. Open `Assets/Scenes/Gameplay.unity` as the development scene.
+5. Enter Play Mode and click the white tile in the middle.
 
-> **Note:** The complete playable loop is not available yet. `Level_001` is currently empty, and the `BoardView` and Inspector references in the `Gameplay` scene must be completed before the Play Mode flow can run.
+> **Note:** `TilePrefab` includes a `BoxCollider2D` for `OnMouseDown`, and Active Input Handling is configured as `Both`.
 
 ### Development status
 
@@ -151,12 +170,25 @@ The project is currently in **pre-alpha / core prototype** development. The doma
 - [x] Runtime `BoardState` creation from level data
 - [x] Basic `BoardView` and `TileView` components
 - [x] Sprite-based `TilePrefab` with source/target role colors
-- [ ] First playable level content and scene wiring
-- [ ] Touch/click tile rotation
+- [x] First playable level content and scene wiring
+- [x] Click-to-rotate interaction and repeated solution checks
 - [ ] Level completion, restart, and UI flow
 - [ ] Projectile animation, audio, and haptic feedback
 - [ ] Edit Mode / Play Mode automated tests
 - [ ] Mobile device validation and Android build preparation
+
+### Quick verification
+
+`Level_001` uses a horizontal Source → Normal → Target route. The Source and Target tiles are locked. The middle Normal tile starts vertically and rotates 90° clockwise on the first click to complete the route.
+
+Expected Console output:
+
+```text
+Başlangıçta çözüldü mü: False
+Hamle sayısı: 1
+Çözüldü mü: True
+Bölüm tamamlandı!
+```
 
 ### Roadmap
 
