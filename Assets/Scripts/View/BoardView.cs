@@ -22,6 +22,8 @@ namespace PipeMuzzle.View
                 throw new ArgumentNullException(nameof(board));
             }
 
+            Clear();
+
             float centerX =
                 (board.Width - 1) * tileSpacing * 0.5f;
 
@@ -39,8 +41,28 @@ namespace PipeMuzzle.View
                         continue;
                     }
 
-                    CreateTile(tileState, centerX, centerY);
+                    CreateTile(
+                        tileState,
+                        centerX,
+                        centerY
+                    );
                 }
+            }
+        }
+
+        public void Clear()
+        {
+            for (int i = transform.childCount - 1; i >= 0; i--)
+            {
+                TileView tileView =
+                    transform.GetChild(i).GetComponent<TileView>();
+
+                if (tileView != null)
+                {
+                    tileView.Clicked -= HandleTileClicked;
+                }
+
+                Destroy(transform.GetChild(i).gameObject);
             }
         }
 
