@@ -12,7 +12,7 @@
 
 Oyuncu, boru parçalarını 90 derecelik adımlarla döndürerek kaynak ile namlu arasında kesintisiz bir bağlantı kurar. Doğru rota tamamlandığında mermi bu hat boyunca ilerleyerek hedefe ulaşır.
 
-Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. İlk veri odaklı bölüm, görsel tahta üretimi ve tıklayarak karo döndürme akışı hazırlanmıştır.
+Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. İlk veri odaklı bölüm, görsel tahta üretimi, tıklayarak karo döndürme ve farklı bölüm boyutlarına otomatik uyum sağlayan kamera akışı hazırlanmıştır.
 
 ### Öne çıkan teknik özellikler
 
@@ -23,10 +23,12 @@ Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. İlk
 - Kaynaktan hedefe ulaşılabilirliği kontrol eden BFS tabanlı bağlantı algoritması
 - `ScriptableObject` tabanlı, tekrar kullanılabilir bölüm tanımları
 - Bölüm verisini çalışma zamanı durumuna çeviren `BoardBuilder`
-- Bölümdeki karoları prefab üzerinden koordinatlarına yerleştiren `BoardView`
-- Karo dönüşünü görsele uygulayan ve kaynak/hedef rollerini renkle ayıran `TileView`
+- Bölümdeki karoları prefab üzerinden üreten ve grid'i dünya merkezine yerleştiren `BoardView`
+- Oluşturulan renderer sınırlarını, ekran oranını ve padding değerini kullanarak kamerayı otomatik ayarlayan `BoardCameraFitter`
+- Karo şekline uygun pipe sprite'ını ve dönüşünü görsele uygulayan `TileView`
 - `OnMouseDown` ve event zinciri üzerinden çalışan tıklama → döndürme → çözüm kontrolü akışı
 - `BoxCollider2D` destekli tile etkileşimi ve kilitli Source/Target kontrolü
+- Bölüm çözüldükten sonra yeni tile inputlarını engelleyen tamamlama kilidi
 
 ### Mimari
 
@@ -34,7 +36,7 @@ Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. İlk
 | --- | --- | --- |
 | `Data` | Yön, bağlantı, karo ve bölüm tanımları | `Direction`, `ConnectionMask`, `TileDefinition`, `LevelDefinition` |
 | `Board` | Çalışma zamanı tahta durumu ve oyun kuralları | `TileState`, `BoardState`, `BoardBuilder`, `ConnectionChecker` |
-| `View` | Karo prefablarının oluşturulması, konumlandırılması, döndürülmesi ve rol renkleri | `BoardView`, `TileView`, `TilePrefab` |
+| `View` | Karo prefablarının oluşturulması, merkezlenmesi, döndürülmesi ve kameranın board sınırlarına uydurulması | `BoardView`, `TileView`, `BoardCameraFitter`, `TilePrefab` |
 | `Gameplay` | Prototip akışının sahne üzerinden çalıştırılması | `BoardLogicTester` |
 
 Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi birbirinden bağımsız geliştirilebilir.
@@ -70,10 +72,13 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 - [x] `LevelDefinition` ve `TileDefinition` veri yapıları
 - [x] Bölüm verisinden `BoardState` oluşturma
 - [x] Temel `BoardView` ve `TileView` bileşenleri
-- [x] Sprite tabanlı `TilePrefab` ve kaynak/hedef rol renkleri
+- [x] Karo şekline göre değişen pipe sprite'larıyla `TilePrefab`
 - [x] İlk oynanabilir bölümün içerik ve sahne bağlantıları
 - [x] Tıklama ile karo döndürme ve yeniden çözüm kontrolü
-- [ ] Bölüm tamamlama, yeniden başlatma ve UI akışı
+- [x] Tek ve çift boyutlu board'ların geometrik merkezlenmesi
+- [x] Renderer bounds ve aspect ratio tabanlı otomatik kamera fit sistemi
+- [x] Bölüm tamamlama algılama ve çözüm sonrası input kilidi
+- [ ] Yeniden başlatma ve bölüm tamamlama UI akışı
 - [ ] Mermi animasyonu, ses ve titreşim geri bildirimi
 - [ ] Edit Mode / Play Mode otomatik testleri
 - [ ] Mobil cihaz doğrulaması ve Android build hazırlığı
@@ -81,6 +86,8 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 ### Hızlı doğrulama
 
 `Level_001`, yatay bir Source → Normal → Target hattı kullanır. Source ve Target kilitlidir. Ortadaki Normal karo başlangıçta dikeydir; ilk tıklamada saat yönünde 90° dönerek hattı tamamlar.
+
+Board dünya merkezine otomatik yerleşir ve kamera görünür tile sınırlarını padding bırakarak ekrana sığdırır. Farklı level boyutları ve ekran oranları için `Orthographic Size` değerini elle değiştirmek gerekmez.
 
 Beklenen Console çıktısı:
 
@@ -113,7 +120,7 @@ Nihai görseller, mermi animasyonu, ses, titreşim, mobil optimizasyon ve Androi
 
 PipeMuzzle is a data-driven 2D mobile puzzle game prototype built with Unity. Players rotate pipe tiles in 90-degree steps to form a continuous connection between a source and a muzzle. Once the route is complete, a projectile travels through the connected path and reaches the target.
 
-The project is currently in **pre-alpha / playable core prototype** development. The first data-driven level, visual board generation, and click-to-rotate interaction flow are now configured.
+The project is currently in **pre-alpha / playable core prototype** development. The first data-driven level, visual board generation, click-to-rotate interaction, and automatic camera fitting for different board sizes are now configured.
 
 ### Technical highlights
 
@@ -124,10 +131,12 @@ The project is currently in **pre-alpha / playable core prototype** development.
 - BFS-based source-to-target connectivity validation
 - Reusable, `ScriptableObject`-based level definitions
 - A `BoardBuilder` pipeline that creates runtime state from level data
-- A `BoardView` that instantiates and positions prefab-based tiles
-- A `TileView` that applies rotation and color-codes source/target roles
+- A `BoardView` that instantiates prefab-based tiles and centers the grid around the world origin
+- A `BoardCameraFitter` that uses renderer bounds, screen aspect ratio, and padding to fit the camera automatically
+- A `TileView` that selects the matching pipe sprite and applies its rotation
 - A click → rotate → solution-check flow built with `OnMouseDown` and C# events
 - `BoxCollider2D`-based tile interaction with locked Source/Target handling
+- A completion lock that prevents additional tile input after the puzzle is solved
 
 ### Architecture
 
@@ -135,7 +144,7 @@ The project is currently in **pre-alpha / playable core prototype** development.
 | --- | --- | --- |
 | `Data` | Direction, connection, tile, and level definitions | `Direction`, `ConnectionMask`, `TileDefinition`, `LevelDefinition` |
 | `Board` | Runtime board state and game rules | `TileState`, `BoardState`, `BoardBuilder`, `ConnectionChecker` |
-| `View` | Instantiating, positioning, rotating, and color-coding tile prefabs | `BoardView`, `TileView`, `TilePrefab` |
+| `View` | Instantiating, centering, and rotating tile prefabs, plus fitting the camera to board bounds | `BoardView`, `TileView`, `BoardCameraFitter`, `TilePrefab` |
 | `Gameplay` | Running the prototype flow from the scene | `BoardLogicTester` |
 
 ### Built with
@@ -169,10 +178,13 @@ The project is currently in **pre-alpha / playable core prototype** development.
 - [x] `LevelDefinition` and `TileDefinition` data structures
 - [x] Runtime `BoardState` creation from level data
 - [x] Basic `BoardView` and `TileView` components
-- [x] Sprite-based `TilePrefab` with source/target role colors
+- [x] Shape-specific pipe sprites configured on `TilePrefab`
 - [x] First playable level content and scene wiring
 - [x] Click-to-rotate interaction and repeated solution checks
-- [ ] Level completion, restart, and UI flow
+- [x] Geometric board centering for odd and even dimensions
+- [x] Renderer-bounds and aspect-ratio-aware automatic camera fitting
+- [x] Completion detection and post-solve input lock
+- [ ] Restart and level-completion UI flow
 - [ ] Projectile animation, audio, and haptic feedback
 - [ ] Edit Mode / Play Mode automated tests
 - [ ] Mobile device validation and Android build preparation
@@ -180,6 +192,8 @@ The project is currently in **pre-alpha / playable core prototype** development.
 ### Quick verification
 
 `Level_001` uses a horizontal Source → Normal → Target route. The Source and Target tiles are locked. The middle Normal tile starts vertically and rotates 90° clockwise on the first click to complete the route.
+
+The board is centered automatically, and the camera fits the visible tile bounds with configurable padding. Manual `Orthographic Size` changes are not required for different level sizes or aspect ratios.
 
 Expected Console output:
 
