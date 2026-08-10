@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using PipeMuzzle.Board;
 using PipeMuzzle.Data;
@@ -24,11 +25,17 @@ namespace PipeMuzzle.Gameplay
         private int currentLevelIndex;
         private bool isCompleted;
 
+        public event Action<int, int> LevelLoaded;
+        public event Action<bool> LevelCompleted;
+
         private void Start()
         {
             if (boardView == null)
             {
-                Debug.LogError("GameController requires a BoardView.");
+                Debug.LogError(
+                    "GameController requires a BoardView."
+                );
+
                 enabled = false;
                 return;
             }
@@ -82,8 +89,13 @@ namespace PipeMuzzle.Gameplay
             bool solved =
                 ConnectionChecker.Evaluate(board);
 
-            Debug.Log($"Hamle sayısı: {board.MoveCount}");
-            Debug.Log($"Çözüldü mü: {solved}");
+            Debug.Log(
+                $"Hamle sayısı: {board.MoveCount}"
+            );
+
+            Debug.Log(
+                $"Çözüldü mü: {solved}"
+            );
 
             if (solved)
             {
@@ -95,9 +107,14 @@ namespace PipeMuzzle.Gameplay
         {
             isCompleted = true;
 
+            bool hasNextLevel =
+                currentLevelIndex < levels.Count - 1;
+
             Debug.Log(
                 $"Bölüm {currentLevelIndex + 1} tamamlandı!"
             );
+
+            LevelCompleted?.Invoke(hasNextLevel);
         }
 
         public void RestartLevel()
@@ -117,7 +134,10 @@ namespace PipeMuzzle.Gameplay
 
             if (nextLevelIndex >= levels.Count)
             {
-                Debug.Log("Tüm bölümler tamamlandı!");
+                Debug.Log(
+                    "Tüm bölümler tamamlandı!"
+                );
+
                 return;
             }
 
@@ -164,13 +184,24 @@ namespace PipeMuzzle.Gameplay
             Debug.Log(
                 $"Başlangıçta çözüldü mü: {solved}"
             );
+
+            LevelLoaded?.Invoke(
+                currentLevelIndex + 1,
+                levels.Count
+            );
+
+            if (solved)
+            {
+                CompleteLevel();
+            }
         }
 
         private void OnDestroy()
         {
             if (boardView != null)
             {
-                boardView.TileClicked -= HandleTileClicked;
+                boardView.TileClicked -=
+                    HandleTileClicked;
             }
         }
     }
