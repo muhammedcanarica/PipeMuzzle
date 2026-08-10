@@ -106,6 +106,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.View.TileView
   spriteRenderer: {fileID: 4462437385542353727}
+  straightSprite: {fileID: -1876876472472163063, guid: 3d3c658f6b9bbe74abd039de7ace06a9, type: 3}
+  cornerSprite: {fileID: -1730701556345148908, guid: 62a43e8da9d92524487763f195ed354d, type: 3}
+  threeWaySprite: {fileID: 1743709871802770797, guid: 593ce2bc9ad08604d808225efd74f93a, type: 3}
+  crossSprite: {fileID: -4091110592893181371, guid: 9fbc6a4ce0596ae44967fce9cd3f1957, type: 3}
 --- !u!61 &-7967250838941427884
 BoxCollider2D:
   m_ObjectHideFlags: 0
