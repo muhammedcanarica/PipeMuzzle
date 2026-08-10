@@ -5,9 +5,6 @@ TextureImporter:
   - first:
       213: -1876876472472163063
     second: pipe_straight_0
-  - first:
-      213: -1703826626381267102
-    second: pipe_straight_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -145,10 +142,10 @@ TextureImporter:
       name: pipe_straight_0
       rect:
         serializedVersion: 2
-        x: 64
-        y: 46
-        width: 947
-        height: 1453
+        x: 0
+        y: 0
+        width: 1024
+        height: 1024
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -159,28 +156,6 @@ TextureImporter:
       bones: []
       spriteID: 90d220bdacef3f5e0800000000000000
       internalID: -1876876472472163063
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: pipe_straight_1
-      rect:
-        serializedVersion: 2
-        x: 782
-        y: 849
-        width: 11
-        height: 14
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 26f31b7e5baca58e0800000000000000
-      internalID: -1703826626381267102
       vertices: []
       indices: 
       edges: []
@@ -200,7 +175,6 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       pipe_straight_0: -1876876472472163063
-      pipe_straight_1: -1703826626381267102
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

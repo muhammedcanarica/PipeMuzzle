@@ -13,16 +13,53 @@ namespace PipeMuzzle.Gameplay
         [SerializeField]
         private LevelDefinition level;
 
+        [SerializeField]
+        private BoardCameraFitter boardCameraFitter;
+
         private BoardState board;
         private bool isCompleted;
 
         private void Start()
         {
+            if (boardView == null)
+            {
+                Debug.LogError(
+                    $"{nameof(BoardLogicTester)} requires a BoardView reference.",
+                    this
+                );
+
+                enabled = false;
+                return;
+            }
+
+            if (level == null)
+            {
+                Debug.LogError(
+                    $"{nameof(BoardLogicTester)} requires a LevelDefinition reference.",
+                    this
+                );
+
+                enabled = false;
+                return;
+            }
+
             board = BoardBuilder.Build(level);
 
             boardView.TileClicked += HandleTileClicked;
 
             boardView.Build(board);
+
+            if (boardCameraFitter == null)
+            {
+                Debug.LogError(
+                    $"{nameof(BoardLogicTester)} requires a BoardCameraFitter reference.",
+                    this
+                );
+            }
+            else
+            {
+                boardCameraFitter.Fit();
+            }
 
             bool solved = ConnectionChecker.Evaluate(board);
 

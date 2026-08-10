@@ -10,6 +10,7 @@ namespace PipeMuzzle.View
         private TileView tilePrefab;
 
         [SerializeField]
+        [Min(0.01f)]
         private float tileSpacing = 1f;
 
         public event Action<TileView> TileClicked;
@@ -20,6 +21,12 @@ namespace PipeMuzzle.View
             {
                 throw new ArgumentNullException(nameof(board));
             }
+
+            float centerX =
+                (board.Width - 1) * tileSpacing * 0.5f;
+
+            float centerY =
+                (board.Height - 1) * tileSpacing * 0.5f;
 
             for (int x = 0; x < board.Width; x++)
             {
@@ -32,12 +39,44 @@ namespace PipeMuzzle.View
                         continue;
                     }
 
-                    CreateTile(tileState);
+                    CreateTile(tileState, centerX, centerY);
                 }
             }
         }
 
-        private void CreateTile(TileState tileState)
+        public bool TryGetWorldBounds(out Bounds bounds)
+        {
+            Renderer[] renderers =
+                GetComponentsInChildren<Renderer>();
+
+            bounds = default;
+            bool hasBounds = false;
+
+            foreach (Renderer currentRenderer in renderers)
+            {
+                if (!currentRenderer.enabled ||
+                    !currentRenderer.gameObject.activeInHierarchy)
+                {
+                    continue;
+                }
+
+                if (!hasBounds)
+                {
+                    bounds = currentRenderer.bounds;
+                    hasBounds = true;
+                    continue;
+                }
+
+                bounds.Encapsulate(currentRenderer.bounds);
+            }
+
+            return hasBounds;
+        }
+
+        private void CreateTile(
+            TileState tileState,
+            float centerX,
+            float centerY)
         {
             TileView tileView = Instantiate(
                 tilePrefab,
@@ -45,8 +84,8 @@ namespace PipeMuzzle.View
             );
 
             tileView.transform.localPosition = new Vector3(
-                tileState.X * tileSpacing,
-                tileState.Y * tileSpacing,
+                tileState.X * tileSpacing - centerX,
+                tileState.Y * tileSpacing - centerY,
                 0f
             );
 

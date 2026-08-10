@@ -96,11 +96,11 @@ namespace PipeMuzzle.View
             switch (tileState.Role)
             {
                 case TileRole.Source:
-                    spriteRenderer.color = Color.green;
+                    spriteRenderer.color = Color.white;
                     break;
 
                 case TileRole.Target:
-                    spriteRenderer.color = Color.red;
+                    spriteRenderer.color = Color.white;
                     break;
 
                 default:

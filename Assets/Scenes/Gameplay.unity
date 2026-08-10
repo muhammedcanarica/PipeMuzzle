@@ -196,6 +196,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.Gameplay.BoardLogicTester
   boardView: {fileID: 1140884900}
   level: {fileID: 11400000, guid: 064af6107d3a84146bedbb6301ecb4a6, type: 2}
+  boardCameraFitter: {fileID: 1135455758}
 --- !u!1 &1076144790
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,6 +288,7 @@ GameObject:
   - component: {fileID: 1135455755}
   - component: {fileID: 1135455754}
   - component: {fileID: 1135455757}
+  - component: {fileID: 1135455758}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -337,7 +339,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 2.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -412,6 +414,22 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &1135455758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135455753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32c8a73b6d3558b45a840b61567cc92f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.View.BoardCameraFitter
+  targetCamera: {fileID: 1135455755}
+  boardView: {fileID: 1140884900}
+  padding: 0.5
+  minOrthographicSize: 1.5
 --- !u!1 &1140884899
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,7 +460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.View.BoardView
   tilePrefab: {fileID: -9002645936253929089, guid: dfee6d2ddaf5713488735940aef32011, type: 3}
-  tileSpacing: 1.5
+  tileSpacing: 1
 --- !u!4 &1140884901
 Transform:
   m_ObjectHideFlags: 0
