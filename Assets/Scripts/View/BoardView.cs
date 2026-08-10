@@ -54,15 +54,18 @@ namespace PipeMuzzle.View
         {
             for (int i = transform.childCount - 1; i >= 0; i--)
             {
+                GameObject child = transform.GetChild(i).gameObject;
+
                 TileView tileView =
-                    transform.GetChild(i).GetComponent<TileView>();
+                    child.GetComponent<TileView>();
 
                 if (tileView != null)
                 {
                     tileView.Clicked -= HandleTileClicked;
                 }
 
-                Destroy(transform.GetChild(i).gameObject);
+                child.SetActive(false);
+                Destroy(child);
             }
         }
 
