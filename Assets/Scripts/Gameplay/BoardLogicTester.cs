@@ -14,6 +14,7 @@ namespace PipeMuzzle.Gameplay
         private LevelDefinition level;
 
         private BoardState board;
+        private bool isCompleted;
 
         private void Start()
         {
@@ -30,6 +31,11 @@ namespace PipeMuzzle.Gameplay
 
         private void HandleTileClicked(TileView tileView)
         {
+            if (isCompleted)
+            {
+                return;
+            }
+
             TileState tile = tileView.State;
 
             bool rotated = board.TryRotateTile(
@@ -51,6 +57,8 @@ namespace PipeMuzzle.Gameplay
 
             if (solved)
             {
+                isCompleted = true;
+
                 Debug.Log("Bölüm tamamlandı!");
             }
         }

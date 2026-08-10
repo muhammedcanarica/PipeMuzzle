@@ -7,8 +7,22 @@ namespace PipeMuzzle.View
 {
     public class TileView : MonoBehaviour
     {
+        [Header("References")]
         [SerializeField]
         private SpriteRenderer spriteRenderer;
+
+        [Header("Tile Sprites")]
+        [SerializeField]
+        private Sprite straightSprite;
+
+        [SerializeField]
+        private Sprite cornerSprite;
+
+        [SerializeField]
+        private Sprite threeWaySprite;
+
+        [SerializeField]
+        private Sprite crossSprite;
 
         private TileState tileState;
 
@@ -35,6 +49,8 @@ namespace PipeMuzzle.View
                 return;
             }
 
+            RefreshSprite();
+
             transform.localRotation = Quaternion.Euler(
                 0f,
                 0f,
@@ -47,6 +63,32 @@ namespace PipeMuzzle.View
         private void OnMouseDown()
         {
             Clicked?.Invoke(this);
+        }
+
+        private void RefreshSprite()
+        {
+            switch (tileState.Shape)
+            {
+                case TileShape.Straight:
+                    spriteRenderer.sprite = straightSprite;
+                    break;
+
+                case TileShape.Corner:
+                    spriteRenderer.sprite = cornerSprite;
+                    break;
+
+                case TileShape.ThreeWay:
+                    spriteRenderer.sprite = threeWaySprite;
+                    break;
+
+                case TileShape.Cross:
+                    spriteRenderer.sprite = crossSprite;
+                    break;
+
+                case TileShape.Empty:
+                    spriteRenderer.sprite = null;
+                    break;
+            }
         }
 
         private void RefreshColor()
