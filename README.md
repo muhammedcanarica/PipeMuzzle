@@ -10,16 +10,16 @@
 
 ### Oyun fikri
 
-Oyuncu, boru parçalarını 90 derecelik adımlarla döndürerek kaynak ile namlu arasında kesintisiz bir bağlantı kurar. Doğru rota tamamlandığında mermi bu hat boyunca ilerleyerek hedefe ulaşır.
+Oyuncu, boru parçalarını 90 derecelik adımlarla döndürerek kaynak ile namlu arasında kesintisiz bir bağlantı kurar. Doğru rota tamamlandığında bölüm çözülür; mermi animasyonu ve ek geri bildirimler sonraki geliştirme adımları arasındadır.
 
-Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. İlk veri odaklı bölüm, görsel tahta üretimi, tıklayarak karo döndürme ve farklı bölüm boyutlarına otomatik uyum sağlayan kamera akışı hazırlanmıştır.
+Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. Üç veri odaklı bölüm; görsel tahta üretimi, tıklayarak karo döndürme, otomatik kamera uyumu, yeniden başlatma ve sonraki bölüme geçiş akışlarıyla oynanabilir durumdadır.
 
 ### Öne çıkan teknik özellikler
 
 - Bit maskeleriyle temsil edilen dört yönlü boru bağlantıları
 - Karo şekline ve dönüşüne göre dinamik bağlantı hesabı
 - Kilitli karoları destekleyen 90° saat yönü dönüş sistemi
-- Başarılı dönüşlerde güncellenen hamle sayacı
+- Başarılı dönüşlerde event üzerinden güncellenen görünür hamle sayacı
 - Kaynaktan hedefe ulaşılabilirliği kontrol eden BFS tabanlı bağlantı algoritması
 - `ScriptableObject` tabanlı, tekrar kullanılabilir bölüm tanımları
 - Bölüm verisini çalışma zamanı durumuna çeviren `BoardBuilder`
@@ -29,6 +29,7 @@ Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. İlk
 - `OnMouseDown` ve event zinciri üzerinden çalışan tıklama → döndürme → çözüm kontrolü akışı
 - `BoxCollider2D` destekli tile etkileşimi ve kilitli Source/Target kontrolü
 - Bölüm çözüldükten sonra yeni tile inputlarını engelleyen tamamlama kilidi
+- Yeniden başlatma, bölüm bilgisi, hamle sayacı ve tamamlama panelini yöneten sade oyun UI'ı
 
 ### Mimari
 
@@ -37,7 +38,8 @@ Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. İlk
 | `Data` | Yön, bağlantı, karo ve bölüm tanımları | `Direction`, `ConnectionMask`, `TileDefinition`, `LevelDefinition` |
 | `Board` | Çalışma zamanı tahta durumu ve oyun kuralları | `TileState`, `BoardState`, `BoardBuilder`, `ConnectionChecker` |
 | `View` | Karo prefablarının oluşturulması, merkezlenmesi, döndürülmesi ve kameranın board sınırlarına uydurulması | `BoardView`, `TileView`, `BoardCameraFitter`, `TilePrefab` |
-| `Gameplay` | Prototip akışının sahne üzerinden çalıştırılması | `BoardLogicTester` |
+| `Gameplay` | Bölüm yükleme, yeniden başlatma, hamle ve ilerleme akışının yönetilmesi | `GameController`, `BoardLogicTester` |
+| `UI` | Bölüm, hamle ve tamamlama durumlarının ekranda gösterilmesi | `GameUI`, TextMesh Pro, Unity UI |
 
 Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi birbirinden bağımsız geliştirilebilir.
 
@@ -60,7 +62,8 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 2. Unity Hub üzerinden proje klasörünü ekleyin.
 3. Projeyi Unity `6000.3.9f1` veya uyumlu bir Unity 6 sürümüyle açın.
 4. Geliştirme sahnesi olarak `Assets/Scenes/Gameplay.unity` dosyasını açın.
-5. Play Mode'u başlatın ve ortadaki beyaz karoya tıklayın.
+5. Play Mode'u başlatın ve döndürülebilir boru karolarına tıklayın.
+6. Üst çubuktaki `RESTART`, `LEVEL` ve `HAMLE` bilgilerini; bölüm çözülünce açılan `NEXT LEVEL` akışını kontrol edin.
 
 > **Not:** `OnMouseDown` etkileşimi için `TilePrefab` üzerinde `BoxCollider2D` bulunur ve Active Input Handling ayarı `Both` olarak yapılandırılmıştır.
 
@@ -73,12 +76,13 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 - [x] Bölüm verisinden `BoardState` oluşturma
 - [x] Temel `BoardView` ve `TileView` bileşenleri
 - [x] Karo şekline göre değişen pipe sprite'larıyla `TilePrefab`
-- [x] İlk oynanabilir bölümün içerik ve sahne bağlantıları
+- [x] Üç oynanabilir bölümün içerik ve sahne bağlantıları
 - [x] Tıklama ile karo döndürme ve yeniden çözüm kontrolü
 - [x] Tek ve çift boyutlu board'ların geometrik merkezlenmesi
 - [x] Renderer bounds ve aspect ratio tabanlı otomatik kamera fit sistemi
 - [x] Bölüm tamamlama algılama ve çözüm sonrası input kilidi
-- [ ] Yeniden başlatma ve bölüm tamamlama UI akışı
+- [x] Yeniden başlatma, bölüm tamamlama ve sonraki bölüme geçiş UI akışı
+- [x] Başarılı dönüşleri gösteren ve bölüm yüklenince sıfırlanan hamle sayacı UI'ı
 - [ ] Mermi animasyonu, ses ve titreşim geri bildirimi
 - [ ] Edit Mode / Play Mode otomatik testleri
 - [ ] Mobil cihaz doğrulaması ve Android build hazırlığı
@@ -89,20 +93,22 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 
 Board dünya merkezine otomatik yerleşir ve kamera görünür tile sınırlarını padding bırakarak ekrana sığdırır. Farklı level boyutları ve ekran oranları için `Orthographic Size` değerini elle değiştirmek gerekmez.
 
-Beklenen Console çıktısı:
+Beklenen UI akışı:
 
 ```text
-Başlangıçta çözüldü mü: False
-Hamle sayısı: 1
-Çözüldü mü: True
-Bölüm tamamlandı!
+RESTART        LEVEL 1 / 3        HAMLE: 0
+Başarılı karo dönüşü              HAMLE: 1
+RESTART                             HAMLE: 0
+Bölüm çözülünce                  LEVEL COMPLETE!
+NEXT LEVEL ile yeni bölüm          HAMLE: 0
+Son bölüm çözülünce            ALL LEVELS COMPLETE!
 ```
 
 ### Yol haritası
 
 #### V1 — Oynanabilir prototip
 
-Veri odaklı ilk bölüm, karo etkileşimi, çözüm kontrolü, yeniden başlatma ve bölüm tamamlama akışı.
+Üç veri odaklı bölüm, karo etkileşimi, çözüm kontrolü, hamle sayacı, yeniden başlatma ve bölüm tamamlama akışı.
 
 #### V2 — İçerik ve ilerleme
 
@@ -118,16 +124,16 @@ Nihai görseller, mermi animasyonu, ses, titreşim, mobil optimizasyon ve Androi
 
 ### Game concept
 
-PipeMuzzle is a data-driven 2D mobile puzzle game prototype built with Unity. Players rotate pipe tiles in 90-degree steps to form a continuous connection between a source and a muzzle. Once the route is complete, a projectile travels through the connected path and reaches the target.
+PipeMuzzle is a data-driven 2D mobile puzzle game prototype built with Unity. Players rotate pipe tiles in 90-degree steps to form a continuous connection between a source and a muzzle. Completing the route solves the level; projectile animation and additional feedback remain planned work.
 
-The project is currently in **pre-alpha / playable core prototype** development. The first data-driven level, visual board generation, click-to-rotate interaction, and automatic camera fitting for different board sizes are now configured.
+The project is currently in **pre-alpha / playable core prototype** development. Three data-driven levels are playable with visual board generation, click-to-rotate interaction, automatic camera fitting, restart, and next-level progression.
 
 ### Technical highlights
 
 - Four-direction pipe connections represented with bit masks
 - Rotation-aware connection calculation for each tile shape
 - Clockwise 90° rotation with locked-tile support
-- Move counting for successful rotations
+- A visible move counter updated through an event after successful rotations
 - BFS-based source-to-target connectivity validation
 - Reusable, `ScriptableObject`-based level definitions
 - A `BoardBuilder` pipeline that creates runtime state from level data
@@ -137,6 +143,7 @@ The project is currently in **pre-alpha / playable core prototype** development.
 - A click → rotate → solution-check flow built with `OnMouseDown` and C# events
 - `BoxCollider2D`-based tile interaction with locked Source/Target handling
 - A completion lock that prevents additional tile input after the puzzle is solved
+- A compact game UI for restart, level progress, move count, and completion states
 
 ### Architecture
 
@@ -145,7 +152,8 @@ The project is currently in **pre-alpha / playable core prototype** development.
 | `Data` | Direction, connection, tile, and level definitions | `Direction`, `ConnectionMask`, `TileDefinition`, `LevelDefinition` |
 | `Board` | Runtime board state and game rules | `TileState`, `BoardState`, `BoardBuilder`, `ConnectionChecker` |
 | `View` | Instantiating, centering, and rotating tile prefabs, plus fitting the camera to board bounds | `BoardView`, `TileView`, `BoardCameraFitter`, `TilePrefab` |
-| `Gameplay` | Running the prototype flow from the scene | `BoardLogicTester` |
+| `Gameplay` | Managing level loading, restart, moves, and progression | `GameController`, `BoardLogicTester` |
+| `UI` | Presenting level, move, and completion states | `GameUI`, TextMesh Pro, Unity UI |
 
 ### Built with
 
@@ -166,7 +174,8 @@ The project is currently in **pre-alpha / playable core prototype** development.
 2. Add the project folder through Unity Hub.
 3. Open it with Unity `6000.3.9f1` or a compatible Unity 6 release.
 4. Open `Assets/Scenes/Gameplay.unity` as the development scene.
-5. Enter Play Mode and click the white tile in the middle.
+5. Enter Play Mode and click the rotatable pipe tiles.
+6. Check the `RESTART`, `LEVEL`, and `HAMLE` values in the top bar, then use `NEXT LEVEL` after solving a level.
 
 > **Note:** `TilePrefab` includes a `BoxCollider2D` for `OnMouseDown`, and Active Input Handling is configured as `Both`.
 
@@ -179,12 +188,13 @@ The project is currently in **pre-alpha / playable core prototype** development.
 - [x] Runtime `BoardState` creation from level data
 - [x] Basic `BoardView` and `TileView` components
 - [x] Shape-specific pipe sprites configured on `TilePrefab`
-- [x] First playable level content and scene wiring
+- [x] Three playable levels with content and scene wiring
 - [x] Click-to-rotate interaction and repeated solution checks
 - [x] Geometric board centering for odd and even dimensions
 - [x] Renderer-bounds and aspect-ratio-aware automatic camera fitting
 - [x] Completion detection and post-solve input lock
-- [ ] Restart and level-completion UI flow
+- [x] Restart, level-completion, and next-level UI flow
+- [x] Move counter UI that updates after valid rotations and resets when a level loads
 - [ ] Projectile animation, audio, and haptic feedback
 - [ ] Edit Mode / Play Mode automated tests
 - [ ] Mobile device validation and Android build preparation
@@ -195,20 +205,22 @@ The project is currently in **pre-alpha / playable core prototype** development.
 
 The board is centered automatically, and the camera fits the visible tile bounds with configurable padding. Manual `Orthographic Size` changes are not required for different level sizes or aspect ratios.
 
-Expected Console output:
+Expected UI flow:
 
 ```text
-Başlangıçta çözüldü mü: False
-Hamle sayısı: 1
-Çözüldü mü: True
-Bölüm tamamlandı!
+RESTART        LEVEL 1 / 3        HAMLE: 0
+Successful tile rotation          HAMLE: 1
+RESTART                             HAMLE: 0
+Level solved                    LEVEL COMPLETE!
+NEXT LEVEL loads a new level       HAMLE: 0
+Final level solved          ALL LEVELS COMPLETE!
 ```
 
 ### Roadmap
 
 #### V1 — Playable prototype
 
-A data-driven first level, tile interaction, solution checks, restart, and level-completion flow.
+Three data-driven levels, tile interaction, solution checks, move counting, restart, and level-completion flow.
 
 #### V2 — Content and progression
 
