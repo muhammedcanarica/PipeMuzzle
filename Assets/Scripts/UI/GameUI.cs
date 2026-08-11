@@ -15,6 +15,9 @@ namespace PipeMuzzle.UI
         private TMP_Text levelText;
 
         [SerializeField]
+        private TMP_Text moveCountText;
+
+        [SerializeField]
         private GameObject completionPanel;
 
         [SerializeField]
@@ -44,6 +47,9 @@ namespace PipeMuzzle.UI
             gameController.LevelCompleted +=
                 HandleLevelCompleted;
 
+            gameController.MoveCountChanged +=
+                HandleMoveCountChanged;
+
             restartButton.onClick.AddListener(
                 gameController.RestartLevel
             );
@@ -55,12 +61,17 @@ namespace PipeMuzzle.UI
             completionPanel.SetActive(false);
         }
 
+        private void HandleMoveCountChanged(int moveCount)
+        {
+            moveCountText.text = $"HAMLE: {moveCount}";
+        }
+
         private void HandleLevelLoaded(
             int levelNumber,
             int totalLevels)
         {
             levelText.text =
-                $"PIPE MUZZLE  •  BÖLÜM {levelNumber} / {totalLevels}";
+                $"LEVEL {levelNumber} / {totalLevels}";
 
             completionPanel.SetActive(false);
         }
@@ -73,14 +84,14 @@ namespace PipeMuzzle.UI
             if (hasNextLevel)
             {
                 completionText.text =
-                    "BÖLÜM TAMAMLANDI!";
+                    "LEVEL COMPLETE!";
 
                 nextButton.gameObject.SetActive(true);
             }
             else
             {
                 completionText.text =
-                    "TÜM BÖLÜMLER TAMAMLANDI!";
+                    "ALL LEVELS COMPLETE!";
 
                 nextButton.gameObject.SetActive(false);
             }
@@ -95,6 +106,9 @@ namespace PipeMuzzle.UI
 
                 gameController.LevelCompleted -=
                     HandleLevelCompleted;
+
+                gameController.MoveCountChanged -=
+                    HandleMoveCountChanged;
             }
 
             if (restartButton != null)

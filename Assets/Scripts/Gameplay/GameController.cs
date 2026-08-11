@@ -27,6 +27,7 @@ namespace PipeMuzzle.Gameplay
 
         public event Action<int, int> LevelLoaded;
         public event Action<bool> LevelCompleted;
+        public event Action<int> MoveCountChanged;
 
         private void Start()
         {
@@ -85,6 +86,8 @@ namespace PipeMuzzle.Gameplay
             }
 
             tileView.Refresh();
+
+            MoveCountChanged?.Invoke(board.MoveCount);
 
             bool solved =
                 ConnectionChecker.Evaluate(board);
@@ -173,6 +176,8 @@ namespace PipeMuzzle.Gameplay
             boardView.Build(board);
 
             boardCameraFitter.Fit();
+
+            MoveCountChanged?.Invoke(board.MoveCount);
 
             bool solved =
                 ConnectionChecker.Evaluate(board);
