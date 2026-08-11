@@ -60,7 +60,7 @@ namespace PipeMuzzle.UI
             int totalLevels)
         {
             levelText.text =
-                $"LEVEL {levelNumber} / {totalLevels}";
+                $"PIPE MUZZLE  •  BÖLÜM {levelNumber} / {totalLevels}";
 
             completionPanel.SetActive(false);
         }
