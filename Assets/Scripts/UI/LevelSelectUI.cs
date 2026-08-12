@@ -18,6 +18,9 @@ namespace PipeMuzzle.UI
         [SerializeField]
         private GameObject gameplayHUD;
 
+        [SerializeField]
+        private Button levelsButton;
+
         [Header("Level Buttons")]
         [SerializeField]
         private List<Button> levelButtons = new();
@@ -26,10 +29,13 @@ namespace PipeMuzzle.UI
 
         private void Start()
         {
-            if (gameController == null)
+            if (gameController == null ||
+                levelSelectPanel == null ||
+                gameplayHUD == null ||
+                levelsButton == null)
             {
                 Debug.LogError(
-                    "LevelSelectUI requires a GameController."
+                    "LevelSelectUI requires a GameController, both panels, and a Levels button."
                 );
 
                 enabled = false;
@@ -37,6 +43,10 @@ namespace PipeMuzzle.UI
             }
 
             SetupButtons();
+
+            levelsButton.onClick.AddListener(
+                ShowLevelSelect
+            );
 
             ShowLevelSelect();
         }
@@ -90,6 +100,13 @@ namespace PipeMuzzle.UI
 
         private void OnDestroy()
         {
+            if (levelsButton != null)
+            {
+                levelsButton.onClick.RemoveListener(
+                    ShowLevelSelect
+                );
+            }
+
             int actionIndex = 0;
 
             for (int i = 0; i < levelButtons.Count; i++)

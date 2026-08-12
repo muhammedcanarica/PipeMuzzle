@@ -68,10 +68,10 @@ namespace PipeMuzzle.UI
 
         private void HandleLevelLoaded(
             int levelNumber,
-            int totalLevels)
+            int _)
         {
             levelText.text =
-                $"LEVEL {levelNumber} / {totalLevels}";
+                $"LEVEL {levelNumber}";
 
             completionPanel.SetActive(false);
         }
