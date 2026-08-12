@@ -28,6 +28,7 @@ namespace PipeMuzzle.Gameplay
         public event Action<int, int> LevelLoaded;
         public event Action<bool> LevelCompleted;
         public event Action<int> MoveCountChanged;
+        public int LevelCount => levels.Count;
 
         private void Start()
         {
@@ -124,7 +125,20 @@ namespace PipeMuzzle.Gameplay
         {
             LoadLevel(currentLevelIndex);
         }
+        public void LoadLevelByIndex(int levelIndex)
+        {
+            if (levelIndex < 0 ||
+                levelIndex >= levels.Count)
+            {
+                Debug.LogWarning(
+                    $"Geçersiz level index: {levelIndex}"
+                );
 
+                return;
+            }
+
+            LoadLevel(levelIndex);
+        }
         public void LoadNextLevel()
         {
             if (!isCompleted)
