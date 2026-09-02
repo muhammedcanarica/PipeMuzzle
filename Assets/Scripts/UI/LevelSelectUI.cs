@@ -72,16 +72,34 @@ namespace PipeMuzzle.UI
                 buttonActions.Add(action);
 
                 button.onClick.AddListener(action);
+            }
+        }
+
+        private void RefreshButtons()
+        {
+            for (int i = 0; i < levelButtons.Count; i++)
+            {
+                Button button = levelButtons[i];
+
+                if (button == null)
+                {
+                    continue;
+                }
+
+                bool levelExists =
+                    i < gameController.LevelCount;
 
                 button.interactable =
-                    levelIndex < gameController.LevelCount;
+                    levelExists &&
+                    gameController.IsLevelUnlocked(i);
             }
         }
 
         private void SelectLevel(int levelIndex)
         {
             if (levelIndex < 0 ||
-                levelIndex >= gameController.LevelCount)
+                levelIndex >= gameController.LevelCount ||
+                !gameController.IsLevelUnlocked(levelIndex))
             {
                 return;
             }
@@ -94,6 +112,8 @@ namespace PipeMuzzle.UI
 
         public void ShowLevelSelect()
         {
+            RefreshButtons();
+
             gameplayHUD.SetActive(false);
             levelSelectPanel.SetActive(true);
         }

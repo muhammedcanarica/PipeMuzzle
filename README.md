@@ -12,7 +12,7 @@
 
 Oyuncu, boru parçalarını 90 derecelik adımlarla döndürerek kaynak ile namlu arasında kesintisiz bir bağlantı kurar. Doğru rota tamamlandığında bölüm çözülür; mermi animasyonu ve ek geri bildirimler sonraki geliştirme adımları arasındadır.
 
-Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. Üç veri odaklı bölüm; görsel tahta üretimi, tıklayarak karo döndürme, otomatik kamera uyumu, yeniden başlatma ve sonraki bölüme geçiş akışlarıyla oynanabilir durumdadır.
+Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. Altı veri odaklı bölüm; görsel tahta üretimi, tıklayarak karo döndürme, otomatik kamera uyumu, yeniden başlatma, bölüm seçimi ve kalıcı açılma ilerlemesiyle oynanabilir durumdadır.
 
 ### Öne çıkan teknik özellikler
 
@@ -29,7 +29,9 @@ Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. Üç
 - `OnMouseDown` ve event zinciri üzerinden çalışan tıklama → döndürme → çözüm kontrolü akışı
 - `BoxCollider2D` destekli tile etkileşimi ve kilitli Source/Target kontrolü
 - Bölüm çözüldükten sonra yeni tile inputlarını engelleyen tamamlama kilidi
-- Yeniden başlatma, bölüm bilgisi, hamle sayacı ve tamamlama panelini yöneten sade oyun UI'ı
+- Üç bölüme geçiş sağlayan `LevelSelectUI`, yeniden başlatma, bölüm bilgisi, hamle sayacı ve tamamlama panelini yöneten sade oyun UI'ı
+- `PlayerPrefs` ile kalıcı tutulan level açılma ilerlemesi
+- İlk Android APK denemesi için hazırlanan build yapılandırması
 
 ### Mimari
 
@@ -38,7 +40,7 @@ Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. Üç
 | `Data` | Yön, bağlantı, karo ve bölüm tanımları | `Direction`, `ConnectionMask`, `TileDefinition`, `LevelDefinition` |
 | `Board` | Çalışma zamanı tahta durumu ve oyun kuralları | `TileState`, `BoardState`, `BoardBuilder`, `ConnectionChecker` |
 | `View` | Karo prefablarının oluşturulması, merkezlenmesi, döndürülmesi ve kameranın board sınırlarına uydurulması | `BoardView`, `TileView`, `BoardCameraFitter`, `TilePrefab` |
-| `Gameplay` | Bölüm yükleme, yeniden başlatma, hamle ve ilerleme akışının yönetilmesi | `GameController`, `BoardLogicTester` |
+| `Gameplay` | Bölüm yükleme, yeniden başlatma, hamle ve ilerleme akışının yönetilmesi | `GameController`, `ProgressService`, `BoardLogicTester` |
 | `UI` | Bölüm, hamle ve tamamlama durumlarının ekranda gösterilmesi | `GameUI`, TextMesh Pro, Unity UI |
 
 Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi birbirinden bağımsız geliştirilebilir.
@@ -76,7 +78,11 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 - [x] Bölüm verisinden `BoardState` oluşturma
 - [x] Temel `BoardView` ve `TileView` bileşenleri
 - [x] Karo şekline göre değişen pipe sprite'larıyla `TilePrefab`
-- [x] Üç oynanabilir bölümün içerik ve sahne bağlantıları
+- [x] Altı farklı oynanabilir bölümün içerik ve sahne bağlantıları
+- [x] Gameplay sahnesine bağlı bölüm seçim ekranı
+- [x] `PlayerPrefs` ile kaydedilen level açılma ilerlemesi
+- [x] Bölüm tamamlanınca sonraki level'ın açılması
+- [x] İlk Android APK denemesi için build yapılandırması
 - [x] Tıklama ile karo döndürme ve yeniden çözüm kontrolü
 - [x] Tek ve çift boyutlu board'ların geometrik merkezlenmesi
 - [x] Renderer bounds ve aspect ratio tabanlı otomatik kamera fit sistemi
@@ -108,15 +114,15 @@ Son bölüm çözülünce            ALL LEVELS COMPLETE!
 
 #### V1 — Oynanabilir prototip
 
-Üç veri odaklı bölüm, karo etkileşimi, çözüm kontrolü, hamle sayacı, yeniden başlatma ve bölüm tamamlama akışı.
+Tamamlandı: temel puzzle akışı, altı bölüm, bölüm seçimi ve kalıcı açılma ilerlemesi.
 
 #### V2 — İçerik ve ilerleme
 
-15 elle hazırlanmış bölüm, bölüm seçimi, yıldız sistemi, kayıtlı ilerleme ve kilitli karolar.
+Kısmen tamamlandı: altı elle hazırlanmış bölüm, bölüm seçimi ve kayıtlı açılma ilerlemesi mevcut; 15 bölüm, yıldızlar ve en iyi hamle kayıtları henüz yok.
 
 #### V3 — Sunum ve mobil yayın
 
-Nihai görseller, mermi animasyonu, ses, titreşim, mobil optimizasyon ve Android yayın hazırlığı.
+Devam ediyor: Android build yapılandırması hazır; fiziksel cihaz testi, mermi animasyonu, ses, titreşim ve final görsel polish henüz tamamlanmadı.
 
 ---
 
@@ -126,7 +132,7 @@ Nihai görseller, mermi animasyonu, ses, titreşim, mobil optimizasyon ve Androi
 
 PipeMuzzle is a data-driven 2D mobile puzzle game prototype built with Unity. Players rotate pipe tiles in 90-degree steps to form a continuous connection between a source and a muzzle. Completing the route solves the level; projectile animation and additional feedback remain planned work.
 
-The project is currently in **pre-alpha / playable core prototype** development. Three data-driven levels are playable with visual board generation, click-to-rotate interaction, automatic camera fitting, restart, and next-level progression.
+The project is currently in **pre-alpha / playable core prototype** development. Six data-driven levels are playable with visual board generation, click-to-rotate interaction, automatic camera fitting, restart, level selection, and persistent unlock progression.
 
 ### Technical highlights
 
@@ -143,7 +149,9 @@ The project is currently in **pre-alpha / playable core prototype** development.
 - A click → rotate → solution-check flow built with `OnMouseDown` and C# events
 - `BoxCollider2D`-based tile interaction with locked Source/Target handling
 - A completion lock that prevents additional tile input after the puzzle is solved
-- A compact game UI for restart, level progress, move count, and completion states
+- `LevelSelectUI` for navigating to the three levels, plus a compact game UI for restart, level progress, move count, and completion states
+- Persistent level-unlock progress stored with `PlayerPrefs`
+- Build configuration prepared for an initial Android APK attempt
 
 ### Architecture
 
@@ -152,7 +160,7 @@ The project is currently in **pre-alpha / playable core prototype** development.
 | `Data` | Direction, connection, tile, and level definitions | `Direction`, `ConnectionMask`, `TileDefinition`, `LevelDefinition` |
 | `Board` | Runtime board state and game rules | `TileState`, `BoardState`, `BoardBuilder`, `ConnectionChecker` |
 | `View` | Instantiating, centering, and rotating tile prefabs, plus fitting the camera to board bounds | `BoardView`, `TileView`, `BoardCameraFitter`, `TilePrefab` |
-| `Gameplay` | Managing level loading, restart, moves, and progression | `GameController`, `BoardLogicTester` |
+| `Gameplay` | Managing level loading, restart, moves, and progression | `GameController`, `ProgressService`, `BoardLogicTester` |
 | `UI` | Presenting level, move, and completion states | `GameUI`, TextMesh Pro, Unity UI |
 
 ### Built with
@@ -188,7 +196,11 @@ The project is currently in **pre-alpha / playable core prototype** development.
 - [x] Runtime `BoardState` creation from level data
 - [x] Basic `BoardView` and `TileView` components
 - [x] Shape-specific pipe sprites configured on `TilePrefab`
-- [x] Three playable levels with content and scene wiring
+- [x] Six distinct playable levels with content and scene wiring
+- [x] Level selection screen wired to the Gameplay scene
+- [x] Level-unlock progress saved with `PlayerPrefs`
+- [x] Unlocking the next level after completing the current one
+- [x] Build configuration for an initial Android APK attempt
 - [x] Click-to-rotate interaction and repeated solution checks
 - [x] Geometric board centering for odd and even dimensions
 - [x] Renderer-bounds and aspect-ratio-aware automatic camera fitting
@@ -220,15 +232,15 @@ Final level solved          ALL LEVELS COMPLETE!
 
 #### V1 — Playable prototype
 
-Three data-driven levels, tile interaction, solution checks, move counting, restart, and level-completion flow.
+Completed: core puzzle flow, six levels, level selection, and persistent unlock progression.
 
 #### V2 — Content and progression
 
-15 handcrafted levels, level selection, star ratings, saved progression, and locked tiles.
+Partially completed: six handcrafted levels, level selection, and saved unlock progression are available; 15 levels, star ratings, and best-move records are not implemented.
 
 #### V3 — Presentation and mobile release
 
-Final visuals, projectile animation, audio, haptics, mobile optimization, and Android release preparation.
+In progress: Android build configuration is prepared; physical-device testing, projectile animation, audio, haptics, and final visual polish are pending.
 
 ## Repository
 

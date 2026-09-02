@@ -21,6 +21,7 @@ namespace PipeMuzzle.Gameplay
         private List<LevelDefinition> levels = new();
 
         private BoardState board;
+        private ProgressService progressService;
 
         private int currentLevelIndex;
         private bool isCompleted;
@@ -29,6 +30,19 @@ namespace PipeMuzzle.Gameplay
         public event Action<bool> LevelCompleted;
         public event Action<int> MoveCountChanged;
         public int LevelCount => levels.Count;
+
+        public bool IsLevelUnlocked(int levelIndex)
+        {
+            return levelIndex >= 0 &&
+                   levelIndex < LevelCount &&
+                   progressService != null &&
+                   progressService.IsLevelUnlocked(levelIndex);
+        }
+
+        private void Awake()
+        {
+            progressService = new ProgressService();
+        }
 
         private void Start()
         {
@@ -114,6 +128,13 @@ namespace PipeMuzzle.Gameplay
             bool hasNextLevel =
                 currentLevelIndex < levels.Count - 1;
 
+            if (hasNextLevel)
+            {
+                progressService.UnlockLevel(
+                    currentLevelIndex + 1
+                );
+            }
+
             Debug.Log(
                 $"Bölüm {currentLevelIndex + 1} tamamlandı!"
             );
@@ -137,8 +158,18 @@ namespace PipeMuzzle.Gameplay
                 return;
             }
 
+            if (!IsLevelUnlocked(levelIndex))
+            {
+                Debug.LogWarning(
+                    $"Level {levelIndex + 1} henüz kilitli."
+                );
+
+                return;
+            }
+
             LoadLevel(levelIndex);
         }
+
         public void LoadNextLevel()
         {
             if (!isCompleted)
