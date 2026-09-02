@@ -12,7 +12,7 @@
 
 Oyuncu, boru parçalarını 90 derecelik adımlarla döndürerek kaynak ile namlu arasında kesintisiz bir bağlantı kurar. Doğru rota tamamlandığında bölüm çözülür; mermi animasyonu ve ek geri bildirimler sonraki geliştirme adımları arasındadır.
 
-Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. Altı veri odaklı bölüm; görsel tahta üretimi, tıklayarak karo döndürme, otomatik kamera uyumu, yeniden başlatma, bölüm seçimi ve kalıcı açılma ilerlemesiyle oynanabilir durumdadır.
+Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. On iki veri odaklı bölüm; görsel tahta üretimi, tıklayarak karo döndürme, otomatik kamera uyumu, yeniden başlatma, bölüm seçimi ve kalıcı açılma ilerlemesiyle oynanabilir durumdadır.
 
 ### Öne çıkan teknik özellikler
 
@@ -29,7 +29,7 @@ Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. Alt�
 - `OnMouseDown` ve event zinciri üzerinden çalışan tıklama → döndürme → çözüm kontrolü akışı
 - `BoxCollider2D` destekli tile etkileşimi ve kilitli Source/Target kontrolü
 - Bölüm çözüldükten sonra yeni tile inputlarını engelleyen tamamlama kilidi
-- Üç bölüme geçiş sağlayan `LevelSelectUI`, yeniden başlatma, bölüm bilgisi, hamle sayacı ve tamamlama panelini yöneten sade oyun UI'ı
+- On iki bölümü düzenli bir grid'de sunan `LevelSelectUI`, yeniden başlatma, bölüm bilgisi, hamle sayacı ve tamamlama panelini yöneten sade oyun UI'ı
 - `PlayerPrefs` ile kalıcı tutulan level açılma ilerlemesi
 - İlk Android APK denemesi için hazırlanan build yapılandırması
 
@@ -78,7 +78,7 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 - [x] Bölüm verisinden `BoardState` oluşturma
 - [x] Temel `BoardView` ve `TileView` bileşenleri
 - [x] Karo şekline göre değişen pipe sprite'larıyla `TilePrefab`
-- [x] Altı farklı oynanabilir bölümün içerik ve sahne bağlantıları
+- [x] On iki farklı oynanabilir bölümün içerik ve sahne bağlantıları
 - [x] Gameplay sahnesine bağlı bölüm seçim ekranı
 - [x] `PlayerPrefs` ile kaydedilen level açılma ilerlemesi
 - [x] Bölüm tamamlanınca sonraki level'ın açılması
@@ -102,7 +102,7 @@ Board dünya merkezine otomatik yerleşir ve kamera görünür tile sınırları
 Beklenen UI akışı:
 
 ```text
-RESTART        LEVEL 1 / 3        HAMLE: 0
+RESTART        LEVEL 1 / 12       HAMLE: 0
 Başarılı karo dönüşü              HAMLE: 1
 RESTART                             HAMLE: 0
 Bölüm çözülünce                  LEVEL COMPLETE!
@@ -114,11 +114,11 @@ Son bölüm çözülünce            ALL LEVELS COMPLETE!
 
 #### V1 — Oynanabilir prototip
 
-Tamamlandı: temel puzzle akışı, altı bölüm, bölüm seçimi ve kalıcı açılma ilerlemesi.
+Tamamlandı: temel puzzle akışı, on iki bölüm, bölüm seçimi ve kalıcı açılma ilerlemesi.
 
 #### V2 — İçerik ve ilerleme
 
-Kısmen tamamlandı: altı elle hazırlanmış bölüm, bölüm seçimi ve kayıtlı açılma ilerlemesi mevcut; 15 bölüm, yıldızlar ve en iyi hamle kayıtları henüz yok.
+Kısmen tamamlandı: on iki elle hazırlanmış bölüm, bölüm seçimi ve kayıtlı açılma ilerlemesi mevcut; 15 bölüm, yıldızlar ve en iyi hamle kayıtları henüz yok.
 
 #### V3 — Sunum ve mobil yayın
 
@@ -132,7 +132,7 @@ Devam ediyor: Android build yapılandırması hazır; fiziksel cihaz testi, merm
 
 PipeMuzzle is a data-driven 2D mobile puzzle game prototype built with Unity. Players rotate pipe tiles in 90-degree steps to form a continuous connection between a source and a muzzle. Completing the route solves the level; projectile animation and additional feedback remain planned work.
 
-The project is currently in **pre-alpha / playable core prototype** development. Six data-driven levels are playable with visual board generation, click-to-rotate interaction, automatic camera fitting, restart, level selection, and persistent unlock progression.
+The project is currently in **pre-alpha / playable core prototype** development. Twelve data-driven levels are playable with visual board generation, click-to-rotate interaction, automatic camera fitting, restart, level selection, and persistent unlock progression.
 
 ### Technical highlights
 
@@ -149,7 +149,7 @@ The project is currently in **pre-alpha / playable core prototype** development.
 - A click → rotate → solution-check flow built with `OnMouseDown` and C# events
 - `BoxCollider2D`-based tile interaction with locked Source/Target handling
 - A completion lock that prevents additional tile input after the puzzle is solved
-- `LevelSelectUI` for navigating to the three levels, plus a compact game UI for restart, level progress, move count, and completion states
+- `LevelSelectUI` for navigating a regular twelve-level grid, plus a compact game UI for restart, level progress, move count, and completion states
 - Persistent level-unlock progress stored with `PlayerPrefs`
 - Build configuration prepared for an initial Android APK attempt
 
@@ -196,7 +196,7 @@ The project is currently in **pre-alpha / playable core prototype** development.
 - [x] Runtime `BoardState` creation from level data
 - [x] Basic `BoardView` and `TileView` components
 - [x] Shape-specific pipe sprites configured on `TilePrefab`
-- [x] Six distinct playable levels with content and scene wiring
+- [x] Twelve distinct playable levels with content and scene wiring
 - [x] Level selection screen wired to the Gameplay scene
 - [x] Level-unlock progress saved with `PlayerPrefs`
 - [x] Unlocking the next level after completing the current one
@@ -220,7 +220,7 @@ The board is centered automatically, and the camera fits the visible tile bounds
 Expected UI flow:
 
 ```text
-RESTART        LEVEL 1 / 3        HAMLE: 0
+RESTART        LEVEL 1 / 12       HAMLE: 0
 Successful tile rotation          HAMLE: 1
 RESTART                             HAMLE: 0
 Level solved                    LEVEL COMPLETE!
@@ -232,11 +232,11 @@ Final level solved          ALL LEVELS COMPLETE!
 
 #### V1 — Playable prototype
 
-Completed: core puzzle flow, six levels, level selection, and persistent unlock progression.
+Completed: core puzzle flow, twelve levels, level selection, and persistent unlock progression.
 
 #### V2 — Content and progression
 
-Partially completed: six handcrafted levels, level selection, and saved unlock progression are available; 15 levels, star ratings, and best-move records are not implemented.
+Partially completed: twelve handcrafted levels, level selection, and saved unlock progression are available; 15 levels, star ratings, and best-move records are not implemented.
 
 #### V3 — Presentation and mobile release
 
