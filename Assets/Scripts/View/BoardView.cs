@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using PipeMuzzle.Board;
 using UnityEngine;
 
@@ -12,6 +13,8 @@ namespace PipeMuzzle.View
         [SerializeField]
         [Min(0.01f)]
         private float tileSpacing = 1f;
+
+        private readonly Dictionary<Vector2Int, TileView> tileViews = new();
 
         public event Action<TileView> TileClicked;
 
@@ -67,6 +70,27 @@ namespace PipeMuzzle.View
                 child.SetActive(false);
                 Destroy(child);
             }
+
+            tileViews.Clear();
+        }
+
+        public void RefreshPoweredTiles(bool animated)
+        {
+            foreach (TileView tileView in tileViews.Values)
+            {
+                tileView.SetPowered(
+                    tileView.State.IsPowered,
+                    animated
+                );
+            }
+        }
+
+        public void PlayCompletionFeedback()
+        {
+            foreach (TileView tileView in tileViews.Values)
+            {
+                tileView.PlayCompletionPulse();
+            }
         }
 
         public bool TryGetWorldBounds(out Bounds bounds)
@@ -117,6 +141,8 @@ namespace PipeMuzzle.View
             tileView.Initialize(tileState);
 
             tileView.Clicked += HandleTileClicked;
+
+            tileViews[new Vector2Int(tileState.X, tileState.Y)] = tileView;
         }
 
         private void HandleTileClicked(TileView tileView)

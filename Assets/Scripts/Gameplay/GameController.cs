@@ -115,12 +115,14 @@ namespace PipeMuzzle.Gameplay
                 return;
             }
 
-            tileView.Refresh();
+            tileView.PlayRotationFeedback();
 
             MoveCountChanged?.Invoke(board.MoveCount);
 
             bool solved =
                 ConnectionChecker.Evaluate(board);
+
+            boardView.RefreshPoweredTiles(true);
 
             Debug.Log(
                 $"Hamle sayısı: {board.MoveCount}"
@@ -132,6 +134,7 @@ namespace PipeMuzzle.Gameplay
 
             if (solved)
             {
+                boardView.PlayCompletionFeedback();
                 CompleteLevel();
             }
         }
@@ -246,6 +249,8 @@ namespace PipeMuzzle.Gameplay
             bool solved =
                 ConnectionChecker.Evaluate(board);
 
+            boardView.RefreshPoweredTiles(false);
+
             Debug.Log(
                 $"Bölüm {currentLevelIndex + 1} yüklendi."
             );
@@ -261,6 +266,7 @@ namespace PipeMuzzle.Gameplay
 
             if (solved)
             {
+                boardView.PlayCompletionFeedback();
                 CompleteLevel();
             }
         }

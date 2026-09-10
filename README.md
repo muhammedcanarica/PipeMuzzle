@@ -26,7 +26,9 @@ Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. On i
 - Bölümdeki karoları prefab üzerinden üreten ve grid'i dünya merkezine yerleştiren `BoardView`
 - Oluşturulan renderer sınırlarını, ekran oranını ve padding değerini kullanarak kamerayı otomatik ayarlayan `BoardCameraFitter`
 - Karo şekline uygun pipe sprite'ını ve dönüşünü görsele uygulayan `TileView`
-- `OnMouseDown` ve event zinciri üzerinden çalışan tıklama → döndürme → çözüm kontrolü akışı
+- `IPointerClickHandler` ve event zinciri üzerinden çalışan tıklama → animasyonlu döndürme → çözüm kontrolü akışı
+- Source / Target rol ayrımı, kilitli karo tint'i ve Source'tan ulaşılabilir hatlarda powered görünümü
+- Çözüm anında powered hat üzerinde kısa completion pulse geri bildirimi
 - `BoxCollider2D` destekli tile etkileşimi ve kilitli Source/Target kontrolü
 - Bölüm çözüldükten sonra yeni tile inputlarını engelleyen tamamlama kilidi
 - On iki bölümü düzenli bir grid'de sunan `LevelSelectUI`, yeniden başlatma, bölüm bilgisi, hamle sayacı ve tamamlama panelini yöneten sade oyun UI'ı
@@ -67,7 +69,7 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 5. Play Mode'u başlatın ve döndürülebilir boru karolarına tıklayın.
 6. Üst çubuktaki `RESTART`, `LEVEL` ve `HAMLE` bilgilerini; bölüm çözülünce açılan `NEXT LEVEL` akışını kontrol edin.
 
-> **Not:** `OnMouseDown` etkileşimi için `TilePrefab` üzerinde `BoxCollider2D` bulunur ve Active Input Handling ayarı `Both` olarak yapılandırılmıştır.
+> **Not:** `IPointerClickHandler` etkileşimi için `TilePrefab` üzerinde `BoxCollider2D`, kamerada `Physics2DRaycaster` ve sahnede `EventSystem` bulunur.
 
 ### Güncel durum
 
@@ -89,6 +91,9 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 - [x] Bölüm tamamlama algılama ve çözüm sonrası input kilidi
 - [x] Yeniden başlatma, bölüm tamamlama ve sonraki bölüme geçiş UI akışı
 - [x] Başarılı dönüşleri gösteren ve bölüm yüklenince sıfırlanan hamle sayacı UI'ı
+- [x] Kuyruklanan hızlı tıklamaları güvenli işleyen animasyonlu karo dönüşü ve hafif scale feedback'i
+- [x] Source / Target / locked görsel ayrımı ve Source'tan ulaşılabilir karolarda powered feedback
+- [x] Powered hat üzerinde kısa bölüm tamamlama pulse'ı
 - [ ] Mermi animasyonu, ses ve titreşim geri bildirimi
 - [ ] Edit Mode / Play Mode otomatik testleri
 - [ ] Mobil cihaz doğrulaması ve Android build hazırlığı
@@ -145,8 +150,10 @@ The project is currently in **pre-alpha / playable core prototype** development.
 - A `BoardBuilder` pipeline that creates runtime state from level data
 - A `BoardView` that instantiates prefab-based tiles and centers the grid around the world origin
 - A `BoardCameraFitter` that uses renderer bounds, screen aspect ratio, and padding to fit the camera automatically
-- A `TileView` that selects the matching pipe sprite and applies its rotation
-- A click → rotate → solution-check flow built with `OnMouseDown` and C# events
+- A `TileView` that selects the matching pipe sprite and animates its rotation
+- A click → animated rotation → solution-check flow built with `IPointerClickHandler` and C# events
+- Source / Target role accents, locked-tile tinting, and powered visuals for the route reachable from the Source
+- A short completion pulse across the powered route when the puzzle is solved
 - `BoxCollider2D`-based tile interaction with locked Source/Target handling
 - A completion lock that prevents additional tile input after the puzzle is solved
 - `LevelSelectUI` for navigating a regular twelve-level grid, plus a compact game UI for restart, level progress, move count, and completion states
@@ -185,7 +192,7 @@ The project is currently in **pre-alpha / playable core prototype** development.
 5. Enter Play Mode and click the rotatable pipe tiles.
 6. Check the `RESTART`, `LEVEL`, and `HAMLE` values in the top bar, then use `NEXT LEVEL` after solving a level.
 
-> **Note:** `TilePrefab` includes a `BoxCollider2D` for `OnMouseDown`, and Active Input Handling is configured as `Both`.
+> **Note:** Pointer interaction uses `IPointerClickHandler`, a `BoxCollider2D` on `TilePrefab`, a `Physics2DRaycaster` on the camera, and the scene `EventSystem`.
 
 ### Development status
 
@@ -207,6 +214,9 @@ The project is currently in **pre-alpha / playable core prototype** development.
 - [x] Completion detection and post-solve input lock
 - [x] Restart, level-completion, and next-level UI flow
 - [x] Move counter UI that updates after valid rotations and resets when a level loads
+- [x] Animated tile rotation with safe rapid-click queuing and subtle scale feedback
+- [x] Source / Target / locked visual distinction and Source-reachable powered feedback
+- [x] Short completion pulse across the powered route
 - [ ] Projectile animation, audio, and haptic feedback
 - [ ] Edit Mode / Play Mode automated tests
 - [ ] Mobile device validation and Android build preparation
