@@ -169,18 +169,19 @@ namespace PipeMuzzle.View
                 return;
             }
 
-            if (powerCoroutine != null)
+            StartGlowPulse(1.06f, completionPulseDuration, 0.38f);
+        }
+
+        public void PlayTargetImpact(float pulseScale, float pulseDuration)
+        {
+            if (tileState == null ||
+                tileState.Role != TileRole.Target ||
+                glowRenderer == null)
             {
-                StopCoroutine(powerCoroutine);
-                powerCoroutine = null;
+                return;
             }
 
-            if (completionCoroutine != null)
-            {
-                StopCoroutine(completionCoroutine);
-            }
-
-            completionCoroutine = StartCoroutine(AnimateCompletionPulse());
+            StartGlowPulse(pulseScale, pulseDuration, 0.52f);
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -340,25 +341,49 @@ namespace PipeMuzzle.View
             powerCoroutine = null;
         }
 
-        private IEnumerator AnimateCompletionPulse()
+        private void StartGlowPulse(
+            float pulseScale,
+            float pulseDuration,
+            float brightness)
+        {
+            if (powerCoroutine != null)
+            {
+                StopCoroutine(powerCoroutine);
+                powerCoroutine = null;
+            }
+
+            if (completionCoroutine != null)
+            {
+                StopCoroutine(completionCoroutine);
+            }
+
+            completionCoroutine = StartCoroutine(
+                AnimateGlowPulse(pulseScale, pulseDuration, brightness)
+            );
+        }
+
+        private IEnumerator AnimateGlowPulse(
+            float pulseScale,
+            float pulseDuration,
+            float brightness)
         {
             Color baseColor = GetGlowColor(true);
-            Color peakColor = Color.Lerp(baseColor, Color.white, 0.38f);
+            Color peakColor = Color.Lerp(baseColor, Color.white, brightness);
             peakColor.a = Mathf.Min(1f, baseColor.a * 1.35f);
 
             float elapsed = 0f;
 
-            while (elapsed < completionPulseDuration)
+            while (elapsed < pulseDuration)
             {
                 elapsed += Time.deltaTime;
                 float progress = Mathf.Clamp01(
-                    elapsed / completionPulseDuration
+                    elapsed / pulseDuration
                 );
                 float pulse = Mathf.Sin(progress * Mathf.PI);
 
                 glowRenderer.color = Color.Lerp(baseColor, peakColor, pulse);
                 glowRenderer.transform.localScale =
-                    Vector3.one * Mathf.Lerp(1f, 1.06f, pulse);
+                    Vector3.one * Mathf.Lerp(1f, pulseScale, pulse);
 
                 yield return null;
             }

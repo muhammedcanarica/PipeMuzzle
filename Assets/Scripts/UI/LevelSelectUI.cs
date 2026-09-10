@@ -128,6 +128,7 @@ namespace PipeMuzzle.UI
         public void ShowLevelSelect()
         {
             RefreshButtons();
+            gameController.CancelTransientVisuals();
 
             gameplayHUD.SetActive(false);
             levelSelectPanel.SetActive(true);

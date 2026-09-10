@@ -11,12 +11,29 @@ namespace PipeMuzzle.View
         private TileView tilePrefab;
 
         [SerializeField]
+        private EnergyFlowView energyFlowView;
+
+        [SerializeField]
         [Min(0.01f)]
         private float tileSpacing = 1f;
 
         private readonly Dictionary<Vector2Int, TileView> tileViews = new();
+        private readonly List<Vector3> flowPathPositions = new();
 
         public event Action<TileView> TileClicked;
+
+        private void Awake()
+        {
+            if (energyFlowView == null)
+            {
+                energyFlowView = GetComponent<EnergyFlowView>();
+            }
+
+            if (energyFlowView == null)
+            {
+                energyFlowView = gameObject.AddComponent<EnergyFlowView>();
+            }
+        }
 
         public void Build(BoardState board)
         {
@@ -55,6 +72,8 @@ namespace PipeMuzzle.View
 
         public void Clear()
         {
+            StopTransientEffects();
+
             for (int i = transform.childCount - 1; i >= 0; i--)
             {
                 GameObject child = transform.GetChild(i).gameObject;
@@ -85,12 +104,25 @@ namespace PipeMuzzle.View
             }
         }
 
-        public void PlayCompletionFeedback()
+        public void PlayCompletionFeedback(
+            IReadOnlyList<TileState> solvedPath)
         {
             foreach (TileView tileView in tileViews.Values)
             {
                 tileView.PlayCompletionPulse();
             }
+
+            PlayEnergyFlow(solvedPath);
+        }
+
+        public void StopTransientEffects()
+        {
+            if (energyFlowView != null)
+            {
+                energyFlowView.StopAndClear();
+            }
+
+            flowPathPositions.Clear();
         }
 
         public bool TryGetWorldBounds(out Bounds bounds)
@@ -143,6 +175,46 @@ namespace PipeMuzzle.View
             tileView.Clicked += HandleTileClicked;
 
             tileViews[new Vector2Int(tileState.X, tileState.Y)] = tileView;
+        }
+
+        private void PlayEnergyFlow(
+            IReadOnlyList<TileState> solvedPath)
+        {
+            if (energyFlowView == null ||
+                solvedPath == null ||
+                solvedPath.Count < 2)
+            {
+                return;
+            }
+
+            flowPathPositions.Clear();
+
+            for (int i = 0; i < solvedPath.Count; i++)
+            {
+                TileState state = solvedPath[i];
+                Vector2Int coordinate = new Vector2Int(state.X, state.Y);
+
+                if (!tileViews.TryGetValue(
+                        coordinate,
+                        out TileView tileView))
+                {
+                    flowPathPositions.Clear();
+                    return;
+                }
+
+                flowPathPositions.Add(tileView.transform.position);
+            }
+
+            TileState targetState = solvedPath[solvedPath.Count - 1];
+            Vector2Int targetCoordinate =
+                new Vector2Int(targetState.X, targetState.Y);
+
+            if (tileViews.TryGetValue(
+                    targetCoordinate,
+                    out TileView targetTile))
+            {
+                energyFlowView.Play(flowPathPositions, targetTile);
+            }
         }
 
         private void HandleTileClicked(TileView tileView)

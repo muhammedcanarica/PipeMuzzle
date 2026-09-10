@@ -2004,6 +2004,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1140884901}
   - component: {fileID: 1140884900}
+  - component: {fileID: 780000001}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -2024,7 +2025,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.View.BoardView
   tilePrefab: {fileID: -9002645936253929089, guid: dfee6d2ddaf5713488735940aef32011, type: 3}
+  energyFlowView: {fileID: 780000001}
   tileSpacing: 1
+--- !u!114 &780000001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140884899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b0847193d1d4d4fbc5dfaf505ebb48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.View.EnergyFlowView
+  travelSpeed: 9
+  trailWidth: 0.08
+  trailDuration: 0.07
+  projectileColor: {r: 0.12, g: 1, b: 0.95, a: 0.95}
+  targetPulseScale: 1.12
+  targetPulseDuration: 0.22
 --- !u!4 &1140884901
 Transform:
   m_ObjectHideFlags: 0

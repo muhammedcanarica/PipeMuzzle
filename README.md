@@ -10,7 +10,7 @@
 
 ### Oyun fikri
 
-Oyuncu, boru parçalarını 90 derecelik adımlarla döndürerek kaynak ile namlu arasında kesintisiz bir bağlantı kurar. Doğru rota tamamlandığında bölüm çözülür; mermi animasyonu ve ek geri bildirimler sonraki geliştirme adımları arasındadır.
+Oyuncu, boru parçalarını 90 derecelik adımlarla döndürerek kaynak ile namlu arasında kesintisiz bir bağlantı kurar. Doğru rota tamamlandığında Source'tan Target'a gerçek çözüm yolunu izleyen kısa bir enerji akışı oynar ve bölüm çözülür.
 
 Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. On iki veri odaklı bölüm; görsel tahta üretimi, tıklayarak karo döndürme, otomatik kamera uyumu, yeniden başlatma, bölüm seçimi ve kalıcı açılma ilerlemesiyle oynanabilir durumdadır.
 
@@ -29,6 +29,7 @@ Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. On i
 - `IPointerClickHandler` ve event zinciri üzerinden çalışan tıklama → animasyonlu döndürme → çözüm kontrolü akışı
 - Source / Target rol ayrımı, kilitli karo tint'i ve Source'tan ulaşılabilir hatlarda powered görünümü
 - Çözüm anında powered hat üzerinde kısa completion pulse geri bildirimi
+- Gerçek Source → Target rotasını tile merkezlerinden takip eden enerji projectile / flow animasyonu
 - `BoxCollider2D` destekli tile etkileşimi ve kilitli Source/Target kontrolü
 - Bölüm çözüldükten sonra yeni tile inputlarını engelleyen tamamlama kilidi
 - On iki bölümü düzenli bir grid'de sunan `LevelSelectUI`, yeniden başlatma, bölüm bilgisi, hamle sayacı ve tamamlama panelini yöneten sade oyun UI'ı
@@ -41,7 +42,7 @@ Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. On i
 | --- | --- | --- |
 | `Data` | Yön, bağlantı, karo ve bölüm tanımları | `Direction`, `ConnectionMask`, `TileDefinition`, `LevelDefinition` |
 | `Board` | Çalışma zamanı tahta durumu ve oyun kuralları | `TileState`, `BoardState`, `BoardBuilder`, `ConnectionChecker` |
-| `View` | Karo prefablarının oluşturulması, merkezlenmesi, döndürülmesi ve kameranın board sınırlarına uydurulması | `BoardView`, `TileView`, `BoardCameraFitter`, `TilePrefab` |
+| `View` | Karo prefablarının oluşturulması, görsel feedback, çözüm rotası enerji akışı ve kamera uyumu | `BoardView`, `TileView`, `EnergyFlowView`, `BoardCameraFitter`, `TilePrefab` |
 | `Gameplay` | Bölüm yükleme, yeniden başlatma, hamle ve ilerleme akışının yönetilmesi | `GameController`, `ProgressService`, `BoardLogicTester` |
 | `UI` | Bölüm, hamle ve tamamlama durumlarının ekranda gösterilmesi | `GameUI`, TextMesh Pro, Unity UI |
 
@@ -94,7 +95,8 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 - [x] Kuyruklanan hızlı tıklamaları güvenli işleyen animasyonlu karo dönüşü ve hafif scale feedback'i
 - [x] Source / Target / locked görsel ayrımı ve Source'tan ulaşılabilir karolarda powered feedback
 - [x] Powered hat üzerinde kısa bölüm tamamlama pulse'ı
-- [ ] Mermi animasyonu, ses ve titreşim geri bildirimi
+- [x] Source → Target çözüm rotasını takip eden enerji projectile / flow animasyonu
+- [ ] Ses ve titreşim geri bildirimi
 - [ ] Edit Mode / Play Mode otomatik testleri
 - [ ] Mobil cihaz doğrulaması ve Android build hazırlığı
 
@@ -127,7 +129,7 @@ Kısmen tamamlandı: on iki elle hazırlanmış bölüm, bölüm seçimi ve kay�
 
 #### V3 — Sunum ve mobil yayın
 
-Devam ediyor: Android build yapılandırması hazır; fiziksel cihaz testi, mermi animasyonu, ses, titreşim ve final görsel polish henüz tamamlanmadı.
+Devam ediyor: Android build yapılandırması ve enerji akışı hazır; fiziksel cihaz testi, ses, titreşim ve final görsel polish henüz tamamlanmadı.
 
 ---
 
@@ -135,7 +137,7 @@ Devam ediyor: Android build yapılandırması hazır; fiziksel cihaz testi, merm
 
 ### Game concept
 
-PipeMuzzle is a data-driven 2D mobile puzzle game prototype built with Unity. Players rotate pipe tiles in 90-degree steps to form a continuous connection between a source and a muzzle. Completing the route solves the level; projectile animation and additional feedback remain planned work.
+PipeMuzzle is a data-driven 2D mobile puzzle game prototype built with Unity. Players rotate pipe tiles in 90-degree steps to form a continuous connection between a source and a muzzle. Completing the route sends a short energy flow along the real Source-to-Target path and solves the level.
 
 The project is currently in **pre-alpha / playable core prototype** development. Twelve data-driven levels are playable with visual board generation, click-to-rotate interaction, automatic camera fitting, restart, level selection, and persistent unlock progression.
 
@@ -154,6 +156,7 @@ The project is currently in **pre-alpha / playable core prototype** development.
 - A click → animated rotation → solution-check flow built with `IPointerClickHandler` and C# events
 - Source / Target role accents, locked-tile tinting, and powered visuals for the route reachable from the Source
 - A short completion pulse across the powered route when the puzzle is solved
+- An energy projectile / flow animation that follows tile centers along the real Source-to-Target route
 - `BoxCollider2D`-based tile interaction with locked Source/Target handling
 - A completion lock that prevents additional tile input after the puzzle is solved
 - `LevelSelectUI` for navigating a regular twelve-level grid, plus a compact game UI for restart, level progress, move count, and completion states
@@ -166,7 +169,7 @@ The project is currently in **pre-alpha / playable core prototype** development.
 | --- | --- | --- |
 | `Data` | Direction, connection, tile, and level definitions | `Direction`, `ConnectionMask`, `TileDefinition`, `LevelDefinition` |
 | `Board` | Runtime board state and game rules | `TileState`, `BoardState`, `BoardBuilder`, `ConnectionChecker` |
-| `View` | Instantiating, centering, and rotating tile prefabs, plus fitting the camera to board bounds | `BoardView`, `TileView`, `BoardCameraFitter`, `TilePrefab` |
+| `View` | Tile creation, visual feedback, solved-route energy flow, and camera fitting | `BoardView`, `TileView`, `EnergyFlowView`, `BoardCameraFitter`, `TilePrefab` |
 | `Gameplay` | Managing level loading, restart, moves, and progression | `GameController`, `ProgressService`, `BoardLogicTester` |
 | `UI` | Presenting level, move, and completion states | `GameUI`, TextMesh Pro, Unity UI |
 
@@ -217,7 +220,8 @@ The project is currently in **pre-alpha / playable core prototype** development.
 - [x] Animated tile rotation with safe rapid-click queuing and subtle scale feedback
 - [x] Source / Target / locked visual distinction and Source-reachable powered feedback
 - [x] Short completion pulse across the powered route
-- [ ] Projectile animation, audio, and haptic feedback
+- [x] Source-to-Target energy projectile / flow animation
+- [ ] Audio and haptic feedback
 - [ ] Edit Mode / Play Mode automated tests
 - [ ] Mobile device validation and Android build preparation
 
@@ -250,7 +254,7 @@ Partially completed: twelve handcrafted levels, level selection, and saved unloc
 
 #### V3 — Presentation and mobile release
 
-In progress: Android build configuration is prepared; physical-device testing, projectile animation, audio, haptics, and final visual polish are pending.
+In progress: Android build configuration and the energy flow are ready; physical-device testing, audio, haptics, and final visual polish are pending.
 
 ## Repository
 

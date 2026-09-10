@@ -23,6 +23,7 @@ namespace PipeMuzzle.Gameplay
 
         private BoardState board;
         private ProgressService progressService;
+        private readonly List<TileState> solvedPath = new();
 
         private int currentLevelIndex;
         private bool isCompleted;
@@ -134,7 +135,7 @@ namespace PipeMuzzle.Gameplay
 
             if (solved)
             {
-                boardView.PlayCompletionFeedback();
+                PlayCompletionFeedback();
                 CompleteLevel();
             }
         }
@@ -167,6 +168,14 @@ namespace PipeMuzzle.Gameplay
         public void RestartLevel()
         {
             LoadLevel(currentLevelIndex);
+        }
+
+        public void CancelTransientVisuals()
+        {
+            if (boardView != null)
+            {
+                boardView.StopTransientEffects();
+            }
         }
         public void LoadLevelByIndex(int levelIndex)
         {
@@ -266,9 +275,21 @@ namespace PipeMuzzle.Gameplay
 
             if (solved)
             {
-                boardView.PlayCompletionFeedback();
+                PlayCompletionFeedback();
                 CompleteLevel();
             }
+        }
+
+        private void PlayCompletionFeedback()
+        {
+            bool hasSolvedPath = ConnectionChecker.TryGetSolvedPath(
+                board,
+                solvedPath
+            );
+
+            boardView.PlayCompletionFeedback(
+                hasSolvedPath ? solvedPath : null
+            );
         }
 
         private void OnDestroy()

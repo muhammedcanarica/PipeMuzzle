@@ -50,45 +50,132 @@ namespace PipeMuzzle.Board
 
                 foreach (Direction direction in Directions)
                 {
-                    if (!current.Connections.Has(direction.ToMask()))
+                    if (!TryGetConnectedNeighbor(
+                            board,
+                            current,
+                            direction,
+                            out TileState neighbor) ||
+                        visited[neighbor.X, neighbor.Y])
                     {
                         continue;
                     }
 
-                    int neighborX =
-                        current.X + direction.DeltaX();
-
-                    int neighborY =
-                        current.Y + direction.DeltaY();
-
-                    TileState neighbor =
-                        board.GetTile(neighborX, neighborY);
-
-                    if (neighbor == null)
-                    {
-                        continue;
-                    }
-
-                    if (visited[neighborX, neighborY])
-                    {
-                        continue;
-                    }
-
-                    ConnectionMask oppositeConnection =
-                        direction.Opposite().ToMask();
-
-                    if (!neighbor.Connections.Has(oppositeConnection))
-                    {
-                        continue;
-                    }
-
-                    visited[neighborX, neighborY] = true;
+                    visited[neighbor.X, neighbor.Y] = true;
                     neighbor.SetPowered(true);
                     queue.Enqueue(neighbor);
                 }
             }
 
             return targetReached;
+        }
+
+        public static bool TryGetSolvedPath(
+            BoardState board,
+            List<TileState> path)
+        {
+            if (board == null)
+            {
+                throw new ArgumentNullException(nameof(board));
+            }
+
+            if (path == null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
+            path.Clear();
+
+            TileState source = board.FindTileByRole(TileRole.Source);
+            TileState target = board.FindTileByRole(TileRole.Target);
+
+            if (source == null || target == null)
+            {
+                return false;
+            }
+
+            Queue<TileState> queue = new Queue<TileState>();
+            bool[,] visited = new bool[board.Width, board.Height];
+            TileState[,] predecessors =
+                new TileState[board.Width, board.Height];
+
+            queue.Enqueue(source);
+            visited[source.X, source.Y] = true;
+
+            while (queue.Count > 0)
+            {
+                TileState current = queue.Dequeue();
+
+                if (current == target)
+                {
+                    BuildPath(source, target, predecessors, path);
+                    return true;
+                }
+
+                foreach (Direction direction in Directions)
+                {
+                    if (!TryGetConnectedNeighbor(
+                            board,
+                            current,
+                            direction,
+                            out TileState neighbor) ||
+                        visited[neighbor.X, neighbor.Y])
+                    {
+                        continue;
+                    }
+
+                    visited[neighbor.X, neighbor.Y] = true;
+                    predecessors[neighbor.X, neighbor.Y] = current;
+                    queue.Enqueue(neighbor);
+                }
+            }
+
+            return false;
+        }
+
+        private static bool TryGetConnectedNeighbor(
+            BoardState board,
+            TileState current,
+            Direction direction,
+            out TileState neighbor)
+        {
+            neighbor = null;
+
+            if (!current.Connections.Has(direction.ToMask()))
+            {
+                return false;
+            }
+
+            int neighborX = current.X + direction.DeltaX();
+            int neighborY = current.Y + direction.DeltaY();
+            neighbor = board.GetTile(neighborX, neighborY);
+
+            return neighbor != null &&
+                   neighbor.Connections.Has(
+                       direction.Opposite().ToMask()
+                   );
+        }
+
+        private static void BuildPath(
+            TileState source,
+            TileState target,
+            TileState[,] predecessors,
+            List<TileState> path)
+        {
+            TileState current = target;
+
+            while (current != null)
+            {
+                path.Add(current);
+
+                if (current == source)
+                {
+                    break;
+                }
+
+                current = predecessors[current.X, current.Y];
+            }
+
+            path.Reverse();
         }
 
         private static void ResetPowerStates(BoardState board)
