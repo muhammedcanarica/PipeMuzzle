@@ -106,10 +106,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.View.TileView
   spriteRenderer: {fileID: 4462437385542353727}
-  straightSprite: {fileID: -1876876472472163063, guid: 3d3c658f6b9bbe74abd039de7ace06a9, type: 3}
-  cornerSprite: {fileID: -1730701556345148908, guid: 62a43e8da9d92524487763f195ed354d, type: 3}
-  threeWaySprite: {fileID: 1743709871802770797, guid: 593ce2bc9ad08604d808225efd74f93a, type: 3}
-  crossSprite: {fileID: -4091110592893181371, guid: 9fbc6a4ce0596ae44967fce9cd3f1957, type: 3}
+  glowRenderer: {fileID: 0}
+  straightSprite: {fileID: 21300000, guid: 43d64da1efa5241479152203435c4ae4, type: 3}
+  cornerSprite: {fileID: 21300000, guid: 004a7cc8abdd7044cbe739c8cd616f90, type: 3}
+  threeWaySprite: {fileID: 21300000, guid: d0ed85eea23bba348b677cc65292601d, type: 3}
+  crossSprite: {fileID: 21300000, guid: 45d0fd5b6dcf5bf438c27fbdb2864506, type: 3}
+  normalColor: {r: 0.72, g: 0.78, b: 0.8, a: 1}
+  lockedTint: {r: 0.55, g: 0.62, b: 0.66, a: 1}
+  sourceGlowColor: {r: 1, g: 0.48, b: 0.08, a: 0.48}
+  targetGlowColor: {r: 0.12, g: 0.9, b: 1, a: 0.62}
+  poweredGlowColor: {r: 0.08, g: 0.92, b: 1, a: 0.55}
+  rotationDuration: 0.14
+  clickScale: 0.97
+  clickDuration: 0.1
+  poweredTransitionDuration: 0.14
+  completionPulseDuration: 0.36
 --- !u!61 &-7967250838941427884
 BoxCollider2D:
   m_ObjectHideFlags: 0

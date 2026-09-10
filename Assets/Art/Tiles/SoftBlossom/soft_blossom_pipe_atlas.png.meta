@@ -1,0 +1,2756 @@
+fileFormatVersion: 2
+guid: bb8604ff6dabe34429dedb4080247e1e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 787037233635106466
+    second: soft_blossom_pipe_atlas_0
+  - first:
+      213: 5619882153512947850
+    second: soft_blossom_pipe_atlas_1
+  - first:
+      213: 7203255434409268662
+    second: soft_blossom_pipe_atlas_2
+  - first:
+      213: -3986885429407042663
+    second: soft_blossom_pipe_atlas_3
+  - first:
+      213: 8609450949157783885
+    second: soft_blossom_pipe_atlas_4
+  - first:
+      213: -8635284147016045797
+    second: soft_blossom_pipe_atlas_5
+  - first:
+      213: -8893453930402056672
+    second: soft_blossom_pipe_atlas_6
+  - first:
+      213: 5178629752051190103
+    second: soft_blossom_pipe_atlas_7
+  - first:
+      213: -47684631243962436
+    second: soft_blossom_pipe_atlas_8
+  - first:
+      213: -6305959985525269296
+    second: soft_blossom_pipe_atlas_9
+  - first:
+      213: 6300708214496610019
+    second: soft_blossom_pipe_atlas_10
+  - first:
+      213: 5765629881047837930
+    second: soft_blossom_pipe_atlas_11
+  - first:
+      213: -4639681802135816588
+    second: soft_blossom_pipe_atlas_12
+  - first:
+      213: -2436916561358718410
+    second: soft_blossom_pipe_atlas_13
+  - first:
+      213: 2127563231621135266
+    second: soft_blossom_pipe_atlas_14
+  - first:
+      213: -98809187935857951
+    second: soft_blossom_pipe_atlas_15
+  - first:
+      213: 4821976937423976696
+    second: soft_blossom_pipe_atlas_16
+  - first:
+      213: -2543169005780924110
+    second: soft_blossom_pipe_atlas_17
+  - first:
+      213: 3948210090732461795
+    second: soft_blossom_pipe_atlas_18
+  - first:
+      213: 5970914025221260909
+    second: soft_blossom_pipe_atlas_19
+  - first:
+      213: 8481401630173988073
+    second: soft_blossom_pipe_atlas_20
+  - first:
+      213: 8172413892800927409
+    second: soft_blossom_pipe_atlas_21
+  - first:
+      213: -1524303576528379271
+    second: soft_blossom_pipe_atlas_22
+  - first:
+      213: 6754019234492069652
+    second: soft_blossom_pipe_atlas_23
+  - first:
+      213: -1650819892327013859
+    second: soft_blossom_pipe_atlas_24
+  - first:
+      213: 6885849777483497646
+    second: soft_blossom_pipe_atlas_25
+  - first:
+      213: 5430767960507338978
+    second: soft_blossom_pipe_atlas_26
+  - first:
+      213: -8568681917917633974
+    second: soft_blossom_pipe_atlas_27
+  - first:
+      213: -7896010741288598648
+    second: soft_blossom_pipe_atlas_28
+  - first:
+      213: 4045700279171475275
+    second: soft_blossom_pipe_atlas_29
+  - first:
+      213: -1984386620151586406
+    second: soft_blossom_pipe_atlas_30
+  - first:
+      213: 4484596508451000868
+    second: soft_blossom_pipe_atlas_31
+  - first:
+      213: 3997088027477106513
+    second: soft_blossom_pipe_atlas_32
+  - first:
+      213: -4590364571952059981
+    second: soft_blossom_pipe_atlas_33
+  - first:
+      213: 7723957346070952462
+    second: soft_blossom_pipe_atlas_34
+  - first:
+      213: 4841603674932984994
+    second: soft_blossom_pipe_atlas_35
+  - first:
+      213: 2206613979146894094
+    second: soft_blossom_pipe_atlas_36
+  - first:
+      213: -5735518020976554755
+    second: soft_blossom_pipe_atlas_37
+  - first:
+      213: -441006252375325806
+    second: soft_blossom_pipe_atlas_38
+  - first:
+      213: 7337511658880961879
+    second: soft_blossom_pipe_atlas_39
+  - first:
+      213: 887028087228071318
+    second: soft_blossom_pipe_atlas_40
+  - first:
+      213: -4076296351183903378
+    second: soft_blossom_pipe_atlas_41
+  - first:
+      213: -501178172466275865
+    second: soft_blossom_pipe_atlas_42
+  - first:
+      213: -1327218726570368306
+    second: soft_blossom_pipe_atlas_43
+  - first:
+      213: -5800475374865474922
+    second: soft_blossom_pipe_atlas_44
+  - first:
+      213: -7510122753815077260
+    second: soft_blossom_pipe_atlas_45
+  - first:
+      213: 494002015731369654
+    second: soft_blossom_pipe_atlas_46
+  - first:
+      213: 4160522282016726069
+    second: soft_blossom_pipe_atlas_47
+  - first:
+      213: -1848811344325158592
+    second: soft_blossom_pipe_atlas_48
+  - first:
+      213: -8906252183700178780
+    second: soft_blossom_pipe_atlas_49
+  - first:
+      213: -5912416758721493192
+    second: soft_blossom_pipe_atlas_50
+  - first:
+      213: 4535343666268399226
+    second: soft_blossom_pipe_atlas_51
+  - first:
+      213: -503124981812739572
+    second: soft_blossom_pipe_atlas_52
+  - first:
+      213: 3115012151532452749
+    second: soft_blossom_pipe_atlas_53
+  - first:
+      213: 6750684561361144411
+    second: soft_blossom_pipe_atlas_54
+  - first:
+      213: -591701246326791831
+    second: soft_blossom_pipe_atlas_55
+  - first:
+      213: -8914884911830740880
+    second: soft_blossom_pipe_atlas_56
+  - first:
+      213: 1261423806403729080
+    second: soft_blossom_pipe_atlas_57
+  - first:
+      213: -5198237232912732938
+    second: soft_blossom_pipe_atlas_58
+  - first:
+      213: -5475268930221918769
+    second: soft_blossom_pipe_atlas_59
+  - first:
+      213: -6211643727422368861
+    second: soft_blossom_pipe_atlas_60
+  - first:
+      213: 568235967642960725
+    second: soft_blossom_pipe_atlas_61
+  - first:
+      213: 2381701245493806656
+    second: soft_blossom_pipe_atlas_62
+  - first:
+      213: 7784747948022130170
+    second: soft_blossom_pipe_atlas_63
+  - first:
+      213: -1012650327122758967
+    second: soft_blossom_pipe_atlas_64
+  - first:
+      213: 4522117422313408223
+    second: soft_blossom_pipe_atlas_65
+  - first:
+      213: -2321923908373308171
+    second: soft_blossom_pipe_atlas_66
+  - first:
+      213: 375211663060981831
+    second: soft_blossom_pipe_atlas_67
+  - first:
+      213: -768042911589875165
+    second: soft_blossom_pipe_atlas_68
+  - first:
+      213: -401815773634123824
+    second: soft_blossom_pipe_atlas_69
+  - first:
+      213: -2924035938658449855
+    second: soft_blossom_pipe_atlas_70
+  - first:
+      213: -1041428020897058794
+    second: soft_blossom_pipe_atlas_71
+  - first:
+      213: -7785061440348923732
+    second: soft_blossom_pipe_atlas_72
+  - first:
+      213: 5573607363970068109
+    second: soft_blossom_pipe_atlas_73
+  - first:
+      213: 4693496547451661242
+    second: soft_blossom_pipe_atlas_74
+  - first:
+      213: 8281485114885366276
+    second: soft_blossom_pipe_atlas_75
+  - first:
+      213: 7201337783993317673
+    second: soft_blossom_pipe_atlas_76
+  - first:
+      213: -3953349321656870475
+    second: soft_blossom_pipe_atlas_77
+  - first:
+      213: 1793012109095532696
+    second: soft_blossom_pipe_atlas_78
+  - first:
+      213: -5944839114136479438
+    second: soft_blossom_pipe_atlas_79
+  - first:
+      213: -1306889677766152967
+    second: soft_blossom_pipe_atlas_80
+  - first:
+      213: 8087585539991950988
+    second: soft_blossom_pipe_atlas_81
+  - first:
+      213: 1635063479235715876
+    second: soft_blossom_pipe_atlas_82
+  - first:
+      213: -4002998900767237090
+    second: soft_blossom_pipe_atlas_83
+  - first:
+      213: 3038470538047945281
+    second: soft_blossom_pipe_atlas_84
+  - first:
+      213: 3518139770282886217
+    second: soft_blossom_pipe_atlas_85
+  - first:
+      213: -3714343604535844370
+    second: soft_blossom_pipe_atlas_86
+  - first:
+      213: -6684346343779623070
+    second: soft_blossom_pipe_atlas_87
+  - first:
+      213: 7005805033880543624
+    second: soft_blossom_pipe_atlas_88
+  - first:
+      213: -586122736635889568
+    second: soft_blossom_pipe_atlas_89
+  - first:
+      213: -7926389753155700175
+    second: soft_blossom_pipe_atlas_90
+  - first:
+      213: 6381656104631029383
+    second: soft_blossom_pipe_atlas_91
+  - first:
+      213: -5356510080123823130
+    second: soft_blossom_pipe_atlas_92
+  - first:
+      213: -8543371111310755011
+    second: soft_blossom_pipe_atlas_93
+  - first:
+      213: 8177138426794143612
+    second: soft_blossom_pipe_atlas_94
+  - first:
+      213: 73095232380477149
+    second: soft_blossom_pipe_atlas_95
+  - first:
+      213: -1383055526006991758
+    second: soft_blossom_pipe_atlas_96
+  - first:
+      213: 7000926206744376509
+    second: soft_blossom_pipe_atlas_97
+  - first:
+      213: 4364002821341558474
+    second: soft_blossom_pipe_atlas_98
+  - first:
+      213: 7632811041981884544
+    second: soft_blossom_pipe_atlas_99
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_0
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 1221
+        width: 30
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ae93dfa13e1cea00800000000000000
+      internalID: 787037233635106466
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_1
+      rect:
+        serializedVersion: 2
+        x: 231
+        y: 1221
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a8052bf0b05ddfd40800000000000000
+      internalID: 5619882153512947850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_2
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 1231
+        width: 52
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b5dd5237aa17f360800000000000000
+      internalID: 7203255434409268662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_3
+      rect:
+        serializedVersion: 2
+        x: 386
+        y: 1116
+        width: 91
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 993330c43dcbba8c0800000000000000
+      internalID: -3986885429407042663
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_4
+      rect:
+        serializedVersion: 2
+        x: 508
+        y: 1173
+        width: 26
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4903bff50aea7770800000000000000
+      internalID: 8609450949157783885
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_5
+      rect:
+        serializedVersion: 2
+        x: 868
+        y: 1132
+        width: 158
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1beb8ae1de492880800000000000000
+      internalID: -8635284147016045797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_6
+      rect:
+        serializedVersion: 2
+        x: 1075
+        y: 1225
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 026751415ca149480800000000000000
+      internalID: -8893453930402056672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1002
+        width: 174
+        height: 225
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 759c74a62503ed740800000000000000
+      internalID: 5178629752051190103
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_8
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 818
+        width: 422
+        height: 263
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cb7457d9417965ff0800000000000000
+      internalID: -47684631243962436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_9
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 1158
+        width: 83
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dc50f6bdcabc78a0800000000000000
+      internalID: -6305959985525269296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_10
+      rect:
+        serializedVersion: 2
+        x: 283
+        y: 1156
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3e6c47e0dbc907750800000000000000
+      internalID: 6300708214496610019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_11
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 1171
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aeceb3644d1a30050800000000000000
+      internalID: 5765629881047837930
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_12
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 1162
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 476b9d8abf98c9fb0800000000000000
+      internalID: -4639681802135816588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_13
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 1183
+        width: 34
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63a72fc7c455e2ed0800000000000000
+      internalID: -2436916561358718410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_14
+      rect:
+        serializedVersion: 2
+        x: 297
+        y: 1146
+        width: 16
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2abb5f1ac7f968d10800000000000000
+      internalID: 2127563231621135266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_15
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 1189
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e2d98c2195f0aef0800000000000000
+      internalID: -98809187935857951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_16
+      rect:
+        serializedVersion: 2
+        x: 334
+        y: 1151
+        width: 23
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f838460a7a1be240800000000000000
+      internalID: 4821976937423976696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_17
+      rect:
+        serializedVersion: 2
+        x: 536
+        y: 1173
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23905a67349d4bcd0800000000000000
+      internalID: -2543169005780924110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_18
+      rect:
+        serializedVersion: 2
+        x: 545
+        y: 1110
+        width: 45
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ee98b4b82cdac630800000000000000
+      internalID: 3948210090732461795
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_19
+      rect:
+        serializedVersion: 2
+        x: 545
+        y: 471
+        width: 694
+        height: 607
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6606b1bba2fcd250800000000000000
+      internalID: 5970914025221260909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_20
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 1045
+        width: 81
+        height: 146
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e480f3a8ddf3b570800000000000000
+      internalID: 8481401630173988073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_21
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 913
+        width: 37
+        height: 142
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1b6ddddd22f3a6170800000000000000
+      internalID: 8172413892800927409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_22
+      rect:
+        serializedVersion: 2
+        x: 653
+        y: 1164
+        width: 57
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9722b2729f598dae0800000000000000
+      internalID: -1524303576528379271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_23
+      rect:
+        serializedVersion: 2
+        x: 731
+        y: 1116
+        width: 28
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4173e0e95b81bbd50800000000000000
+      internalID: 6754019234492069652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_24
+      rect:
+        serializedVersion: 2
+        x: 1029
+        y: 1096
+        width: 106
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1223b9ed0c1719e0800000000000000
+      internalID: -1650819892327013859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_25
+      rect:
+        serializedVersion: 2
+        x: 1125
+        y: 1142
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea04b9bc3e37f8f50800000000000000
+      internalID: 6885849777483497646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_26
+      rect:
+        serializedVersion: 2
+        x: 1141
+        y: 1028
+        width: 72
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e0dc97cfa6fd5b40800000000000000
+      internalID: 5430767960507338978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_27
+      rect:
+        serializedVersion: 2
+        x: 1198
+        y: 931
+        width: 27
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a42e439c13de51980800000000000000
+      internalID: -8568681917917633974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_28
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 787
+        width: 65
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88303dec01cbb6290800000000000000
+      internalID: -7896010741288598648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_29
+      rect:
+        serializedVersion: 2
+        x: 86
+        y: 759
+        width: 46
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b47e6b708f6352830800000000000000
+      internalID: 4045700279171475275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_30
+      rect:
+        serializedVersion: 2
+        x: 601
+        y: 803
+        width: 43
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a91a3d8f1ea0674e0800000000000000
+      internalID: -1984386620151586406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_31
+      rect:
+        serializedVersion: 2
+        x: 709
+        y: 801
+        width: 20
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 422dd2793cc7c3e30800000000000000
+      internalID: 4484596508451000868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 730
+        width: 23
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 15f5dbd2262887730800000000000000
+      internalID: 3997088027477106513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_33
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 724
+        width: 29
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3b9624b1ebfbb40c0800000000000000
+      internalID: -4590364571952059981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_34
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 742
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0af3d07842013b60800000000000000
+      internalID: 7723957346070952462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_35
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 750
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ac3b93f3e4d03340800000000000000
+      internalID: 4841603674932984994
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_36
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 751
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0b367f09b77f9e10800000000000000
+      internalID: 2206613979146894094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_37
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 737
+        width: 81
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfc47dc7fb85760b0800000000000000
+      internalID: -5735518020976554755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_38
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 755
+        width: 15
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2934177662b31e9f0800000000000000
+      internalID: -441006252375325806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_39
+      rect:
+        serializedVersion: 2
+        x: 659
+        y: 736
+        width: 15
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75d03ea5af314d560800000000000000
+      internalID: 7337511658880961879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_40
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 738
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69df50d785b5f4c00800000000000000
+      internalID: 887028087228071318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_41
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 720
+        width: 8
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e656674d0161e67c0800000000000000
+      internalID: -4076296351183903378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_42
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 632
+        width: 78
+        height: 94
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e9d7f48b157b09f0800000000000000
+      internalID: -501178172466275865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_43
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 710
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec2e68f9995c49de0800000000000000
+      internalID: -1327218726570368306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_44
+      rect:
+        serializedVersion: 2
+        x: 295
+        y: 704
+        width: 44
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 69a1eb8f062908fa0800000000000000
+      internalID: -5800475374865474922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_45
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 640
+        width: 95
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47e164f452fa6c790800000000000000
+      internalID: -7510122753815077260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_46
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 554
+        width: 199
+        height: 147
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b6cef9473c0bd600800000000000000
+      internalID: 494002015731369654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_47
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 672
+        width: 78
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 53c54bbd8f42db930800000000000000
+      internalID: 4160522282016726069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_48
+      rect:
+        serializedVersion: 2
+        x: 344
+        y: 681
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04959c4b0e3b756e0800000000000000
+      internalID: -1848811344325158592
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_49
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 680
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4a8f08683d2a66480800000000000000
+      internalID: -8906252183700178780
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_50
+      rect:
+        serializedVersion: 2
+        x: 362
+        y: 688
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 837c6548840e2fda0800000000000000
+      internalID: -5912416758721493192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_51
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 658
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a76ee320907c0fe30800000000000000
+      internalID: 4535343666268399226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_52
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 636
+        width: 28
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c024d65ae7a8409f0800000000000000
+      internalID: -503124981812739572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_53
+      rect:
+        serializedVersion: 2
+        x: 492
+        y: 650
+        width: 22
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8bfd1b3c0fba3b20800000000000000
+      internalID: 3115012151532452749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_54
+      rect:
+        serializedVersion: 2
+        x: 818
+        y: 640
+        width: 21
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5a05a687df3fad50800000000000000
+      internalID: 6750684561361144411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_55
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 632
+        width: 20
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9612987f9dad9c7f0800000000000000
+      internalID: -591701246326791831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_56
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 646
+        width: 15
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 070d6d0e767f74480800000000000000
+      internalID: -8914884911830740880
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_57
+      rect:
+        serializedVersion: 2
+        x: 362
+        y: 629
+        width: 25
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b65ae3c44a718110800000000000000
+      internalID: 1261423806403729080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_58
+      rect:
+        serializedVersion: 2
+        x: 494
+        y: 594
+        width: 70
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6fce60237c62cd7b0800000000000000
+      internalID: -5198237232912732938
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_59
+      rect:
+        serializedVersion: 2
+        x: 794
+        y: 628
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc5b36ccaefe304b0800000000000000
+      internalID: -5475268930221918769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_60
+      rect:
+        serializedVersion: 2
+        x: 834
+        y: 636
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a3d4bbc0fecbc9a0800000000000000
+      internalID: -6211643727422368861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_61
+      rect:
+        serializedVersion: 2
+        x: 1099
+        y: 616
+        width: 17
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55385f71a97c2e700800000000000000
+      internalID: 568235967642960725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_62
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 562
+        width: 53
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04683caf9a08d0120800000000000000
+      internalID: 2381701245493806656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_63
+      rect:
+        serializedVersion: 2
+        x: 723
+        y: 602
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af56fcb630bf80c60800000000000000
+      internalID: 7784747948022130170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_64
+      rect:
+        serializedVersion: 2
+        x: 511
+        y: 584
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c23a2a84e752f1f0800000000000000
+      internalID: -1012650327122758967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_65
+      rect:
+        serializedVersion: 2
+        x: 520
+        y: 584
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd6889d16d9c1ce30800000000000000
+      internalID: 4522117422313408223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_66
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 512
+        width: 67
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fc1ce5e18ed6cfd0800000000000000
+      internalID: -2321923908373308171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_67
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 546
+        width: 34
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 74855540505053500800000000000000
+      internalID: 375211663060981831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_68
+      rect:
+        serializedVersion: 2
+        x: 635
+        y: 15
+        width: 560
+        height: 540
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 322cd6a8a0d5755f0800000000000000
+      internalID: -768042911589875165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_69
+      rect:
+        serializedVersion: 2
+        x: 635
+        y: 540
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d7a36bcea67c6af0800000000000000
+      internalID: -401815773634123824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_70
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 0
+        width: 552
+        height: 545
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14689c55eccbb67d0800000000000000
+      internalID: -2924035938658449855
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_71
+      rect:
+        serializedVersion: 2
+        x: 585
+        y: 503
+        width: 17
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 610fa439bba1c81f0800000000000000
+      internalID: -1041428020897058794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_72
+      rect:
+        serializedVersion: 2
+        x: 625
+        y: 515
+        width: 19
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca85965fdd7e5f390800000000000000
+      internalID: -7785061440348923732
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_73
+      rect:
+        serializedVersion: 2
+        x: 559
+        y: 441
+        width: 33
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d8eefe60e5e695d40800000000000000
+      internalID: 5573607363970068109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_74
+      rect:
+        serializedVersion: 2
+        x: 651
+        y: 425
+        width: 35
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abbe0612e36a22140800000000000000
+      internalID: 4693496547451661242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_75
+      rect:
+        serializedVersion: 2
+        x: 593
+        y: 391
+        width: 35
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4026d65b5debde270800000000000000
+      internalID: 8281485114885366276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_76
+      rect:
+        serializedVersion: 2
+        x: 605
+        y: 192
+        width: 23
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 929358a6f8a40f360800000000000000
+      internalID: 7201337783993317673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_77
+      rect:
+        serializedVersion: 2
+        x: 667
+        y: 164
+        width: 42
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b95c99dcb1e229c0800000000000000
+      internalID: -3953349321656870475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_78
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 128
+        width: 41
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 898fc90730f02e810800000000000000
+      internalID: 1793012109095532696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_79
+      rect:
+        serializedVersion: 2
+        x: 577
+        y: 136
+        width: 53
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2391c03a250bf7da0800000000000000
+      internalID: -5944839114136479438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_80
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 71
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fcaf1423cefcdde0800000000000000
+      internalID: -1306889677766152967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_81
+      rect:
+        serializedVersion: 2
+        x: 271
+        y: 61
+        width: 9
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c865ec1e230ec3070800000000000000
+      internalID: 8087585539991950988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_82
+      rect:
+        serializedVersion: 2
+        x: 289
+        y: 61
+        width: 15
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4232f094299e0b610800000000000000
+      internalID: 1635063479235715876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_83
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 61
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1c5d7365bd7278c0800000000000000
+      internalID: -4002998900767237090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_84
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 53
+        width: 13
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14a76d81bd0da2a20800000000000000
+      internalID: 3038470538047945281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_85
+      rect:
+        serializedVersion: 2
+        x: 394
+        y: 62
+        width: 21
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 944c2ed2b71f2d030800000000000000
+      internalID: 3518139770282886217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_86
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 65
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ee1a5edcb20047cc0800000000000000
+      internalID: -3714343604535844370
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_87
+      rect:
+        serializedVersion: 2
+        x: 458
+        y: 65
+        width: 7
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26f955f5a6e6c33a0800000000000000
+      internalID: -6684346343779623070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_88
+      rect:
+        serializedVersion: 2
+        x: 607
+        y: 55
+        width: 29
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 881e71a5f8e993160800000000000000
+      internalID: 7005805033880543624
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_89
+      rect:
+        serializedVersion: 2
+        x: 1186
+        y: 71
+        width: 43
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 068b908f97cadd7f0800000000000000
+      internalID: -586122736635889568
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_90
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 55
+        width: 9
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 13abbdbe38ecff190800000000000000
+      internalID: -7926389753155700175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_91
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 47
+        width: 10
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78e4c3b6a62309850800000000000000
+      internalID: 6381656104631029383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_92
+      rect:
+        serializedVersion: 2
+        x: 842
+        y: 53
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6eb9b6e467ad9a5b0800000000000000
+      internalID: -5356510080123823130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_93
+      rect:
+        serializedVersion: 2
+        x: 898
+        y: 53
+        width: 15
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3bfcfd2d39df6980800000000000000
+      internalID: -8543371111310755011
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_94
+      rect:
+        serializedVersion: 2
+        x: 201
+        y: 31
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7fe24823180b7170800000000000000
+      internalID: 8177138426794143612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_95
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 19
+        width: 15
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dde10d00abfa30100800000000000000
+      internalID: 73095232380477149
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_96
+      rect:
+        serializedVersion: 2
+        x: 410
+        y: 17
+        width: 7
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27456bba3566ecce0800000000000000
+      internalID: -1383055526006991758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_97
+      rect:
+        serializedVersion: 2
+        x: 212
+        y: 0
+        width: 38
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db4b8b3ea49482160800000000000000
+      internalID: 7000926206744376509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_98
+      rect:
+        serializedVersion: 2
+        x: 316
+        y: 17
+        width: 13
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac6bddcc17d009c30800000000000000
+      internalID: 4364002821341558474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: soft_blossom_pipe_atlas_99
+      rect:
+        serializedVersion: 2
+        x: 327
+        y: 23
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 088620bc3313de960800000000000000
+      internalID: 7632811041981884544
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      soft_blossom_pipe_atlas_0: 787037233635106466
+      soft_blossom_pipe_atlas_1: 5619882153512947850
+      soft_blossom_pipe_atlas_10: 6300708214496610019
+      soft_blossom_pipe_atlas_11: 5765629881047837930
+      soft_blossom_pipe_atlas_12: -4639681802135816588
+      soft_blossom_pipe_atlas_13: -2436916561358718410
+      soft_blossom_pipe_atlas_14: 2127563231621135266
+      soft_blossom_pipe_atlas_15: -98809187935857951
+      soft_blossom_pipe_atlas_16: 4821976937423976696
+      soft_blossom_pipe_atlas_17: -2543169005780924110
+      soft_blossom_pipe_atlas_18: 3948210090732461795
+      soft_blossom_pipe_atlas_19: 5970914025221260909
+      soft_blossom_pipe_atlas_2: 7203255434409268662
+      soft_blossom_pipe_atlas_20: 8481401630173988073
+      soft_blossom_pipe_atlas_21: 8172413892800927409
+      soft_blossom_pipe_atlas_22: -1524303576528379271
+      soft_blossom_pipe_atlas_23: 6754019234492069652
+      soft_blossom_pipe_atlas_24: -1650819892327013859
+      soft_blossom_pipe_atlas_25: 6885849777483497646
+      soft_blossom_pipe_atlas_26: 5430767960507338978
+      soft_blossom_pipe_atlas_27: -8568681917917633974
+      soft_blossom_pipe_atlas_28: -7896010741288598648
+      soft_blossom_pipe_atlas_29: 4045700279171475275
+      soft_blossom_pipe_atlas_3: -3986885429407042663
+      soft_blossom_pipe_atlas_30: -1984386620151586406
+      soft_blossom_pipe_atlas_31: 4484596508451000868
+      soft_blossom_pipe_atlas_32: 3997088027477106513
+      soft_blossom_pipe_atlas_33: -4590364571952059981
+      soft_blossom_pipe_atlas_34: 7723957346070952462
+      soft_blossom_pipe_atlas_35: 4841603674932984994
+      soft_blossom_pipe_atlas_36: 2206613979146894094
+      soft_blossom_pipe_atlas_37: -5735518020976554755
+      soft_blossom_pipe_atlas_38: -441006252375325806
+      soft_blossom_pipe_atlas_39: 7337511658880961879
+      soft_blossom_pipe_atlas_4: 8609450949157783885
+      soft_blossom_pipe_atlas_40: 887028087228071318
+      soft_blossom_pipe_atlas_41: -4076296351183903378
+      soft_blossom_pipe_atlas_42: -501178172466275865
+      soft_blossom_pipe_atlas_43: -1327218726570368306
+      soft_blossom_pipe_atlas_44: -5800475374865474922
+      soft_blossom_pipe_atlas_45: -7510122753815077260
+      soft_blossom_pipe_atlas_46: 494002015731369654
+      soft_blossom_pipe_atlas_47: 4160522282016726069
+      soft_blossom_pipe_atlas_48: -1848811344325158592
+      soft_blossom_pipe_atlas_49: -8906252183700178780
+      soft_blossom_pipe_atlas_5: -8635284147016045797
+      soft_blossom_pipe_atlas_50: -5912416758721493192
+      soft_blossom_pipe_atlas_51: 4535343666268399226
+      soft_blossom_pipe_atlas_52: -503124981812739572
+      soft_blossom_pipe_atlas_53: 3115012151532452749
+      soft_blossom_pipe_atlas_54: 6750684561361144411
+      soft_blossom_pipe_atlas_55: -591701246326791831
+      soft_blossom_pipe_atlas_56: -8914884911830740880
+      soft_blossom_pipe_atlas_57: 1261423806403729080
+      soft_blossom_pipe_atlas_58: -5198237232912732938
+      soft_blossom_pipe_atlas_59: -5475268930221918769
+      soft_blossom_pipe_atlas_6: -8893453930402056672
+      soft_blossom_pipe_atlas_60: -6211643727422368861
+      soft_blossom_pipe_atlas_61: 568235967642960725
+      soft_blossom_pipe_atlas_62: 2381701245493806656
+      soft_blossom_pipe_atlas_63: 7784747948022130170
+      soft_blossom_pipe_atlas_64: -1012650327122758967
+      soft_blossom_pipe_atlas_65: 4522117422313408223
+      soft_blossom_pipe_atlas_66: -2321923908373308171
+      soft_blossom_pipe_atlas_67: 375211663060981831
+      soft_blossom_pipe_atlas_68: -768042911589875165
+      soft_blossom_pipe_atlas_69: -401815773634123824
+      soft_blossom_pipe_atlas_7: 5178629752051190103
+      soft_blossom_pipe_atlas_70: -2924035938658449855
+      soft_blossom_pipe_atlas_71: -1041428020897058794
+      soft_blossom_pipe_atlas_72: -7785061440348923732
+      soft_blossom_pipe_atlas_73: 5573607363970068109
+      soft_blossom_pipe_atlas_74: 4693496547451661242
+      soft_blossom_pipe_atlas_75: 8281485114885366276
+      soft_blossom_pipe_atlas_76: 7201337783993317673
+      soft_blossom_pipe_atlas_77: -3953349321656870475
+      soft_blossom_pipe_atlas_78: 1793012109095532696
+      soft_blossom_pipe_atlas_79: -5944839114136479438
+      soft_blossom_pipe_atlas_8: -47684631243962436
+      soft_blossom_pipe_atlas_80: -1306889677766152967
+      soft_blossom_pipe_atlas_81: 8087585539991950988
+      soft_blossom_pipe_atlas_82: 1635063479235715876
+      soft_blossom_pipe_atlas_83: -4002998900767237090
+      soft_blossom_pipe_atlas_84: 3038470538047945281
+      soft_blossom_pipe_atlas_85: 3518139770282886217
+      soft_blossom_pipe_atlas_86: -3714343604535844370
+      soft_blossom_pipe_atlas_87: -6684346343779623070
+      soft_blossom_pipe_atlas_88: 7005805033880543624
+      soft_blossom_pipe_atlas_89: -586122736635889568
+      soft_blossom_pipe_atlas_9: -6305959985525269296
+      soft_blossom_pipe_atlas_90: -7926389753155700175
+      soft_blossom_pipe_atlas_91: 6381656104631029383
+      soft_blossom_pipe_atlas_92: -5356510080123823130
+      soft_blossom_pipe_atlas_93: -8543371111310755011
+      soft_blossom_pipe_atlas_94: 8177138426794143612
+      soft_blossom_pipe_atlas_95: 73095232380477149
+      soft_blossom_pipe_atlas_96: -1383055526006991758
+      soft_blossom_pipe_atlas_97: 7000926206744376509
+      soft_blossom_pipe_atlas_98: 4364002821341558474
+      soft_blossom_pipe_atlas_99: 7632811041981884544
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
