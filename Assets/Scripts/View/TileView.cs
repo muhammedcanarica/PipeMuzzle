@@ -67,6 +67,7 @@ namespace PipeMuzzle.View
         private float completionPulseDuration = 0.36f;
 
         private TileState tileState;
+        private Transform visualTransform;
         private Coroutine rotationCoroutine;
         private Coroutine powerCoroutine;
         private Coroutine completionCoroutine;
@@ -85,6 +86,7 @@ namespace PipeMuzzle.View
             }
 
             tileState = state;
+            EnsureVisualRenderer();
             EnsureGlowRenderer();
             Refresh();
         }
@@ -205,7 +207,10 @@ namespace PipeMuzzle.View
             }
 
             GameObject glowObject = new GameObject("GlowVisual");
-            glowObject.transform.SetParent(transform, false);
+            glowObject.transform.SetParent(
+                spriteRenderer.transform,
+                false
+            );
 
             glowRenderer = glowObject.AddComponent<SpriteRenderer>();
             glowRenderer.sharedMaterial = spriteRenderer.sharedMaterial;
@@ -225,12 +230,48 @@ namespace PipeMuzzle.View
             };
 
             spriteRenderer.sprite = sprite;
+            spriteRenderer.enabled = sprite != null;
 
             if (glowRenderer != null)
             {
                 glowRenderer.sprite = sprite;
                 glowRenderer.enabled = sprite != null;
             }
+
+            ApplyVisualOffset();
+        }
+
+        private void EnsureVisualRenderer()
+        {
+            if (spriteRenderer == null ||
+                spriteRenderer.transform != transform)
+            {
+                return;
+            }
+
+            GameObject visualObject = new GameObject("PipeVisual");
+            visualObject.transform.SetParent(transform, false);
+
+            SpriteRenderer visualRenderer =
+                visualObject.AddComponent<SpriteRenderer>();
+            visualRenderer.sharedMaterial = spriteRenderer.sharedMaterial;
+            visualRenderer.sortingLayerID = spriteRenderer.sortingLayerID;
+            visualRenderer.sortingOrder = spriteRenderer.sortingOrder;
+
+            spriteRenderer.enabled = false;
+            spriteRenderer = visualRenderer;
+            visualTransform = visualObject.transform;
+        }
+
+        private void ApplyVisualOffset()
+        {
+            if (visualTransform == null || tileState == null)
+            {
+                return;
+            }
+
+            visualTransform.localPosition =
+                GetVisualPositionOffset(tileState.Shape);
         }
 
         private static float GetVisualRotationOffsetDegrees(
@@ -245,6 +286,18 @@ namespace PipeMuzzle.View
                 TileShape.Corner => 180f,
                 TileShape.ThreeWay => -90f,
                 _ => 0f
+            };
+        }
+
+        private static Vector3 GetVisualPositionOffset(
+            TileShape shape)
+        {
+            return shape switch
+            {
+                TileShape.Straight => new Vector3(-0.02f, 0f, 0f),
+                TileShape.Corner => new Vector3(-0.075f, -0.03f, 0f),
+                TileShape.ThreeWay => new Vector3(-0.02f, 0.05f, 0f),
+                _ => Vector3.zero
             };
         }
 
