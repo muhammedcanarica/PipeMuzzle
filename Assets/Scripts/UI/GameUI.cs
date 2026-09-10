@@ -35,6 +35,14 @@ namespace PipeMuzzle.UI
 
         private bool isBound;
 
+        private void Awake()
+        {
+            if (GetComponent<SoftBlossomUITheme>() == null)
+            {
+                gameObject.AddComponent<SoftBlossomUITheme>();
+            }
+        }
+
         private void OnEnable()
         {
             EnsureCompletionControls();
@@ -187,7 +195,7 @@ namespace PipeMuzzle.UI
 
             if (levelNumber > 0)
             {
-                levelText.text = $"LEVEL {levelNumber}";
+                levelText.text = $"LEVEL {levelNumber:00}";
             }
 
             HandleMoveCountChanged(
@@ -208,7 +216,8 @@ namespace PipeMuzzle.UI
 
         private void HandleMoveCountChanged(int moveCount)
         {
-            moveCountText.text = $"MOVES {moveCount}";
+            moveCountText.text =
+                $"<size=22>MOVES</size>\n<size=38>{moveCount}</size>";
             completionMoveCountText.text =
                 $"Moves: {moveCount}";
         }
@@ -218,7 +227,7 @@ namespace PipeMuzzle.UI
             int _)
         {
             levelText.text =
-                $"LEVEL {levelNumber}";
+                $"LEVEL {levelNumber:00}";
 
             completionPanel.SetActive(false);
         }
