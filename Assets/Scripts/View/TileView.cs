@@ -99,7 +99,9 @@ namespace PipeMuzzle.View
             StopVisualCoroutines();
             RefreshSprite();
 
-            visualRotationDegrees = tileState.Rotation * -90f;
+            visualRotationDegrees =
+                GetVisualRotationOffsetDegrees(tileState.Shape) +
+                tileState.Rotation * -90f;
             transform.localRotation = Quaternion.Euler(
                 0f,
                 0f,
@@ -229,6 +231,21 @@ namespace PipeMuzzle.View
                 glowRenderer.sprite = sprite;
                 glowRenderer.enabled = sprite != null;
             }
+        }
+
+        private static float GetVisualRotationOffsetDegrees(
+            TileShape shape)
+        {
+            return shape switch
+            {
+                // SoftBlossom source art uses these base directions:
+                // Straight: East + West; Corner: South + West;
+                // ThreeWay: North + East + West.
+                TileShape.Straight => -90f,
+                TileShape.Corner => 180f,
+                TileShape.ThreeWay => -90f,
+                _ => 0f
+            };
         }
 
         private void RefreshBaseColor()
