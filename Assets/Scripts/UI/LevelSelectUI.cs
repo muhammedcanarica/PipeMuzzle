@@ -27,6 +27,12 @@ namespace PipeMuzzle.UI
 
         private readonly List<UnityAction> buttonActions = new();
 
+        private void Awake()
+        {
+            EnsureSafeArea(gameplayHUD);
+            EnsureSafeArea(levelSelectPanel);
+        }
+
         private void Start()
         {
             if (gameController == null ||
@@ -72,6 +78,15 @@ namespace PipeMuzzle.UI
                 buttonActions.Add(action);
 
                 button.onClick.AddListener(action);
+            }
+        }
+
+        private static void EnsureSafeArea(GameObject panel)
+        {
+            if (panel != null &&
+                panel.GetComponent<SafeAreaPanel>() == null)
+            {
+                panel.AddComponent<SafeAreaPanel>();
             }
         }
 

@@ -2,10 +2,11 @@ using System;
 using PipeMuzzle.Board;
 using PipeMuzzle.Data;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace PipeMuzzle.View
 {
-    public class TileView : MonoBehaviour
+    public class TileView : MonoBehaviour, IPointerClickHandler
     {
         [Header("References")]
         [SerializeField]
@@ -60,8 +61,14 @@ namespace PipeMuzzle.View
             RefreshColor();
         }
 
-        private void OnMouseDown()
+        public void OnPointerClick(PointerEventData eventData)
         {
+            if (eventData == null ||
+                eventData.button != PointerEventData.InputButton.Left)
+            {
+                return;
+            }
+
             Clicked?.Invoke(this);
         }
 

@@ -4,6 +4,7 @@ using PipeMuzzle.Board;
 using PipeMuzzle.Data;
 using PipeMuzzle.View;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace PipeMuzzle.Gameplay
 {
@@ -29,7 +30,13 @@ namespace PipeMuzzle.Gameplay
         public event Action<int, int> LevelLoaded;
         public event Action<bool> LevelCompleted;
         public event Action<int> MoveCountChanged;
-        public int LevelCount => levels.Count;
+        public int LevelCount => levels?.Count ?? 0;
+        public int CurrentLevelNumber =>
+            board == null ? 0 : currentLevelIndex + 1;
+        public int CurrentMoveCount => board?.MoveCount ?? 0;
+        public bool IsCompleted => isCompleted;
+        public bool HasNextLevel =>
+            board != null && currentLevelIndex < LevelCount - 1;
 
         public bool IsLevelUnlocked(int levelIndex)
         {
@@ -66,7 +73,7 @@ namespace PipeMuzzle.Gameplay
                 return;
             }
 
-            if (levels == null || levels.Count == 0)
+            if (LevelCount == 0)
             {
                 Debug.LogError(
                     "GameController requires at least one level."
@@ -76,6 +83,11 @@ namespace PipeMuzzle.Gameplay
                 return;
             }
 
+            if (boardCameraFitter.GetComponent<Physics2DRaycaster>() == null)
+            {
+                boardCameraFitter.gameObject.AddComponent<Physics2DRaycaster>();
+            }
+
             boardView.TileClicked += HandleTileClicked;
 
             LoadLevel(0);
@@ -83,7 +95,10 @@ namespace PipeMuzzle.Gameplay
 
         private void HandleTileClicked(TileView tileView)
         {
-            if (isCompleted)
+            if (isCompleted ||
+                board == null ||
+                tileView == null ||
+                tileView.State == null)
             {
                 return;
             }
@@ -123,10 +138,14 @@ namespace PipeMuzzle.Gameplay
 
         private void CompleteLevel()
         {
+            if (isCompleted || board == null)
+            {
+                return;
+            }
+
             isCompleted = true;
 
-            bool hasNextLevel =
-                currentLevelIndex < levels.Count - 1;
+            bool hasNextLevel = HasNextLevel;
 
             if (hasNextLevel)
             {
@@ -149,7 +168,7 @@ namespace PipeMuzzle.Gameplay
         public void LoadLevelByIndex(int levelIndex)
         {
             if (levelIndex < 0 ||
-                levelIndex >= levels.Count)
+                levelIndex >= LevelCount)
             {
                 Debug.LogWarning(
                     $"Geçersiz level index: {levelIndex}"
@@ -180,7 +199,7 @@ namespace PipeMuzzle.Gameplay
             int nextLevelIndex =
                 currentLevelIndex + 1;
 
-            if (nextLevelIndex >= levels.Count)
+            if (nextLevelIndex >= LevelCount)
             {
                 Debug.Log(
                     "Tüm bölümler tamamlandı!"
@@ -195,7 +214,7 @@ namespace PipeMuzzle.Gameplay
         private void LoadLevel(int levelIndex)
         {
             if (levelIndex < 0 ||
-                levelIndex >= levels.Count)
+                levelIndex >= LevelCount)
             {
                 return;
             }
@@ -237,7 +256,7 @@ namespace PipeMuzzle.Gameplay
 
             LevelLoaded?.Invoke(
                 currentLevelIndex + 1,
-                levels.Count
+                LevelCount
             );
 
             if (solved)
