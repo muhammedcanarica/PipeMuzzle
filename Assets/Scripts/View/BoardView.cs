@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using PipeMuzzle.Board;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace PipeMuzzle.View
 {
@@ -15,7 +16,8 @@ namespace PipeMuzzle.View
 
         [SerializeField]
         [Min(0.01f)]
-        private float tileSpacing = 1f;
+        [FormerlySerializedAs("tileSpacing")]
+        private float cellSize = 1f;
 
         private readonly Dictionary<Vector2Int, TileView> tileViews = new();
         private readonly List<Vector3> flowPathPositions = new();
@@ -45,10 +47,10 @@ namespace PipeMuzzle.View
             Clear();
 
             float centerX =
-                (board.Width - 1) * tileSpacing * 0.5f;
+                (board.Width - 1) * cellSize * 0.5f;
 
             float centerY =
-                (board.Height - 1) * tileSpacing * 0.5f;
+                (board.Height - 1) * cellSize * 0.5f;
 
             for (int x = 0; x < board.Width; x++)
             {
@@ -164,10 +166,11 @@ namespace PipeMuzzle.View
                 transform
             );
 
-            tileView.transform.localPosition = new Vector3(
-                tileState.X * tileSpacing - centerX,
-                tileState.Y * tileSpacing - centerY,
-                0f
+            tileView.transform.localPosition = GetCellCenterLocalPosition(
+                tileState.X,
+                tileState.Y,
+                centerX,
+                centerY
             );
 
             tileView.Initialize(tileState);
@@ -175,6 +178,19 @@ namespace PipeMuzzle.View
             tileView.Clicked += HandleTileClicked;
 
             tileViews[new Vector2Int(tileState.X, tileState.Y)] = tileView;
+        }
+
+        private Vector3 GetCellCenterLocalPosition(
+            int column,
+            int row,
+            float centerX,
+            float centerY)
+        {
+            return new Vector3(
+                column * cellSize - centerX,
+                row * cellSize - centerY,
+                0f
+            );
         }
 
         private void PlayEnergyFlow(
