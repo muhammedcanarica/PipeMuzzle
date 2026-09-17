@@ -25,7 +25,7 @@ MonoBehaviour:
     y: 4
     shape: 1
     role: 0
-    startRotation: 0
+    startRotation: 2
     isLocked: 0
   - x: 2
     y: 4
@@ -63,3 +63,63 @@ MonoBehaviour:
     role: 2
     startRotation: 0
     isLocked: 1
+  - x: 0
+    y: 3
+    shape: 2
+    role: 0
+    startRotation: 1
+    isLocked: 0
+  - x: 1
+    y: 3
+    shape: 3
+    role: 0
+    startRotation: 2
+    isLocked: 0
+  - x: 3
+    y: 4
+    shape: 2
+    role: 0
+    startRotation: 3
+    isLocked: 0
+  - x: 4
+    y: 4
+    shape: 1
+    role: 0
+    startRotation: 0
+    isLocked: 0
+  - x: 0
+    y: 2
+    shape: 1
+    role: 0
+    startRotation: 1
+    isLocked: 0
+  - x: 1
+    y: 2
+    shape: 2
+    role: 0
+    startRotation: 0
+    isLocked: 0
+  - x: 3
+    y: 3
+    shape: 3
+    role: 0
+    startRotation: 1
+    isLocked: 0
+  - x: 4
+    y: 3
+    shape: 2
+    role: 0
+    startRotation: 2
+    isLocked: 0
+  - x: 0
+    y: 1
+    shape: 2
+    role: 0
+    startRotation: 3
+    isLocked: 0
+  - x: 1
+    y: 1
+    shape: 1
+    role: 0
+    startRotation: 0
+    isLocked: 0

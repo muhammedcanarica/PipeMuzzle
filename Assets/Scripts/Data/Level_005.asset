@@ -13,59 +13,89 @@ MonoBehaviour:
   m_Name: Level_005
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.Data.LevelDefinition
   width: 5
-  height: 5
+  height: 4
   tiles:
   - x: 0
-    y: 0
+    y: 3
     shape: 1
     role: 1
     startRotation: 1
     isLocked: 1
   - x: 1
-    y: 0
-    shape: 1
-    role: 0
-    startRotation: 0
-    isLocked: 0
-  - x: 2
-    y: 0
-    shape: 2
-    role: 0
-    startRotation: 1
-    isLocked: 0
-  - x: 2
-    y: 1
+    y: 3
     shape: 3
     role: 0
     startRotation: 3
     isLocked: 0
   - x: 2
     y: 2
+    shape: 3
+    role: 0
+    startRotation: 2
+    isLocked: 0
+  - x: 3
+    y: 2
+    shape: 3
+    role: 0
+    startRotation: 0
+    isLocked: 0
+  - x: 2
+    y: 1
+    shape: 2
+    role: 0
+    startRotation: 1
+    isLocked: 0
+  - x: 3
+    y: 1
+    shape: 3
+    role: 0
+    startRotation: 0
+    isLocked: 0
+  - x: 4
+    y: 1
+    shape: 2
+    role: 0
+    startRotation: 2
+    isLocked: 0
+  - x: 3
+    y: 0
     shape: 2
     role: 0
     startRotation: 3
     isLocked: 0
-  - x: 3
-    y: 2
+  - x: 4
+    y: 0
     shape: 1
+    role: 2
+    startRotation: 1
+    isLocked: 1
+  - x: 0
+    y: 2
+    shape: 2
     role: 0
     startRotation: 0
     isLocked: 0
-  - x: 4
-    y: 2
+  - x: 0
+    y: 1
+    shape: 1
+    role: 0
+    startRotation: 1
+    isLocked: 0
+  - x: 1
+    y: 1
+    shape: 3
+    role: 0
+    startRotation: 2
+    isLocked: 0
+  - x: 2
+    y: 3
     shape: 2
     role: 0
     startRotation: 1
     isLocked: 0
-  - x: 4
+  - x: 3
     y: 3
     shape: 1
     role: 0
-    startRotation: 1
-    isLocked: 0
-  - x: 4
-    y: 4
-    shape: 1
-    role: 2
     startRotation: 0
-    isLocked: 1
+    isLocked: 0
