@@ -3024,6 +3024,7 @@ GameObject:
   - component: {fileID: 1881871526}
   - component: {fileID: 1881871530}
   - component: {fileID: 1881871531}
+  - component: {fileID: 1881871532}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3163,6 +3164,22 @@ MonoBehaviour:
   - {fileID: 740000003}
   - {fileID: 750000003}
   - {fileID: 760000003}
+--- !u!114 &1881871532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881871525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073e347e10c3e6a48b74fc77cf2eb0da, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.UI.ScreenManager
+  worldMapPanel: {fileID: 0}
+  comicViewerPanel: {fileID: 0}
+  levelSelectPanel: {fileID: 1942539215}
+  gameplayHud: {fileID: 2000881445}
 --- !u!1 &1900664683
 GameObject:
   m_ObjectHideFlags: 0

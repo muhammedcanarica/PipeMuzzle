@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f59f29a9a6743e8a984c5d328c57ce3, type: 3}
+  m_Name: MoonStory
+  m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.Data.ComicStoryDefinition
+  storyId: moon_story
+  panels:
+  - {fileID: -703000000000000001, guid: 4392cf57342c4f2fab6d68532d8f9c4e, type: 3}
+  - {fileID: -703000000000000002, guid: 4392cf57342c4f2fab6d68532d8f9c4e, type: 3}
+  - {fileID: -703000000000000003, guid: 4392cf57342c4f2fab6d68532d8f9c4e, type: 3}
+  - {fileID: -703000000000000004, guid: 4392cf57342c4f2fab6d68532d8f9c4e, type: 3}
+  - {fileID: -703000000000000005, guid: 4392cf57342c4f2fab6d68532d8f9c4e, type: 3}
+  - {fileID: -703000000000000006, guid: 4392cf57342c4f2fab6d68532d8f9c4e, type: 3}
