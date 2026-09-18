@@ -16,10 +16,14 @@ namespace PipeMuzzle.Data
         [SerializeField] private string displayName;
         [SerializeField, Min(1)] private int levelCount = 12;
         [SerializeField] private ComicStoryDefinition story;
+        [SerializeField] private WorldLevelSelectTheme levelSelectTheme;
+        [SerializeField] private LevelPathLayoutDefinition levelPathLayout;
 
         public WorldId WorldId => worldId;
         public string DisplayName => displayName;
         public int LevelCount => levelCount;
         public ComicStoryDefinition Story => story;
+        public WorldLevelSelectTheme LevelSelectTheme => levelSelectTheme;
+        public LevelPathLayoutDefinition LevelPathLayout => levelPathLayout;
     }
 }

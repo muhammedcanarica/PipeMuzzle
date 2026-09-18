@@ -10,3 +10,5 @@ MonoBehaviour:
   displayName: Moon Shrine
   levelCount: 12
   story: {fileID: 11400000, guid: e3653f9886dd4bf0af304c8d99cab783, type: 2}
+  levelSelectTheme: {fileID: 11400000, guid: 3043f600a953a524b928fd9c3d22504b, type: 2}
+  levelPathLayout: {fileID: 11400000, guid: 4799b1e5c92c19d4ca94deeee826373a, type: 2}
