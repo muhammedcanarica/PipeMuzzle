@@ -3109,6 +3109,7 @@ RectTransform:
   m_Children:
   - {fileID: 2000881446}
   - {fileID: 1942539216}
+  - {fileID: 810000002}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3151,6 +3152,7 @@ MonoBehaviour:
   levelSelectPanel: {fileID: 1942539215}
   gameplayHUD: {fileID: 2000881445}
   levelsButton: {fileID: 635453427}
+  storyNavigation: {fileID: 810000004}
   levelButtons:
   - {fileID: 1900664687}
   - {fileID: 259454085}
@@ -3177,9 +3179,23 @@ MonoBehaviour:
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.UI.ScreenManager
   worldMapPanel: {fileID: 0}
-  comicViewerPanel: {fileID: 0}
+  comicViewerPanel: {fileID: 810000001}
   levelSelectPanel: {fileID: 1942539215}
   gameplayHud: {fileID: 2000881445}
+--- !u!114 &810000004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881871525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8fdc64a3f947eab6fe33a372129b2c, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.UI.StoryNavigationCoordinator
+  screenManager: {fileID: 1881871532}
+  comicViewerUi: {fileID: 810000003}
 --- !u!1 &1900664683
 GameObject:
   m_ObjectHideFlags: 0
@@ -5395,3 +5411,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 760000006}
   m_CullTransparentMesh: 1
+--- !u!1 &810000001
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 810000002}
+  - component: {fileID: 810000003}
+  m_Layer: 5
+  m_Name: ComicViewerPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &810000002
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810000001}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1881871529}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &810000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7476d188b61413b9ca5d652d51cb497, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.UI.ComicViewerUI
+  panelImage: {fileID: 0}
+  panelCanvasGroup: {fileID: 0}
+  advanceButton: {fileID: 0}
+  skipButton: {fileID: 0}
+  backButton: {fileID: 0}
+  continueLabel: {fileID: 0}

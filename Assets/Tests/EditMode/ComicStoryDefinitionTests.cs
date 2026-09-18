@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using PipeMuzzle.Data;
 using PipeMuzzle.UI;
+using UnityEditor;
 using UnityEngine;
 
 namespace PipeMuzzle.Tests.EditMode
@@ -55,6 +56,60 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(levelSelect.activeSelf, Is.False);
             Assert.That(gameplay.activeSelf, Is.False);
 
+            Object.DestroyImmediate(managerObject);
+            Object.DestroyImmediate(worldMap);
+            Object.DestroyImmediate(comic);
+            Object.DestroyImmediate(levelSelect);
+            Object.DestroyImmediate(gameplay);
+        }
+
+        [TestCase("SakuraStory", "Assets/Data/Stories/SakuraStory.asset", "Assets/Resources/Worlds/SakuraGarden.asset")]
+        [TestCase("BambooStory", "Assets/Data/Stories/BambooStory.asset", "Assets/Resources/Worlds/BambooWorkshop.asset")]
+        [TestCase("MoonStory", "Assets/Data/Stories/MoonStory.asset", "Assets/Resources/Worlds/MoonShrine.asset")]
+        public void WorldAssetReferencesItsSixPanelComicStory(
+            string expectedStoryName,
+            string storyPath,
+            string worldPath)
+        {
+            ComicStoryDefinition story = AssetDatabase.LoadAssetAtPath<ComicStoryDefinition>(storyPath);
+            WorldDefinition world = AssetDatabase.LoadAssetAtPath<WorldDefinition>(worldPath);
+
+            Assert.That(story, Is.Not.Null);
+            Assert.That(story.name, Is.EqualTo(expectedStoryName));
+            Assert.That(story.PanelCount, Is.EqualTo(6));
+            Assert.That(world, Is.Not.Null);
+            Assert.That(world.Story, Is.SameAs(story));
+            Assert.That(world.LevelCount, Is.EqualTo(12));
+        }
+
+        [Test]
+        public void StoryNavigatorOpensComicThenSkipReturnsToLevelSelect()
+        {
+            GameObject managerObject = new("ScreenManager");
+            ScreenManager manager = managerObject.AddComponent<ScreenManager>();
+            GameObject worldMap = new("WorldMap");
+            GameObject comic = new("Comic");
+            GameObject levelSelect = new("LevelSelect");
+            GameObject gameplay = new("Gameplay");
+            manager.Configure(worldMap, comic, levelSelect, gameplay);
+
+            GameObject viewerObject = new("ComicViewer");
+            ComicViewerUI viewer = viewerObject.AddComponent<ComicViewerUI>();
+            GameObject navigatorObject = new("StoryNavigationCoordinator");
+            StoryNavigationCoordinator navigator = navigatorObject.AddComponent<StoryNavigationCoordinator>();
+            navigator.Configure(manager, viewer);
+
+            WorldDefinition world = AssetDatabase.LoadAssetAtPath<WorldDefinition>(
+                "Assets/Resources/Worlds/SakuraGarden.asset"
+            );
+            navigator.OpenWorld(world);
+
+            Assert.That(comic.activeSelf, Is.True);
+            viewer.Skip();
+            Assert.That(levelSelect.activeSelf, Is.True);
+
+            Object.DestroyImmediate(navigatorObject);
+            Object.DestroyImmediate(viewerObject);
             Object.DestroyImmediate(managerObject);
             Object.DestroyImmediate(worldMap);
             Object.DestroyImmediate(comic);

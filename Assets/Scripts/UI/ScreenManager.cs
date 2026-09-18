@@ -18,6 +18,11 @@ namespace PipeMuzzle.UI
             gameplayHud = gameplay;
         }
 
+        public void ConfigureWorldMap(GameObject worldMap)
+        {
+            worldMapPanel = worldMap;
+        }
+
         public void ShowWorldMap() => SetScreen(true, false, false, false);
         public void ShowComic() => SetScreen(false, true, false, false);
         public void ShowLevelSelect() => SetScreen(false, false, true, false);
