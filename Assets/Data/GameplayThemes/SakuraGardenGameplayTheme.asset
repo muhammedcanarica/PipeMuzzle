@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: SakuraGardenGameplayTheme
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.Data.WorldGameplayTheme
   backgroundSprite: {fileID: 21300000, guid: 89d2c14a8dff361408a061f3d9579ccf, type: 3}
-  cameraBackgroundColor: {r: 0.9647059, g: 0.84705883, b: 0.8666667, a: 1}
-  textColor: {r: 0.32156864, g: 0.23137255, b: 0.29803923, a: 1}
-  panelColor: {r: 1, g: 0.98039216, b: 0.972549, a: 0.8627451}
-  primaryButtonColor: {r: 0.98039216, g: 0.52156866, b: 0.68235296, a: 1}
-  secondaryButtonColor: {r: 1, g: 0.9490196, b: 0.95686275, a: 1}
+  cameraBackgroundColor: {r: 0.9764706, g: 0.93333334, b: 0.8627451, a: 1}
+  textColor: {r: 0.24313726, g: 0.15294118, b: 0.19607843, a: 1}
+  panelColor: {r: 1, g: 0.9843137, b: 0.94509804, a: 0.9490196}
+  primaryButtonColor: {r: 0.9019608, g: 0.41960785, b: 0.5803922, a: 1}
+  secondaryButtonColor: {r: 0.99607843, g: 0.92156863, b: 0.93333334, a: 1}
   straightSprite: {fileID: 21300000, guid: bbba8568ed89e0847a39af969d515fb7, type: 3}
   cornerSprite: {fileID: 21300000, guid: 8c833a626e883bb479266f4271f95df3, type: 3}
   threeWaySprite: {fileID: 21300000, guid: 7af7d2e6aadd6fa49b3e69c8f180730b, type: 3}

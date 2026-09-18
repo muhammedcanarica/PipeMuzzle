@@ -7,6 +7,8 @@ namespace PipeMuzzle.UI
     [DisallowMultipleComponent]
     public sealed class WorldPresentationController : MonoBehaviour
     {
+        private const string BackgroundObjectName = "WorldGameplayBackground";
+
         private SpriteRenderer backgroundRenderer;
         private WorldGameplayTheme activeTheme;
 
@@ -34,14 +36,39 @@ namespace PipeMuzzle.UI
 
             if (backgroundRenderer == null)
             {
-                GameObject background = new GameObject("WorldGameplayBackground");
-                background.transform.SetParent(camera.transform, false);
-                background.transform.localPosition = new Vector3(0f, 0f, 20f);
-                backgroundRenderer = background.AddComponent<SpriteRenderer>();
-                backgroundRenderer.sortingOrder = -1000;
+                backgroundRenderer = FindOrCreateBackgroundRenderer(camera);
             }
 
             backgroundRenderer.sprite = theme.BackgroundSprite;
+        }
+
+        private static SpriteRenderer FindOrCreateBackgroundRenderer(Camera camera)
+        {
+            SpriteRenderer existingRenderer = null;
+
+            for (int index = camera.transform.childCount - 1; index >= 0; index--)
+            {
+                Transform child = camera.transform.GetChild(index);
+                if (child.name != BackgroundObjectName) continue;
+
+                SpriteRenderer candidate = child.GetComponent<SpriteRenderer>();
+                if (existingRenderer == null && candidate != null)
+                {
+                    existingRenderer = candidate;
+                    continue;
+                }
+
+                Destroy(child.gameObject);
+            }
+
+            if (existingRenderer != null) return existingRenderer;
+
+            GameObject background = new(BackgroundObjectName);
+            background.transform.SetParent(camera.transform, false);
+            background.transform.localPosition = new Vector3(0f, 0f, 20f);
+            SpriteRenderer renderer = background.AddComponent<SpriteRenderer>();
+            renderer.sortingOrder = -1000;
+            return renderer;
         }
     }
 }
