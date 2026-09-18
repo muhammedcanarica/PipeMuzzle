@@ -10,3 +10,5 @@ MonoBehaviour:
   displayName: Sakura Garden
   levelCount: 12
   story: {fileID: 11400000, guid: c1431e7664bb49ec8d1f2a6b77a89561, type: 2}
+  levelSelectTheme: {fileID: 11400000, guid: 669b970673efd124c984e0aff844b301, type: 2}
+  levelPathLayout: {fileID: 11400000, guid: b8679f0b41639a24aaf19b72794c96d9, type: 2}

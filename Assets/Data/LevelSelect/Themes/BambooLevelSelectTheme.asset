@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_Script: {fileID: 11500000, guid: 8a66e696c8f642b0aa9bd8272ab42c76, type: 3}
+  m_Name: BambooLevelSelectTheme
+  backgroundSprite: {fileID: 0}
+  normalNodeSprite: {fileID: 0}
+  lockedNodeSprite: {fileID: 0}
+  completedNodeSprite: {fileID: 0}
+  routeSegmentSprite: {fileID: 0}
+  decorativeSprites: []
+  titleColor: {r: 0.18, g: 0.34, b: 0.2, a: 1}
+  routeColor: {r: 0.35, g: 0.58, b: 0.31, a: 1}
+  unlockedTextColor: {r: 1, g: 1, b: 1, a: 1}
+  lockedTextColor: {r: 0.45, g: 0.45, b: 0.45, a: 1}

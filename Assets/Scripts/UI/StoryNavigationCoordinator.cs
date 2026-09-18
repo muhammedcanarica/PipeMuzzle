@@ -10,6 +10,8 @@ namespace PipeMuzzle.UI
         [SerializeField] private ComicViewerUI comicViewerUi;
 
         private WorldMapUI worldMapUi;
+        private LevelSelectUI levelSelectUi;
+        private WorldDefinition selectedWorld;
 
         public void Configure(ScreenManager screens, ComicViewerUI viewer)
         {
@@ -34,12 +36,20 @@ namespace PipeMuzzle.UI
                 return;
             }
 
+            if (world == null)
+            {
+                Debug.LogError("StoryNavigationCoordinator requires a selected WorldDefinition.");
+                return;
+            }
+
+            selectedWorld = world;
             screenManager.ShowComic();
-            comicViewerUi.Play(world != null ? world.Story : null);
+            comicViewerUi.Play(selectedWorld.Story);
         }
 
         private void Awake()
         {
+            levelSelectUi = GetComponent<LevelSelectUI>();
             SubscribeComicEvents();
         }
 
@@ -67,7 +77,14 @@ namespace PipeMuzzle.UI
 
         private void ShowLevelSelect()
         {
-            if (screenManager != null) screenManager.ShowLevelSelect();
+            if (screenManager == null || levelSelectUi == null || selectedWorld == null)
+            {
+                Debug.LogError("StoryNavigationCoordinator cannot open level select without its selected world.");
+                return;
+            }
+
+            levelSelectUi.ConfigureForWorld(selectedWorld);
+            screenManager.ShowLevelSelect();
         }
 
         private void ShowWorldMap()
