@@ -11,6 +11,7 @@ namespace PipeMuzzle.UI
 
         private WorldMapUI worldMapUi;
         private LevelSelectUI levelSelectUi;
+        private WorldPresentationController presentationController;
         private WorldDefinition selectedWorld;
 
         public void Configure(ScreenManager screens, ComicViewerUI viewer)
@@ -43,6 +44,11 @@ namespace PipeMuzzle.UI
             }
 
             selectedWorld = world;
+            if (presentationController == null)
+                presentationController = GetComponent<WorldPresentationController>();
+            if (presentationController == null)
+                presentationController = gameObject.AddComponent<WorldPresentationController>();
+            presentationController.Configure(selectedWorld);
             screenManager.ShowComic();
             comicViewerUi.Play(selectedWorld.Story);
         }

@@ -3,6 +3,12 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7469a08a0ee052f44a619c3c6e342789, type: 3}
   m_Name: BambooWorkshop
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.Data.WorldDefinition
@@ -12,3 +18,4 @@ MonoBehaviour:
   story: {fileID: 11400000, guid: d2542f8775cc4aef9e2f3b7c88b9a672, type: 2}
   levelSelectTheme: {fileID: 11400000, guid: ee6369efdb566504291edd99a4d4032e, type: 2}
   levelPathLayout: {fileID: 11400000, guid: 6c6082a77ac2ce54caa98b93a5cbf867, type: 2}
+  gameplayTheme: {fileID: 11400000, guid: bb9be0228da425b4fb5cc5f6e4a9cbc9, type: 2}

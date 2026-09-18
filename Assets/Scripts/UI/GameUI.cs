@@ -1,4 +1,5 @@
 using PipeMuzzle.Gameplay;
+using PipeMuzzle.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -37,10 +38,31 @@ namespace PipeMuzzle.UI
 
         private void Awake()
         {
-            if (GetComponent<SoftBlossomUITheme>() == null)
+        }
+
+        public void ApplyTheme(WorldGameplayTheme theme)
+        {
+            if (theme == null) return;
+
+            foreach (TMP_Text text in GetComponentsInChildren<TMP_Text>(true))
+                text.color = theme.TextColor;
+
+            if (completionPanel != null)
             {
-                gameObject.AddComponent<SoftBlossomUITheme>();
+                Image panel = completionPanel.GetComponent<Image>();
+                if (panel != null) panel.color = theme.PanelColor;
             }
+
+            ApplyButtonColor(restartButton, theme.SecondaryButtonColor);
+            ApplyButtonColor(nextButton, theme.PrimaryButtonColor);
+            ApplyButtonColor(completionRestartButton, theme.SecondaryButtonColor);
+        }
+
+        private static void ApplyButtonColor(Button button, Color color)
+        {
+            if (button == null) return;
+            Image image = button.GetComponent<Image>();
+            if (image != null) image.color = color;
         }
 
         private void OnEnable()

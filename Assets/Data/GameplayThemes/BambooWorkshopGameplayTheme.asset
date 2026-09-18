@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d856bba4a2f2a540a3826f4f43c70c3, type: 3}
+  m_Name: BambooWorkshopGameplayTheme
+  m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.Data.WorldGameplayTheme
+  backgroundSprite: {fileID: 21300000, guid: 5d149512a3e124b49be22f1e8edc387d, type: 3}
+  cameraBackgroundColor: {r: 0.7921569, g: 0.8627451, b: 0.69411767, a: 1}
+  textColor: {r: 0.1882353, g: 0.2901961, b: 0.16470589, a: 1}
+  panelColor: {r: 0.9607843, g: 0.92156863, b: 0.7882353, a: 0.8627451}
+  primaryButtonColor: {r: 0.43529412, g: 0.5803922, b: 0.3137255, a: 1}
+  secondaryButtonColor: {r: 0.9098039, g: 0.8509804, b: 0.6509804, a: 1}
+  straightSprite: {fileID: 21300000, guid: 57d44669a011af74db0e87e8d771ac53, type: 3}
+  cornerSprite: {fileID: 21300000, guid: 35c68235d467a674faf16ed4d275ffa5, type: 3}
+  threeWaySprite: {fileID: 21300000, guid: 854499edbc7c51d488627cdda9457fc6, type: 3}
+  crossSprite: {fileID: 21300000, guid: 40bf6dda3b4402346b3e8f1c3b30e995, type: 3}
+  normalTint: {r: 1, g: 1, b: 1, a: 1}
+  lockedTint: {r: 0.58, g: 0.58, b: 0.62, a: 1}
+  sourceGlowColor: {r: 0.2, g: 0.75, b: 1, a: 0.65}
+  targetGlowColor: {r: 0.4, g: 0.9, b: 1, a: 0.75}
+  poweredGlowColor: {r: 0.15, g: 0.8, b: 1, a: 0.6}

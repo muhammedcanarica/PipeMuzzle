@@ -18,6 +18,7 @@ namespace PipeMuzzle.Data
         [SerializeField] private ComicStoryDefinition story;
         [SerializeField] private WorldLevelSelectTheme levelSelectTheme;
         [SerializeField] private LevelPathLayoutDefinition levelPathLayout;
+        [SerializeField] private WorldGameplayTheme gameplayTheme;
 
         public WorldId WorldId => worldId;
         public string DisplayName => displayName;
@@ -25,5 +26,8 @@ namespace PipeMuzzle.Data
         public ComicStoryDefinition Story => story;
         public WorldLevelSelectTheme LevelSelectTheme => levelSelectTheme;
         public LevelPathLayoutDefinition LevelPathLayout => levelPathLayout;
+        public WorldGameplayTheme GameplayTheme => gameplayTheme;
+
+        public void SetGameplayTheme(WorldGameplayTheme theme) => gameplayTheme = theme;
     }
 }

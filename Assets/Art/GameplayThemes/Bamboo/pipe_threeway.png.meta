@@ -1,0 +1,624 @@
+fileFormatVersion: 2
+guid: 854499edbc7c51d488627cdda9457fc6
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1743709871802770797
+    second: pipe_threeway_0
+  - first:
+      213: 8503949124214292799
+    second: pipe_threeway_1
+  - first:
+      213: -5603885538331425575
+    second: pipe_threeway_2
+  - first:
+      213: -5595342463760806087
+    second: pipe_threeway_3
+  - first:
+      213: 8635109263936462201
+    second: pipe_threeway_4
+  - first:
+      213: -1303071713408206032
+    second: pipe_threeway_5
+  - first:
+      213: -5785962964849321053
+    second: pipe_threeway_6
+  - first:
+      213: 7127578363940877733
+    second: pipe_threeway_7
+  - first:
+      213: -4179318726428326294
+    second: pipe_threeway_8
+  - first:
+      213: 2061819263006101849
+    second: pipe_threeway_9
+  - first:
+      213: -1586538929372013599
+    second: pipe_threeway_10
+  - first:
+      213: 7133589076372637029
+    second: pipe_threeway_11
+  - first:
+      213: 1282994213920672996
+    second: pipe_threeway_12
+  - first:
+      213: -5296703760221797276
+    second: pipe_threeway_13
+  - first:
+      213: -6002342128757230221
+    second: pipe_threeway_14
+  - first:
+      213: 7039841714880470682
+    second: pipe_threeway_15
+  - first:
+      213: 6433260867273012227
+    second: pipe_threeway_16
+  - first:
+      213: -5556063793504180884
+    second: pipe_threeway_17
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 820
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: pipe_threeway_0
+      rect:
+        serializedVersion: 2
+        x: 733
+        y: 1156
+        width: 18
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d65652cc3e6e23810800000000000000
+      internalID: 1743709871802770797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_threeway_1
+      rect:
+        serializedVersion: 2
+        x: 747
+        y: 1158
+        width: 10
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3189c03ca8140670800000000000000
+      internalID: 8503949124214292799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_threeway_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 55
+        width: 1217
+        height: 1018
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d48ec52bcffa32b0800000000000000
+      internalID: -5603885538331425575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_threeway_3
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 119
+        width: 15
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93fc0e2bca95952b0800000000000000
+      internalID: -5595342463760806087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_threeway_4
+      rect:
+        serializedVersion: 2
+        x: 469
+        y: 124
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 97d1e91ff1216d770800000000000000
+      internalID: 8635109263936462201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_threeway_5
+      rect:
+        serializedVersion: 2
+        x: 514
+        y: 119
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03bb17d3e2f8aede0800000000000000
+      internalID: -1303071713408206032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_threeway_6
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 132
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ab179cb65124bfa0800000000000000
+      internalID: -5785962964849321053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_threeway_7
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 140
+        width: 20
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a5b47b22ce3ae260800000000000000
+      internalID: 7127578363940877733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_threeway_8
+      rect:
+        serializedVersion: 2
+        x: 577
+        y: 144
+        width: 13
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a660a14e2c31006c0800000000000000
+      internalID: -4179318726428326294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_threeway_9
+      rect:
+        serializedVersion: 2
+        x: 593
+        y: 138
+        width: 43
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 951598a12bd0d9c10800000000000000
+      internalID: 2061819263006101849
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_threeway_10
+      rect:
+        serializedVersion: 2
+        x: 681
+        y: 157
+        width: 15
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ebd374ef3b7bf9e0800000000000000
+      internalID: -1586538929372013599
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_threeway_11
+      rect:
+        serializedVersion: 2
+        x: 685
+        y: 146
+        width: 9
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5654cc638799ff260800000000000000
+      internalID: 7133589076372637029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_threeway_12
+      rect:
+        serializedVersion: 2
+        x: 713
+        y: 134
+        width: 38
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ec8f91a07c1ec110800000000000000
+      internalID: 1282994213920672996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_threeway_13
+      rect:
+        serializedVersion: 2
+        x: 725
+        y: 130
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46401834ef35e76b0800000000000000
+      internalID: -5296703760221797276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_threeway_14
+      rect:
+        serializedVersion: 2
+        x: 745
+        y: 128
+        width: 29
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 375301bb2a563bca0800000000000000
+      internalID: -6002342128757230221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_threeway_15
+      rect:
+        serializedVersion: 2
+        x: 802
+        y: 142
+        width: 8
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9e5d62bdba82b160800000000000000
+      internalID: 7039841714880470682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_threeway_16
+      rect:
+        serializedVersion: 2
+        x: 808
+        y: 142
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 304ba358ca8874950800000000000000
+      internalID: 6433260867273012227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pipe_threeway_17
+      rect:
+        serializedVersion: 2
+        x: 850
+        y: 140
+        width: 55
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6526c6ca65e4e2b0800000000000000
+      internalID: -5556063793504180884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      pipe_threeway_0: 1743709871802770797
+      pipe_threeway_1: 8503949124214292799
+      pipe_threeway_10: -1586538929372013599
+      pipe_threeway_11: 7133589076372637029
+      pipe_threeway_12: 1282994213920672996
+      pipe_threeway_13: -5296703760221797276
+      pipe_threeway_14: -6002342128757230221
+      pipe_threeway_15: 7039841714880470682
+      pipe_threeway_16: 6433260867273012227
+      pipe_threeway_17: -5556063793504180884
+      pipe_threeway_2: -5603885538331425575
+      pipe_threeway_3: -5595342463760806087
+      pipe_threeway_4: 8635109263936462201
+      pipe_threeway_5: -1303071713408206032
+      pipe_threeway_6: -5785962964849321053
+      pipe_threeway_7: 7127578363940877733
+      pipe_threeway_8: -4179318726428326294
+      pipe_threeway_9: 2061819263006101849
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

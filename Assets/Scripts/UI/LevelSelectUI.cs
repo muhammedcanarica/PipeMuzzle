@@ -259,9 +259,30 @@ namespace PipeMuzzle.UI
                 background.sprite = theme.BackgroundSprite;
             }
 
+            ApplyGameplayTheme(currentWorld.GameplayTheme);
             RefreshButtons();
             ApplyWorldLayout();
-            RebuildRoute();
+        }
+
+        private void ApplyGameplayTheme(WorldGameplayTheme theme)
+        {
+            if (theme == null) return;
+
+            Image background = levelSelectBackground != null
+                ? levelSelectBackground
+                : levelSelectPanel.GetComponent<Image>();
+            if (background != null) background.color = theme.PanelColor;
+
+            foreach (TMP_Text text in levelSelectPanel.GetComponentsInChildren<TMP_Text>(true))
+            {
+                text.color = theme.TextColor;
+            }
+
+            foreach (Button button in levelSelectPanel.GetComponentsInChildren<Button>(true))
+            {
+                Image image = button.GetComponent<Image>();
+                if (image != null) image.color = theme.SecondaryButtonColor;
+            }
         }
 
         private TMP_Text FindWorldTitle()

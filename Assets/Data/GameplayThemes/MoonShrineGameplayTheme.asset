@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d856bba4a2f2a540a3826f4f43c70c3, type: 3}
+  m_Name: MoonShrineGameplayTheme
+  m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.Data.WorldGameplayTheme
+  backgroundSprite: {fileID: 21300000, guid: cc566433e3685d149b5aa2aab83ec62f, type: 3}
+  cameraBackgroundColor: {r: 0.11372549, g: 0.14901961, b: 0.27450982, a: 1}
+  textColor: {r: 0.90588236, g: 0.9019608, b: 1, a: 1}
+  panelColor: {r: 0.14901961, g: 0.1764706, b: 0.30588236, a: 0.8627451}
+  primaryButtonColor: {r: 0.40784314, g: 0.43529412, b: 0.6666667, a: 1}
+  secondaryButtonColor: {r: 0.3254902, g: 0.35686275, b: 0.5294118, a: 1}
+  straightSprite: {fileID: 21300000, guid: 816d5161a34fcf943a9e84afa0ee2a9f, type: 3}
+  cornerSprite: {fileID: 21300000, guid: 7b1eb674fed05d2428ee17d95f5cc035, type: 3}
+  threeWaySprite: {fileID: 21300000, guid: 7ffdd9676a8a5964b9c4f30a910c609d, type: 3}
+  crossSprite: {fileID: 21300000, guid: d871ef5af931bc647b057a54b527a8bb, type: 3}
+  normalTint: {r: 1, g: 1, b: 1, a: 1}
+  lockedTint: {r: 0.58, g: 0.58, b: 0.62, a: 1}
+  sourceGlowColor: {r: 0.2, g: 0.75, b: 1, a: 0.65}
+  targetGlowColor: {r: 0.4, g: 0.9, b: 1, a: 0.75}
+  poweredGlowColor: {r: 0.15, g: 0.8, b: 1, a: 0.6}

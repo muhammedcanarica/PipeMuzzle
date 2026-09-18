@@ -77,6 +77,21 @@ namespace PipeMuzzle.View
 
         public event Action<TileView> Clicked;
 
+        public void ApplyTheme(WorldGameplayTheme theme)
+        {
+            if (theme == null) return;
+
+            straightSprite = theme.StraightSprite;
+            cornerSprite = theme.CornerSprite;
+            threeWaySprite = theme.ThreeWaySprite;
+            crossSprite = theme.CrossSprite;
+            normalColor = theme.NormalTint;
+            lockedTint = theme.LockedTint;
+            sourceGlowColor = theme.SourceGlowColor;
+            targetGlowColor = theme.TargetGlowColor;
+            poweredGlowColor = theme.PoweredGlowColor;
+        }
+
         public void Initialize(TileState state)
         {
             if (state == null)

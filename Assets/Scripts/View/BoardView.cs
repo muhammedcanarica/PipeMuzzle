@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PipeMuzzle.Board;
+using PipeMuzzle.Data;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -21,8 +22,14 @@ namespace PipeMuzzle.View
 
         private readonly Dictionary<Vector2Int, TileView> tileViews = new();
         private readonly List<Vector3> flowPathPositions = new();
+        private WorldGameplayTheme gameplayTheme;
 
         public event Action<TileView> TileClicked;
+
+        public void SetGameplayTheme(WorldGameplayTheme theme)
+        {
+            gameplayTheme = theme;
+        }
 
         private void Awake()
         {
@@ -172,6 +179,7 @@ namespace PipeMuzzle.View
                 centerX,
                 centerY
             );
+            tileView.ApplyTheme(gameplayTheme);
 
             tileView.Initialize(tileState);
 
