@@ -14,6 +14,12 @@ namespace PipeMuzzle.UI
 
         public WorldGameplayTheme ActiveTheme => activeTheme;
 
+        private void LateUpdate()
+        {
+            if (backgroundRenderer == null) return;
+            FitBackgroundToCamera(Camera.main, backgroundRenderer);
+        }
+
         public void Configure(WorldDefinition world)
         {
             activeTheme = world != null ? world.GameplayTheme : null;
@@ -40,6 +46,33 @@ namespace PipeMuzzle.UI
             }
 
             backgroundRenderer.sprite = theme.BackgroundSprite;
+            FitBackgroundToCamera(camera, backgroundRenderer);
+        }
+
+        private static void FitBackgroundToCamera(
+            Camera camera,
+            SpriteRenderer renderer
+        )
+        {
+            if (camera == null ||
+                renderer == null ||
+                renderer.sprite == null ||
+                !camera.orthographic)
+            {
+                return;
+            }
+
+            Vector2 spriteSize = renderer.sprite.bounds.size;
+            if (spriteSize.x <= 0f || spriteSize.y <= 0f) return;
+
+            float worldHeight = camera.orthographicSize * 2f;
+            float worldWidth = worldHeight * camera.aspect;
+            float scale = Mathf.Max(
+                worldWidth / spriteSize.x,
+                worldHeight / spriteSize.y
+            );
+
+            renderer.transform.localScale = new Vector3(scale, scale, 1f);
         }
 
         private static SpriteRenderer FindOrCreateBackgroundRenderer(Camera camera)
