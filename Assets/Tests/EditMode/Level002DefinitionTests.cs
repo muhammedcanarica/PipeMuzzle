@@ -15,6 +15,11 @@ namespace PipeMuzzle.Tests.EditMode
             (4, 4), (5, 4), (5, 4), (5, 5), (5, 5), (5, 5)
         };
 
+        private static readonly int[] MinimumSolutionPathLengths =
+        {
+            3, 6, 8, 9, 10, 10, 10, 11, 11, 13, 15, 15
+        };
+
         [TestCaseSource(nameof(LevelNumbers))]
         public void SakuraLevelUsesEveryBoardCellExactlyOnce(int levelNumber)
         {
@@ -69,11 +74,18 @@ namespace PipeMuzzle.Tests.EditMode
         {
             LevelDefinition level = LoadLevel(levelNumber);
             BoardState board = BoardBuilder.Build(level);
+            int solutionPathLength = FindShortestPossiblePathLength(board);
 
             Assert.That(ConnectionChecker.Evaluate(board), Is.False,
                 $"Level {levelNumber} starts solved.");
-            Assert.That(HasPossiblePath(board), Is.True,
+            Assert.That(solutionPathLength, Is.GreaterThan(0),
                 $"Level {levelNumber} has no rotatable Source-to-Target path.");
+            Assert.That(solutionPathLength,
+                Is.GreaterThanOrEqualTo(
+                    MinimumSolutionPathLengths[levelNumber - 1]),
+                $"Level {levelNumber} has a trivial alternate solution.");
+            Assert.That(solutionPathLength, Is.LessThan(level.Tiles.Count),
+                $"Level {levelNumber} has no decoy outside its shortest path.");
         }
 
         private static IEnumerable<int> LevelNumbers()
@@ -92,26 +104,28 @@ namespace PipeMuzzle.Tests.EditMode
             return level;
         }
 
-        private static bool HasPossiblePath(BoardState board)
+        private static int FindShortestPossiblePathLength(BoardState board)
         {
             TileState source = board.FindTileByRole(TileRole.Source);
             TileState target = board.FindTileByRole(TileRole.Target);
             if (source == null || target == null)
             {
-                return false;
+                return 0;
             }
 
-            Queue<(TileState current, TileState previous)> queue = new();
+            Queue<(TileState current, TileState previous, int length)> queue =
+                new();
             HashSet<(int x, int y, int previousX, int previousY)> visited =
                 new();
-            queue.Enqueue((source, null));
+            queue.Enqueue((source, null, 1));
 
             while (queue.Count > 0)
             {
-                (TileState current, TileState previous) = queue.Dequeue();
+                (TileState current, TileState previous, int length) =
+                    queue.Dequeue();
                 if (current == target)
                 {
-                    return true;
+                    return length;
                 }
 
                 foreach (Direction direction in Directions)
@@ -136,12 +150,12 @@ namespace PipeMuzzle.Tests.EditMode
                         neighbor.X, neighbor.Y, current.X, current.Y);
                     if (visited.Add(state))
                     {
-                        queue.Enqueue((neighbor, current));
+                        queue.Enqueue((neighbor, current, length + 1));
                     }
                 }
             }
 
-            return false;
+            return 0;
         }
 
         private static bool CanConnect(
