@@ -191,8 +191,7 @@ namespace PipeMuzzle.UI
                 }
 
                 bool levelExists = currentWorld != null &&
-                    i < currentWorld.LevelCount &&
-                    i < gameController.LevelCount;
+                    i < currentWorld.LevelCount;
 
                 button.interactable =
                     levelExists &&
@@ -204,8 +203,9 @@ namespace PipeMuzzle.UI
 
         private void SelectLevel(int levelIndex)
         {
-            if (levelIndex < 0 ||
-                levelIndex >= gameController.LevelCount ||
+            if (currentWorld == null ||
+                levelIndex < 0 ||
+                levelIndex >= currentWorld.LevelCount ||
                 !gameController.IsLevelUnlocked(levelIndex))
             {
                 return;
@@ -232,9 +232,10 @@ namespace PipeMuzzle.UI
 
         public void ConfigureForWorld(WorldDefinition world)
         {
-            if (world == null)
+            currentWorld = null;
+            if (!gameController.ConfigureWorld(world))
             {
-                Debug.LogError("LevelSelectUI requires a non-null WorldDefinition.");
+                RefreshButtons();
                 return;
             }
 

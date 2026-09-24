@@ -90,7 +90,8 @@ namespace PipeMuzzle.UI
             }
 
             levelSelectUi.ConfigureForWorld(selectedWorld);
-            screenManager.ShowLevelSelect();
+            if (levelSelectUi.CurrentWorld == selectedWorld)
+                screenManager.ShowLevelSelect();
         }
 
         private void ShowWorldMap()

@@ -23,7 +23,12 @@ namespace PipeMuzzle.UI
             worldMapPanel = worldMap;
         }
 
-        public void ShowWorldMap() => SetScreen(true, false, false, false);
+        public void ShowWorldMap()
+        {
+            SetScreen(true, false, false, false);
+            if (worldMapPanel != null)
+                worldMapPanel.GetComponent<WorldMapUI>()?.Refresh();
+        }
         public void ShowComic() => SetScreen(false, true, false, false);
         public void ShowLevelSelect() => SetScreen(false, false, true, false);
         public void ShowGameplay() => SetScreen(false, false, false, true);
