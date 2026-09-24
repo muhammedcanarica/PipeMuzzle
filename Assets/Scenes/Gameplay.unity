@@ -730,19 +730,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.Gameplay.GameController
   boardView: {fileID: 1140884900}
   boardCameraFitter: {fileID: 1135455758}
-  levels:
-  - {fileID: 11400000, guid: 064af6107d3a84146bedbb6301ecb4a6, type: 2}
-  - {fileID: 11400000, guid: 2451c317cd645a241ad9595acd5fb27f, type: 2}
-  - {fileID: 11400000, guid: a3b1fd79a2e391a43af0c7881f097188, type: 2}
-  - {fileID: 11400000, guid: 41ed2a1e852b4f9386a0d9d3e04d9f11, type: 2}
-  - {fileID: 11400000, guid: b384d1c0dc0f4f2b9f7b410ed0f9f7c2, type: 2}
-  - {fileID: 11400000, guid: c6f7ab42e5314f2b90a1f8f6d4474f90, type: 2}
-  - {fileID: 11400000, guid: 7a4e1c6825c14ac39ef06f7a9e1d4207, type: 2}
-  - {fileID: 11400000, guid: 8b5f2d7936d25bd4a0f17e8b0f2e5318, type: 2}
-  - {fileID: 11400000, guid: 9c6a3e8a47e36ce5b1f28f9c103f6429, type: 2}
-  - {fileID: 11400000, guid: a7b4f9b958f47df6c2a390ad2140753a, type: 2}
-  - {fileID: 11400000, guid: b8c50aca69a58e07d3b4a1be3251864b, type: 2}
-  - {fileID: 11400000, guid: c9d61bdb7ab69f18e4c5b2cf4362975c, type: 2}
 --- !u!1 &481921098
 GameObject:
   m_ObjectHideFlags: 0
