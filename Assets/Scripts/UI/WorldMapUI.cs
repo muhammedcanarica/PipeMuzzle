@@ -39,7 +39,7 @@ namespace PipeMuzzle.UI
             for (int index = 0; index < worlds.Count; index++)
             {
                 WorldDefinition world = worlds[index];
-                bool unlocked = progress.IsWorldUnlocked(index);
+                bool unlocked = progress.IsWorldUnlocked(world.WorldId);
                 if (index > 0) CreateRoute(root, positions[index - 1] + 120f);
                 CreateDestination(root, world, positions[index], unlocked);
             }
