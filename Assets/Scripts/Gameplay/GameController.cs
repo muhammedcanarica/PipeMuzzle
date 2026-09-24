@@ -49,7 +49,7 @@ namespace PipeMuzzle.Gameplay
 
         private void Awake()
         {
-            progressService = new ProgressService();
+            progressService = new ProgressService(WorldId.SakuraGarden, LevelCount);
         }
 
         private void Start()
