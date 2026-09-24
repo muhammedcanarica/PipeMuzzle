@@ -96,7 +96,10 @@ namespace PipeMuzzle.View
                 }
 
                 child.SetActive(false);
-                Destroy(child);
+                if (Application.isPlaying)
+                    Destroy(child);
+                else
+                    DestroyImmediate(child);
             }
 
             tileViews.Clear();

@@ -17,12 +17,11 @@ namespace PipeMuzzle.Gameplay
         [SerializeField]
         private BoardCameraFitter boardCameraFitter;
 
-        [Header("Levels")]
-        [SerializeField]
-        private List<LevelDefinition> levels = new();
-
         private BoardState board;
         private ProgressService progressService;
+        private WorldProgressService worldProgressService;
+        private WorldDefinition currentWorld;
+        private LevelDefinition currentLevelDefinition;
         private readonly List<TileState> solvedPath = new();
 
         private int currentLevelIndex;
@@ -31,7 +30,9 @@ namespace PipeMuzzle.Gameplay
         public event Action<int, int> LevelLoaded;
         public event Action<bool> LevelCompleted;
         public event Action<int> MoveCountChanged;
-        public int LevelCount => levels?.Count ?? 0;
+        public WorldDefinition CurrentWorld => currentWorld;
+        public LevelDefinition CurrentLevelDefinition => currentLevelDefinition;
+        public int LevelCount => currentWorld?.LevelCount ?? 0;
         public int CurrentLevelNumber =>
             board == null ? 0 : currentLevelIndex + 1;
         public int CurrentMoveCount => board?.MoveCount ?? 0;
@@ -49,7 +50,33 @@ namespace PipeMuzzle.Gameplay
 
         private void Awake()
         {
-            progressService = new ProgressService(WorldId.SakuraGarden, LevelCount);
+            worldProgressService = new WorldProgressService();
+        }
+
+        public bool ConfigureWorld(WorldDefinition world)
+        {
+            CancelTransientVisuals();
+            if (boardView != null)
+                boardView.Clear();
+
+            board = null;
+            currentWorld = null;
+            currentLevelDefinition = null;
+            progressService = null;
+            currentLevelIndex = 0;
+            isCompleted = false;
+            solvedPath.Clear();
+
+            worldProgressService ??= new WorldProgressService();
+            if (worldProgressService.GetAccessState(world) != WorldAccessState.Playable)
+            {
+                Debug.LogError("GameController cannot configure an unavailable world.");
+                return false;
+            }
+
+            currentWorld = world;
+            progressService = new ProgressService(world.WorldId, world.LevelCount);
+            return true;
         }
 
         private void Start()
@@ -74,16 +101,6 @@ namespace PipeMuzzle.Gameplay
                 return;
             }
 
-            if (LevelCount == 0)
-            {
-                Debug.LogError(
-                    "GameController requires at least one level."
-                );
-
-                enabled = false;
-                return;
-            }
-
             if (boardCameraFitter.GetComponent<Physics2DRaycaster>() == null)
             {
                 boardCameraFitter.gameObject.AddComponent<Physics2DRaycaster>();
@@ -91,7 +108,6 @@ namespace PipeMuzzle.Gameplay
 
             boardView.TileClicked += HandleTileClicked;
 
-            LoadLevel(0);
         }
 
         private void HandleTileClicked(TileView tileView)
@@ -157,6 +173,10 @@ namespace PipeMuzzle.Gameplay
                     currentLevelIndex + 1
                 );
             }
+            else
+            {
+                worldProgressService.MarkWorldCompleted(currentWorld.WorldId);
+            }
 
             Debug.Log(
                 $"Bölüm {currentLevelIndex + 1} tamamlandı!"
@@ -167,7 +187,8 @@ namespace PipeMuzzle.Gameplay
 
         public void RestartLevel()
         {
-            LoadLevel(currentLevelIndex);
+            if (board != null)
+                LoadLevel(currentLevelIndex);
         }
 
         public void CancelTransientVisuals()
@@ -231,8 +252,7 @@ namespace PipeMuzzle.Gameplay
                 return;
             }
 
-            LevelDefinition level =
-                levels[levelIndex];
+            LevelDefinition level = currentWorld.Levels[levelIndex];
 
             if (level == null)
             {
@@ -248,6 +268,7 @@ namespace PipeMuzzle.Gameplay
 
             board =
                 BoardBuilder.Build(level);
+            currentLevelDefinition = level;
 
             boardView.Build(board);
 
