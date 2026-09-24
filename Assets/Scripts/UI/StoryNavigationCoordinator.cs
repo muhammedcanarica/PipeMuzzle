@@ -43,6 +43,15 @@ namespace PipeMuzzle.UI
                 return;
             }
 
+            if (world.Story == null || world.Story.PanelCount == 0 ||
+                world.LevelSelectTheme == null ||
+                world.LevelPathLayout == null || !world.LevelPathLayout.HasValidNodeCount ||
+                world.GameplayTheme == null)
+            {
+                Debug.LogError("StoryNavigationCoordinator cannot open a world with missing presentation assets.");
+                return;
+            }
+
             selectedWorld = world;
             if (presentationController == null)
                 presentationController = GetComponent<WorldPresentationController>();

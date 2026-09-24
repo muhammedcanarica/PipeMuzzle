@@ -40,6 +40,7 @@ namespace PipeMuzzle.UI
         {
             List<WorldDefinition> valid = new();
             HashSet<WorldId> seen = new();
+            HashSet<WorldId> duplicates = new();
             foreach (WorldDefinition world in candidates)
             {
                 if (world == null) continue;
@@ -53,10 +54,17 @@ namespace PipeMuzzle.UI
                 }
                 if (!seen.Add(id))
                 {
-                    Debug.LogError($"WorldMapUI skipped a duplicate WorldId: {id}.");
+                    if (duplicates.Add(id))
+                        Debug.LogError($"WorldMapUI skipped a duplicate WorldId: {id}.");
+                    valid.RemoveAll(candidate => candidate.WorldId == id);
                     continue;
                 }
                 valid.Add(world);
+            }
+            foreach (WorldId id in new[] { WorldId.SakuraGarden, WorldId.BambooWorkshop, WorldId.MoonShrine })
+            {
+                if (!valid.Exists(world => world.WorldId == id))
+                    Debug.LogError($"WorldMapUI has no valid asset for WorldId: {id}.");
             }
             return valid;
         }
@@ -68,7 +76,7 @@ namespace PipeMuzzle.UI
             {
                 WorldAccessState state = progress.GetAccessState(card.World);
                 card.Button.interactable = state == WorldAccessState.Playable;
-                card.Background.color = state == WorldAccessState.Playable
+                card.Background.color = state != WorldAccessState.Locked
                     ? Accent(card.World.WorldId)
                     : new Color32(151, 141, 150, 255);
                 card.Status.text = state switch

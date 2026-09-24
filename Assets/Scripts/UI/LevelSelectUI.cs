@@ -239,13 +239,16 @@ namespace PipeMuzzle.UI
                 return;
             }
 
-            currentWorld = world;
-            WorldLevelSelectTheme theme = currentWorld.LevelSelectTheme;
+            WorldLevelSelectTheme theme = world.LevelSelectTheme;
             if (theme == null)
             {
-                Debug.LogError($"World '{currentWorld.DisplayName}' has no level select theme.");
+                Debug.LogError($"World '{world.DisplayName}' has no level select theme.");
+                gameController.ConfigureWorld(null);
+                RefreshButtons();
                 return;
             }
+
+            currentWorld = world;
 
             TMP_Text title = worldTitleText != null ? worldTitleText : FindWorldTitle();
             if (title != null)

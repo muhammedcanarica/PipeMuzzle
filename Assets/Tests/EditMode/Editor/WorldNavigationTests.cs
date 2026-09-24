@@ -85,6 +85,8 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(root.transform.Find("Bamboo Workshop").GetComponent<Button>(), Is.SameAs(bamboo));
             Assert.That(bamboo.interactable, Is.False);
             Assert.That(Status(bamboo), Is.EqualTo("COMING SOON"));
+            Assert.That(bamboo.GetComponent<Image>().color,
+                Is.EqualTo((Color)new Color32(103, 143, 86, 255)));
             Assert.That(Status(moon), Is.EqualTo("LOCKED"));
         }
 
@@ -96,15 +98,28 @@ namespace PipeMuzzle.Tests.EditMode
             typeof(WorldDefinition).GetField("worldId",
                 BindingFlags.Instance | BindingFlags.NonPublic)!
                 .SetValue(unknown, (WorldId)999);
+            WorldDefinition duplicate = ScriptableObject.CreateInstance<WorldDefinition>();
+            created.Add(duplicate);
             MethodInfo validate = typeof(WorldMapUI).GetMethod("ValidateWorlds",
                 BindingFlags.NonPublic | BindingFlags.Static);
             Assert.That(validate, Is.Not.Null);
 
             LogAssert.Expect(LogType.Error, "WorldMapUI skipped a duplicate WorldId: SakuraGarden.");
             LogAssert.Expect(LogType.Error, "WorldMapUI skipped an unknown WorldId: 999.");
+            LogAssert.Expect(LogType.Error, "WorldMapUI has no valid asset for WorldId: SakuraGarden.");
+            LogAssert.Expect(LogType.Error, "WorldMapUI has no valid asset for WorldId: BambooWorkshop.");
+            LogAssert.Expect(LogType.Error, "WorldMapUI has no valid asset for WorldId: MoonShrine.");
             var result = (IEnumerable<WorldDefinition>)validate.Invoke(null,
-                new object[] { new[] { Sakura(), Sakura(), unknown } });
-            Assert.That(result.ToArray(), Is.EqualTo(new[] { Sakura() }));
+                new object[] { new[] { Sakura(), duplicate, unknown } });
+            Assert.That(result, Is.Empty);
+
+            LogAssert.Expect(LogType.Error, "WorldMapUI skipped a duplicate WorldId: SakuraGarden.");
+            LogAssert.Expect(LogType.Error, "WorldMapUI has no valid asset for WorldId: SakuraGarden.");
+            LogAssert.Expect(LogType.Error, "WorldMapUI has no valid asset for WorldId: BambooWorkshop.");
+            LogAssert.Expect(LogType.Error, "WorldMapUI has no valid asset for WorldId: MoonShrine.");
+            result = (IEnumerable<WorldDefinition>)validate.Invoke(null,
+                new object[] { new[] { duplicate, Sakura() } });
+            Assert.That(result, Is.Empty);
         }
 
         [Test]
@@ -143,11 +158,57 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(buttons[0].interactable, Is.True);
             Assert.That(buttons[12].interactable, Is.False);
 
+            WorldDefinition noTheme = ScriptableObject.CreateInstance<WorldDefinition>();
+            created.Add(noTheme);
+            SerializedObject noThemeSerialized = new(noTheme);
+            SerializedProperty noThemeLevels = noThemeSerialized.FindProperty("levels");
+            noThemeLevels.arraySize = 12;
+            for (int i = 0; i < 12; i++)
+                noThemeLevels.GetArrayElementAtIndex(i).objectReferenceValue = Sakura().Levels[i];
+            noThemeSerialized.ApplyModifiedPropertiesWithoutUndo();
+            LogAssert.Expect(LogType.Error, "World '' has no level select theme.");
+            LogAssert.Expect(LogType.Error, "GameController cannot configure an unavailable world.");
+            select.ConfigureForWorld(noTheme);
+            Assert.That(select.CurrentWorld, Is.Null);
+            Assert.That(controller.CurrentWorld, Is.Null);
+            Assert.That(buttons.All(button => !button.interactable), Is.True);
+
             LogAssert.Expect(LogType.Error, "GameController cannot configure an unavailable world.");
             select.ConfigureForWorld(Bamboo());
             Assert.That(select.CurrentWorld, Is.Null);
             Assert.That(controller.CurrentWorld, Is.Null);
             Assert.That(buttons.All(button => !button.interactable), Is.True);
+        }
+
+        [Test]
+        public void MissingPresentationAssetsCannotOpenComic()
+        {
+            GameObject root = new("Navigation");
+            root.SetActive(false);
+            created.Add(root);
+            ScreenManager screens = root.AddComponent<ScreenManager>();
+            StoryNavigationCoordinator navigation = root.AddComponent<StoryNavigationCoordinator>();
+            GameObject comic = new("Comic", typeof(RectTransform));
+            comic.transform.SetParent(root.transform);
+            comic.SetActive(false);
+            ComicViewerUI viewer = comic.AddComponent<ComicViewerUI>();
+            screens.Configure(null, comic, null, null);
+            navigation.Configure(screens, viewer);
+
+            WorldDefinition noPresentation = ScriptableObject.CreateInstance<WorldDefinition>();
+            created.Add(noPresentation);
+            SerializedObject serialized = new(noPresentation);
+            SerializedProperty levels = serialized.FindProperty("levels");
+            levels.arraySize = 12;
+            for (int i = 0; i < 12; i++)
+                levels.GetArrayElementAtIndex(i).objectReferenceValue = Sakura().Levels[i];
+            serialized.ApplyModifiedPropertiesWithoutUndo();
+            Assert.That(noPresentation.IsContentReady, Is.True);
+
+            LogAssert.Expect(LogType.Error,
+                "StoryNavigationCoordinator cannot open a world with missing presentation assets.");
+            navigation.OpenWorld(noPresentation);
+            Assert.That(comic.activeSelf, Is.False);
         }
 
         private static string Status(Button button) =>
