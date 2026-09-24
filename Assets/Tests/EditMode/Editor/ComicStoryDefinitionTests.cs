@@ -3,6 +3,7 @@ using PipeMuzzle.Data;
 using PipeMuzzle.UI;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace PipeMuzzle.Tests.EditMode
 {
@@ -79,11 +80,12 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(story.PanelCount, Is.EqualTo(6));
             Assert.That(world, Is.Not.Null);
             Assert.That(world.Story, Is.SameAs(story));
-            Assert.That(world.LevelCount, Is.EqualTo(12));
+            int expectedActualLevels = world.WorldId == WorldId.SakuraGarden ? 12 : 0;
+            Assert.That(world.LevelCount, Is.EqualTo(expectedActualLevels));
         }
 
         [Test]
-        public void StoryNavigatorOpensComicThenSkipReturnsToLevelSelect()
+        public void StoryNavigatorWithoutLevelSelectKeepsComicOpenAfterSkip()
         {
             GameObject managerObject = new("ScreenManager");
             ScreenManager manager = managerObject.AddComponent<ScreenManager>();
@@ -105,8 +107,11 @@ namespace PipeMuzzle.Tests.EditMode
             navigator.OpenWorld(world);
 
             Assert.That(comic.activeSelf, Is.True);
+            LogAssert.Expect(LogType.Error,
+                "StoryNavigationCoordinator cannot open level select without its selected world.");
             viewer.Skip();
-            Assert.That(levelSelect.activeSelf, Is.True);
+            Assert.That(levelSelect.activeSelf, Is.False);
+            Assert.That(comic.activeSelf, Is.True);
 
             Object.DestroyImmediate(navigatorObject);
             Object.DestroyImmediate(viewerObject);

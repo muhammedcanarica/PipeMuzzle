@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.Data.WorldDefinition
   worldId: 1
   displayName: Bamboo Workshop
-  levelCount: 12
+  levels: []
   story: {fileID: 11400000, guid: d2542f8775cc4aef9e2f3b7c88b9a672, type: 2}
   levelSelectTheme: {fileID: 11400000, guid: ee6369efdb566504291edd99a4d4032e, type: 2}
   levelPathLayout: {fileID: 11400000, guid: 6c6082a77ac2ce54caa98b93a5cbf867, type: 2}
