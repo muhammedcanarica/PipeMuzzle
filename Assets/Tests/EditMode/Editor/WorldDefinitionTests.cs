@@ -24,14 +24,14 @@ namespace PipeMuzzle.Tests.EditMode
         }
 
         [Test]
-        public void MoonShrineHasNoPlayableLevels()
+        public void MoonShrineHasTwelvePlayableLevels()
         {
             WorldDefinition world = AssetDatabase.LoadAssetAtPath<WorldDefinition>(
                 "Assets/Resources/Worlds/MoonShrine.asset");
 
             Assert.That(world, Is.Not.Null);
-            Assert.That(world.LevelCount, Is.Zero);
-            Assert.That(world.IsContentReady, Is.False);
+            Assert.That(world.LevelCount, Is.EqualTo(12));
+            Assert.That(world.IsContentReady, Is.True);
         }
 
         [Test]

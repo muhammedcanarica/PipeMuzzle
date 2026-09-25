@@ -80,8 +80,7 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(story.PanelCount, Is.EqualTo(6));
             Assert.That(world, Is.Not.Null);
             Assert.That(world.Story, Is.SameAs(story));
-            int expectedActualLevels = world.WorldId == WorldId.MoonShrine ? 0 : 12;
-            Assert.That(world.LevelCount, Is.EqualTo(expectedActualLevels));
+            Assert.That(world.LevelCount, Is.EqualTo(12));
         }
 
         [Test]

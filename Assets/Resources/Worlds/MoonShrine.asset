@@ -14,7 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.Data.WorldDefinition
   worldId: 2
   displayName: Moon Shrine
-  levels: []
+  levels:
+  - {fileID: 11400000, guid: 965adeb49f548af6867b978fcc0eae10, type: 2}
+  - {fileID: 11400000, guid: 4a12a70e4180163c5da100c183023406, type: 2}
+  - {fileID: 11400000, guid: eb607a2445f0372f2b2d33b26536f5b3, type: 2}
+  - {fileID: 11400000, guid: 1737f9ea83055211cdbb6b45587d2c3e, type: 2}
+  - {fileID: 11400000, guid: 0f7accdb38667dd23a8e7992535219d9, type: 2}
+  - {fileID: 11400000, guid: 98f0f94ce01e0e5e0c2546b1f6a600d4, type: 2}
+  - {fileID: 11400000, guid: 1246ec20b125c3b69cb98a38b5a4feda, type: 2}
+  - {fileID: 11400000, guid: 04e62bfeb9e2cba129f342165262379b, type: 2}
+  - {fileID: 11400000, guid: 85414c87cac97fd50e991c97e0f1e232, type: 2}
+  - {fileID: 11400000, guid: 4b39cf6bb1c11598d9e6cfbc40419fa7, type: 2}
+  - {fileID: 11400000, guid: 0335f41bf04b407ead57b5e3bc017c1b, type: 2}
+  - {fileID: 11400000, guid: d1bda4270565dcea4a6d5e882af27da0, type: 2}
   story: {fileID: 11400000, guid: e3653f9886dd4bf0af304c8d99cab783, type: 2}
   levelSelectTheme: {fileID: 11400000, guid: 3043f600a953a524b928fd9c3d22504b, type: 2}
   levelPathLayout: {fileID: 11400000, guid: 4799b1e5c92c19d4ca94deeee826373a, type: 2}

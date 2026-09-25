@@ -140,7 +140,7 @@ namespace PipeMuzzle.Tests.EditMode
                 progress.MarkWorldCompleted(WorldId.BambooWorkshop);
 
                 Assert.That(progress.GetAccessState(moon),
-                    Is.EqualTo(WorldAccessState.ComingSoon));
+                    Is.EqualTo(WorldAccessState.Playable));
             }
             finally
             {

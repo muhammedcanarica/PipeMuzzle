@@ -151,7 +151,9 @@ namespace PipeMuzzle.Tests.EditMode
             GameController controller = CreateController();
             WorldProgressService worlds = new();
             bool? lastHasNext = null;
+            int loaded = 0;
             controller.LevelCompleted += hasNext => lastHasNext = hasNext;
+            controller.LevelLoaded += (_, _) => loaded++;
 
             CompleteFinalLevel(controller, Sakura(), WorldId.SakuraGarden);
             Assert.That(worlds.IsWorldUnlocked(WorldId.BambooWorkshop), Is.True);
@@ -161,12 +163,20 @@ namespace PipeMuzzle.Tests.EditMode
                 CreateCompleteWorld(WorldId.BambooWorkshop), WorldId.BambooWorkshop);
             Assert.That(worlds.IsWorldUnlocked(WorldId.MoonShrine), Is.True);
 
-            CompleteFinalLevel(controller,
-                CreateCompleteWorld(WorldId.MoonShrine), WorldId.MoonShrine);
+            WorldDefinition moon = AssetDatabase.LoadAssetAtPath<WorldDefinition>(
+                "Assets/Resources/Worlds/MoonShrine.asset");
+            CompleteFinalLevel(controller, moon, WorldId.MoonShrine);
             Assert.That(worlds.IsWorldCompleted(WorldId.MoonShrine), Is.True);
             Assert.That(controller.HasNextLevel, Is.False);
             Assert.That(lastHasNext, Is.False);
             Assert.That(controller.LevelCount, Is.EqualTo(12));
+            Assert.That(controller.CurrentLevelDefinition, Is.SameAs(moon.Levels[11]));
+            int loadedAfterFinale = loaded;
+            controller.LoadLevelByIndex(12);
+            Assert.That(loaded, Is.EqualTo(loadedAfterFinale));
+            Assert.That(controller.CurrentLevelDefinition, Is.SameAs(moon.Levels[11]));
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+                worlds.IsWorldUnlocked((WorldId)3));
         }
 
         private static WorldDefinition Sakura() =>

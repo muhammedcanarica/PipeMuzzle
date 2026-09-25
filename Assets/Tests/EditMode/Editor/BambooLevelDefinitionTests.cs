@@ -145,15 +145,15 @@ namespace PipeMuzzle.Tests.EditMode
         }
 
         [Test]
-        public void MoonShrineRemainsContentIncomplete()
+        public void MoonShrineNowContainsItsOwnPlayableLevels()
         {
             WorldDefinition moon =
                 AssetDatabase.LoadAssetAtPath<WorldDefinition>(
                     "Assets/Resources/Worlds/MoonShrine.asset");
 
             Assert.That(moon, Is.Not.Null);
-            Assert.That(moon.LevelCount, Is.Zero);
-            Assert.That(moon.IsContentReady, Is.False);
+            Assert.That(moon.LevelCount, Is.EqualTo(12));
+            Assert.That(moon.IsContentReady, Is.True);
         }
 
         private static IEnumerable<int> LevelNumbers()
