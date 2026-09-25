@@ -19,13 +19,13 @@ MonoBehaviour:
     y: 4
     shape: 3
     role: 0
-    startRotation: 0
+    startRotation: 3
     isLocked: 0
   - x: 3
     y: 4
     shape: 3
     role: 0
-    startRotation: 1
+    startRotation: 0
     isLocked: 0
   - x: 2
     y: 4
@@ -37,13 +37,13 @@ MonoBehaviour:
     y: 4
     shape: 3
     role: 0
-    startRotation: 2
+    startRotation: 3
     isLocked: 0
   - x: 0
     y: 4
     shape: 1
     role: 0
-    startRotation: 2
+    startRotation: 1
     isLocked: 0
   - x: 4
     y: 3
@@ -55,7 +55,7 @@ MonoBehaviour:
     y: 3
     shape: 1
     role: 0
-    startRotation: 0
+    startRotation: 1
     isLocked: 0
   - x: 2
     y: 3
@@ -73,19 +73,23 @@ MonoBehaviour:
     y: 3
     shape: 2
     role: 0
-    startRotation: 3
+    startRotation: 2
     isLocked: 0
   - x: 4
     y: 2
     shape: 2
     role: 0
-    startRotation: 0
+    startRotation: 3
     isLocked: 0
   - x: 3
     y: 2
     shape: 1
     role: 0
-    startRotation: 0
+    startRotation: 3
+    isLocked: 0
+  - x: 2
+    y: 2
+    shape: 1
     role: 0
     startRotation: 1
     isLocked: 0
@@ -99,49 +103,49 @@ MonoBehaviour:
     y: 2
     shape: 2
     role: 0
-    startRotation: 1
+    startRotation: 0
     isLocked: 0
   - x: 4
     y: 1
     shape: 1
     role: 0
-    startRotation: 0
+    startRotation: 1
     isLocked: 0
   - x: 3
     y: 1
     shape: 2
     role: 0
-    startRotation: 0
+    startRotation: 3
     isLocked: 0
   - x: 2
     y: 1
     shape: 1
     role: 0
-    startRotation: 3
+    startRotation: 0
     isLocked: 0
   - x: 1
     y: 1
     shape: 1
     role: 0
-    startRotation: 1
+    startRotation: 2
     isLocked: 0
   - x: 0
     y: 1
     shape: 2
     role: 0
-    startRotation: 0
+    startRotation: 1
     isLocked: 0
   - x: 4
     y: 0
     shape: 2
     role: 0
-    startRotation: 0
+    startRotation: 1
     isLocked: 0
   - x: 3
     y: 0
     shape: 2
     role: 0
-    startRotation: 3
+    startRotation: 0
     isLocked: 0
   - x: 2
     y: 0
@@ -153,11 +157,11 @@ MonoBehaviour:
     y: 0
     shape: 1
     role: 0
-    startRotation: 2
+    startRotation: 1
     isLocked: 0
   - x: 0
     y: 0
     shape: 2
     role: 0
-    startRotation: 1
+    startRotation: 0
     isLocked: 0
