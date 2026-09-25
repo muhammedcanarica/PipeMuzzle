@@ -86,10 +86,6 @@ MonoBehaviour:
     shape: 1
     role: 0
     startRotation: 0
-    isLocked: 0
-  - x: 2
-    y: 2
-    shape: 3
     role: 0
     startRotation: 1
     isLocked: 0
