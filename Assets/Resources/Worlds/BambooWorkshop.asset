@@ -14,7 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.Data.WorldDefinition
   worldId: 1
   displayName: Bamboo Workshop
-  levels: []
+  levels:
+  - {fileID: 11400000, guid: cbac0be454dcc53965c22a45db48af0f, type: 2}
+  - {fileID: 11400000, guid: a5b0d41dc36e0d05d5a24d20e0e6c3ba, type: 2}
+  - {fileID: 11400000, guid: 9edb8f2163b280834c659cf508b424c0, type: 2}
+  - {fileID: 11400000, guid: e82eaad7ab36ae16ee49a617e581c19c, type: 2}
+  - {fileID: 11400000, guid: d3d91c19f0ddb8a8b917004991e8a68f, type: 2}
+  - {fileID: 11400000, guid: c919a92f6b85778323f547306be79f80, type: 2}
+  - {fileID: 11400000, guid: 94e94a1d67494ca9ebbb315f847957f2, type: 2}
+  - {fileID: 11400000, guid: 67ff88142cab738f7fc255d6c2ae3d34, type: 2}
+  - {fileID: 11400000, guid: 1a15d1936eec8ce615c90a22feabd946, type: 2}
+  - {fileID: 11400000, guid: ce8807660c495834751e480f970963fe, type: 2}
+  - {fileID: 11400000, guid: 4ef3358cca7cc2f53d4b2c10820baed8, type: 2}
+  - {fileID: 11400000, guid: b55e78138e3718230a4a10bba814d573, type: 2}
   story: {fileID: 11400000, guid: d2542f8775cc4aef9e2f3b7c88b9a672, type: 2}
   levelSelectTheme: {fileID: 11400000, guid: ee6369efdb566504291edd99a4d4032e, type: 2}
   levelPathLayout: {fileID: 11400000, guid: 6c6082a77ac2ce54caa98b93a5cbf867, type: 2}

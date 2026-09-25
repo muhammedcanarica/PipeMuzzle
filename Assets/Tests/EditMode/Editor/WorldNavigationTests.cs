@@ -58,7 +58,7 @@ namespace PipeMuzzle.Tests.EditMode
         }
 
         [Test]
-        public void MapRefreshShowsComingSoonWithoutRebuildingCards()
+        public void MapRefreshShowsPlayableBambooWithoutRebuildingCards()
         {
             GameObject root = new("WorldMapTest", typeof(RectTransform));
             created.Add(root);
@@ -83,11 +83,14 @@ namespace PipeMuzzle.Tests.EditMode
 
             Assert.That(root.transform.childCount, Is.EqualTo(childCount));
             Assert.That(root.transform.Find("Bamboo Workshop").GetComponent<Button>(), Is.SameAs(bamboo));
-            Assert.That(bamboo.interactable, Is.False);
-            Assert.That(Status(bamboo), Is.EqualTo("COMING SOON"));
+            Assert.That(bamboo.interactable, Is.True);
+            Assert.That(Status(bamboo), Is.EqualTo("12 LEVELS"));
             Assert.That(bamboo.GetComponent<Image>().color,
                 Is.EqualTo((Color)new Color32(103, 143, 86, 255)));
             Assert.That(Status(moon), Is.EqualTo("LOCKED"));
+
+            bamboo.onClick.Invoke();
+            Assert.That(selected, Is.SameAs(Bamboo()));
         }
 
         [Test]

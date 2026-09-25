@@ -110,6 +110,8 @@ namespace PipeMuzzle.Tests.EditMode
                 "Assets/Resources/Worlds/SakuraGarden.asset");
             WorldDefinition bamboo = AssetDatabase.LoadAssetAtPath<WorldDefinition>(
                 "Assets/Resources/Worlds/BambooWorkshop.asset");
+            WorldDefinition moon = AssetDatabase.LoadAssetAtPath<WorldDefinition>(
+                "Assets/Resources/Worlds/MoonShrine.asset");
             WorldDefinition completeBamboo = UnityEngine.Object.Instantiate(sakura);
 
             try
@@ -129,11 +131,16 @@ namespace PipeMuzzle.Tests.EditMode
                 progress.MarkWorldCompleted(WorldId.SakuraGarden);
 
                 Assert.That(progress.GetAccessState(bamboo),
-                    Is.EqualTo(WorldAccessState.ComingSoon));
+                    Is.EqualTo(WorldAccessState.Playable));
                 Assert.That(progress.GetAccessState(completeBamboo),
                     Is.EqualTo(WorldAccessState.Playable));
                 Assert.That(progress.GetAccessState(sakura),
                     Is.EqualTo(WorldAccessState.Playable));
+
+                progress.MarkWorldCompleted(WorldId.BambooWorkshop);
+
+                Assert.That(progress.GetAccessState(moon),
+                    Is.EqualTo(WorldAccessState.ComingSoon));
             }
             finally
             {

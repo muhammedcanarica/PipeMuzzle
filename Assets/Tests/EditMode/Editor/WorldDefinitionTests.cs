@@ -23,12 +23,11 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(sakura.Levels.Distinct().Count(), Is.EqualTo(12));
         }
 
-        [TestCase("BambooWorkshop")]
-        [TestCase("MoonShrine")]
-        public void UnfinishedWorldHasNoPlayableLevels(string worldName)
+        [Test]
+        public void MoonShrineHasNoPlayableLevels()
         {
             WorldDefinition world = AssetDatabase.LoadAssetAtPath<WorldDefinition>(
-                $"Assets/Resources/Worlds/{worldName}.asset");
+                "Assets/Resources/Worlds/MoonShrine.asset");
 
             Assert.That(world, Is.Not.Null);
             Assert.That(world.LevelCount, Is.Zero);
