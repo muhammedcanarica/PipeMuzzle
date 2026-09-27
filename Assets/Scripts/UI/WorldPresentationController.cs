@@ -8,6 +8,7 @@ namespace PipeMuzzle.UI
     public sealed class WorldPresentationController : MonoBehaviour
     {
         private const string BackgroundObjectName = "WorldGameplayBackground";
+        private const float BackgroundOpacity = 0.74f;
 
         private SpriteRenderer backgroundRenderer;
         private WorldGameplayTheme activeTheme;
@@ -40,12 +41,10 @@ namespace PipeMuzzle.UI
             if (camera == null) return;
             camera.backgroundColor = theme.CameraBackgroundColor;
 
-            if (backgroundRenderer == null)
-            {
-                backgroundRenderer = FindOrCreateBackgroundRenderer(camera);
-            }
+            backgroundRenderer = FindOrCreateBackgroundRenderer(camera);
 
             backgroundRenderer.sprite = theme.BackgroundSprite;
+            backgroundRenderer.color = new Color(1f, 1f, 1f, BackgroundOpacity);
             FitBackgroundToCamera(camera, backgroundRenderer);
         }
 
@@ -91,17 +90,33 @@ namespace PipeMuzzle.UI
                     continue;
                 }
 
-                Destroy(child.gameObject);
+                DestroyBackground(child.gameObject);
             }
 
-            if (existingRenderer != null) return existingRenderer;
+            if (existingRenderer == null)
+            {
+                GameObject background = new(BackgroundObjectName);
+                existingRenderer = background.AddComponent<SpriteRenderer>();
+            }
 
-            GameObject background = new(BackgroundObjectName);
-            background.transform.SetParent(camera.transform, false);
-            background.transform.localPosition = new Vector3(0f, 0f, 20f);
-            SpriteRenderer renderer = background.AddComponent<SpriteRenderer>();
-            renderer.sortingOrder = -1000;
-            return renderer;
+            Transform backgroundTransform = existingRenderer.transform;
+            backgroundTransform.SetParent(camera.transform, false);
+            backgroundTransform.localPosition = new Vector3(0f, 0f, 20f);
+            backgroundTransform.localRotation = Quaternion.identity;
+            existingRenderer.sortingOrder = -1000;
+            return existingRenderer;
+        }
+
+        private static void DestroyBackground(GameObject background)
+        {
+            if (Application.isPlaying)
+            {
+                Destroy(background);
+            }
+            else
+            {
+                DestroyImmediate(background);
+            }
         }
     }
 }

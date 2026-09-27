@@ -9,20 +9,11 @@ namespace PipeMuzzle.UI
     [DisallowMultipleComponent]
     public sealed class SoftBlossomUITheme : MonoBehaviour
     {
-        private const string BackgroundResource =
-            "UI/soft-blossom-background";
-
         private static readonly Color32 Charcoal =
             new(54, 50, 61, 255);
 
-        private static readonly Color32 Rose =
-            new(235, 94, 145, 255);
-
         private static readonly Color32 DeepRose =
             new(201, 67, 116, 255);
-
-        private static readonly Color32 Blush =
-            new(255, 218, 230, 255);
 
         private static readonly Color32 Ivory =
             new(255, 249, 246, 255);
@@ -36,10 +27,6 @@ namespace PipeMuzzle.UI
         private Texture2D cardTexture;
         private Texture2D ivoryButtonTexture;
         private Texture2D pinkButtonTexture;
-        private Sprite backgroundSprite;
-        private GameObject backgroundObject;
-        private SpriteRenderer backgroundRenderer;
-        private Camera gameplayCamera;
         private GameObject levelSelectPanel;
         private GameObject boardRoot;
         private Renderer[] boardRenderers;
@@ -51,7 +38,6 @@ namespace PipeMuzzle.UI
         private void Awake()
         {
             BuildRuntimeSprites();
-            EnsureWorldBackground();
             ApplyTheme();
             boardRoot = GameObject.Find("Board");
             initialized = true;
@@ -59,7 +45,6 @@ namespace PipeMuzzle.UI
 
         private IEnumerator Start()
         {
-            // GameUI creates completion controls during OnEnable.
             yield return null;
             ApplyTheme();
             SyncBoardVisibility(true);
@@ -75,7 +60,6 @@ namespace PipeMuzzle.UI
 
         private void LateUpdate()
         {
-            FitBackgroundToCamera();
             SyncBoardVisibility(false);
         }
 
@@ -106,100 +90,15 @@ namespace PipeMuzzle.UI
             );
         }
 
-        private void EnsureWorldBackground()
-        {
-            gameplayCamera = Camera.main;
-
-            if (gameplayCamera == null)
-            {
-                return;
-            }
-
-            Texture2D texture =
-                Resources.Load<Texture2D>(BackgroundResource);
-
-            if (texture == null)
-            {
-                Debug.LogWarning(
-                    $"SoftBlossomUITheme could not load {BackgroundResource}.",
-                    this
-                );
-                return;
-            }
-
-            backgroundSprite = Sprite.Create(
-                texture,
-                new Rect(0f, 0f, texture.width, texture.height),
-                new Vector2(0.5f, 0.5f),
-                100f,
-                0,
-                SpriteMeshType.FullRect
-            );
-            backgroundSprite.name = "Soft Blossom Background";
-
-            backgroundObject = new GameObject(
-                "SoftBlossomBackground"
-            );
-            backgroundObject.transform.SetParent(
-                gameplayCamera.transform,
-                false
-            );
-            backgroundObject.transform.localPosition =
-                new Vector3(0f, 0f, 20f);
-
-            backgroundRenderer =
-                backgroundObject.AddComponent<SpriteRenderer>();
-            backgroundRenderer.sprite = backgroundSprite;
-            backgroundRenderer.sortingOrder = -1000;
-
-            gameplayCamera.backgroundColor =
-                new Color32(246, 216, 221, 255);
-
-            FitBackgroundToCamera();
-        }
-
-        private void FitBackgroundToCamera()
-        {
-            if (gameplayCamera == null ||
-                backgroundRenderer == null ||
-                backgroundSprite == null ||
-                !gameplayCamera.orthographic)
-            {
-                return;
-            }
-
-            float worldHeight = gameplayCamera.orthographicSize * 2f;
-            float worldWidth = worldHeight * gameplayCamera.aspect;
-            Vector2 spriteSize = backgroundSprite.bounds.size;
-
-            float scale = Mathf.Max(
-                worldWidth / spriteSize.x,
-                worldHeight / spriteSize.y
-            );
-
-            backgroundObject.transform.localScale =
-                new Vector3(scale, scale, 1f);
-        }
-
         private void ApplyTheme()
         {
             Transform levelSelect = FindDeepChild(
                 transform,
                 "LevelSelectPanel"
             );
-            Transform gameplayHud = FindDeepChild(
-                transform,
-                "GameplayHUD"
-            );
-
             if (levelSelect != null)
             {
                 StyleLevelSelect(levelSelect);
-            }
-
-            if (gameplayHud != null)
-            {
-                StyleGameplayHud(gameplayHud);
             }
         }
 
@@ -320,127 +219,6 @@ namespace PipeMuzzle.UI
             boardRendererStates = new bool[boardRenderers.Length];
         }
 
-        private void StyleGameplayHud(Transform hud)
-        {
-            TMP_Text levelText = FindText(hud, "LevelText");
-            TMP_Text moveText = FindText(hud, "MoveCountText");
-
-            StyleText(levelText, 38f, Charcoal);
-            StyleText(moveText, 28f, Charcoal);
-
-            if (levelText != null)
-            {
-                levelText.rectTransform.anchoredPosition =
-                    new Vector2(0f, -58f);
-                levelText.rectTransform.sizeDelta =
-                    new Vector2(330f, 68f);
-            }
-
-            if (moveText != null)
-            {
-                moveText.rectTransform.anchoredPosition =
-                    new Vector2(-116f, -62f);
-                moveText.rectTransform.sizeDelta =
-                    new Vector2(170f, 92f);
-            }
-
-            EnsureTextChip(
-                levelText,
-                "LevelChip",
-                new Vector2(42f, 18f),
-                Ivory
-            );
-            EnsureTextChip(
-                moveText,
-                "MoveChip",
-                new Vector2(28f, 14f),
-                Blush
-            );
-
-            Transform restartButton = FindDeepChild(
-                hud,
-                "RestartButton"
-            );
-            Transform levelsButton = FindDeepChild(
-                hud,
-                "LevelsButton"
-            );
-
-            StyleButton(restartButton, false);
-            StyleButton(levelsButton, false);
-
-            if (restartButton != null)
-            {
-                RectTransform rect =
-                    restartButton.GetComponent<RectTransform>();
-                rect.anchoredPosition = new Vector2(138f, -58f);
-                rect.sizeDelta = new Vector2(224f, 64f);
-            }
-
-            if (levelsButton != null)
-            {
-                RectTransform rect =
-                    levelsButton.GetComponent<RectTransform>();
-                rect.anchoredPosition = new Vector2(118f, -130f);
-                rect.sizeDelta = new Vector2(184f, 54f);
-            }
-
-            Transform completion = FindDeepChild(
-                hud,
-                "CompletionPanel"
-            );
-
-            if (completion != null)
-            {
-                StyleCompletion(completion);
-            }
-        }
-
-        private void StyleCompletion(Transform panel)
-        {
-            Image overlay = panel.GetComponent<Image>();
-
-            if (overlay != null)
-            {
-                overlay.color = new Color32(69, 42, 61, 112);
-                overlay.sprite = null;
-                overlay.type = Image.Type.Simple;
-            }
-
-            RectTransform card = EnsurePanel(
-                panel,
-                "BlossomCompletionCard",
-                new Vector2(720f, 450f),
-                Vector2.zero,
-                cardSprite,
-                new Color32(255, 250, 248, 255)
-            );
-            card.SetSiblingIndex(0);
-            EnsureBlossom(card, "TopBlossom", new Vector2(-304f, 172f));
-            EnsureBlossom(card, "BottomBlossom", new Vector2(302f, -172f));
-
-            TMP_Text completionText = FindText(
-                panel,
-                "CompletionText"
-            );
-            TMP_Text movesText = FindText(
-                panel,
-                "CompletionMoveCountText"
-            );
-
-            StyleText(completionText, 46f, Charcoal);
-            StyleText(movesText, 28f, DeepRose);
-
-            StyleButton(
-                FindDeepChild(panel, "CompletionRestartButton"),
-                false
-            );
-            StyleButton(
-                FindDeepChild(panel, "NextButton"),
-                true
-            );
-        }
-
         private void StyleButton(Transform buttonTransform, bool primary)
         {
             if (buttonTransform == null)
@@ -503,50 +281,6 @@ namespace PipeMuzzle.UI
                     primary ? Color.white : Charcoal
                 );
             }
-        }
-
-        private void EnsureTextChip(
-            TMP_Text target,
-            string name,
-            Vector2 padding,
-            Color color)
-        {
-            if (target == null)
-            {
-                return;
-            }
-
-            RectTransform targetRect = target.rectTransform;
-            Transform existing = targetRect.parent.Find(name);
-            RectTransform chip;
-
-            if (existing == null)
-            {
-                GameObject chipObject = new(name, typeof(RectTransform), typeof(Image));
-                chipObject.transform.SetParent(targetRect.parent, false);
-                chip = chipObject.GetComponent<RectTransform>();
-            }
-            else
-            {
-                chip = existing.GetComponent<RectTransform>();
-            }
-
-            chip.anchorMin = targetRect.anchorMin;
-            chip.anchorMax = targetRect.anchorMax;
-            chip.pivot = targetRect.pivot;
-            chip.anchoredPosition = targetRect.anchoredPosition;
-            chip.sizeDelta = targetRect.sizeDelta + padding;
-            chip.localScale = Vector3.one;
-
-            Image image = chip.GetComponent<Image>();
-            image.sprite = cardSprite;
-            image.type = Image.Type.Sliced;
-            image.color = color;
-            image.raycastTarget = false;
-
-            int targetIndex = targetRect.GetSiblingIndex();
-            chip.SetSiblingIndex(targetIndex);
-            targetRect.SetSiblingIndex(targetIndex + 1);
         }
 
         private RectTransform EnsurePanel(
@@ -791,8 +525,6 @@ namespace PipeMuzzle.UI
 
         private void OnDestroy()
         {
-            Destroy(backgroundObject);
-            Destroy(backgroundSprite);
             Destroy(cardSprite);
             Destroy(ivoryButtonSprite);
             Destroy(pinkButtonSprite);

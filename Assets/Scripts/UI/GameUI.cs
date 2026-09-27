@@ -1,5 +1,5 @@
-using PipeMuzzle.Gameplay;
 using PipeMuzzle.Data;
+using PipeMuzzle.Gameplay;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,302 +8,527 @@ namespace PipeMuzzle.UI
 {
     public class GameUI : MonoBehaviour
     {
+        private static readonly Color32 Charcoal = new(54, 50, 61, 255);
+        private static readonly Color32 Ivory = new(255, 250, 244, 255);
+
         [Header("References")]
-        [SerializeField]
-        private GameController gameController;
-
-        [SerializeField]
-        private TMP_Text levelText;
-
-        [SerializeField]
-        private TMP_Text moveCountText;
-
-        [SerializeField]
-        private GameObject completionPanel;
-
-        [SerializeField]
-        private TMP_Text completionText;
+        [SerializeField] private GameController gameController;
+        [SerializeField] private TMP_Text levelText;
+        [SerializeField] private TMP_Text moveCountText;
+        [SerializeField] private GameObject completionPanel;
+        [SerializeField] private TMP_Text completionText;
+        [SerializeField] private Button restartButton;
+        [SerializeField] private Button nextButton;
 
         private TMP_Text completionMoveCountText;
-
-        [SerializeField]
-        private Button restartButton;
-
-        [SerializeField]
-        private Button nextButton;
-
         private Button completionRestartButton;
-
+        private Button levelsButton;
+        private Image levelSurface;
+        private Image movesSurface;
+        private Image completionCard;
+        private WorldGameplayTheme activeTheme;
+        private Sprite surfaceSprite;
+        private Sprite secondaryButtonSprite;
+        private Sprite primaryButtonSprite;
+        private Sprite completionCardSprite;
+        private Texture2D surfaceTexture;
+        private Texture2D secondaryButtonTexture;
+        private Texture2D primaryButtonTexture;
+        private Texture2D completionCardTexture;
         private bool isBound;
-
-        private void Awake()
-        {
-        }
 
         public void ApplyTheme(WorldGameplayTheme theme)
         {
             if (theme == null) return;
 
-            foreach (TMP_Text text in GetComponentsInChildren<TMP_Text>(true))
-                text.color = theme.TextColor;
+            activeTheme = theme;
+            EnsureCompletionControls();
+            EnsurePresentationObjects();
+            BuildThemeSprites(theme);
+            ApplyLayout();
+
+            StyleText(levelText, 34f, Charcoal, FontStyles.Bold);
+            StyleText(moveCountText, 25f, Charcoal, FontStyles.Normal);
+            StyleText(completionText, 42f, Charcoal, FontStyles.Bold);
+            StyleText(completionMoveCountText, 27f, Charcoal, FontStyles.Normal);
+
+            ConfigureSurface(levelSurface, surfaceSprite);
+            ConfigureSurface(movesSurface, surfaceSprite);
 
             if (completionPanel != null)
             {
-                Image panel = completionPanel.GetComponent<Image>();
-                if (panel != null) panel.color = theme.PanelColor;
+                Image overlay = completionPanel.GetComponent<Image>();
+                if (overlay != null)
+                {
+                    overlay.sprite = null;
+                    overlay.type = Image.Type.Simple;
+                    overlay.color = new Color(0.08f, 0.08f, 0.12f, 0.38f);
+                }
             }
 
-            ApplyButtonColor(restartButton, theme.SecondaryButtonColor);
-            ApplyButtonColor(nextButton, theme.PrimaryButtonColor);
-            ApplyButtonColor(completionRestartButton, theme.SecondaryButtonColor);
-        }
+            if (completionCard != null)
+            {
+                completionCard.sprite = completionCardSprite;
+                completionCard.type = Image.Type.Sliced;
+                completionCard.color = Color.white;
+                completionCard.raycastTarget = false;
+                Shadow shadow = completionCard.GetComponent<Shadow>();
+                shadow.effectColor = new Color(0.12f, 0.1f, 0.15f, 0.16f);
+                shadow.effectDistance = new Vector2(0f, -4f);
+                shadow.useGraphicAlpha = true;
+            }
 
-        private static void ApplyButtonColor(Button button, Color color)
-        {
-            if (button == null) return;
-            Image image = button.GetComponent<Image>();
-            if (image != null) image.color = color;
+            ApplyButtonStyle(levelsButton, false, theme);
+            ApplyButtonStyle(restartButton, false, theme);
+            ApplyButtonStyle(completionRestartButton, false, theme);
+            ApplyButtonStyle(nextButton, true, theme);
         }
 
         private void OnEnable()
         {
             EnsureCompletionControls();
+            EnsurePresentationObjects();
 
             if (!HasRequiredReferences())
             {
-                Debug.LogError(
-                    "GameUI has missing Inspector references.",
-                    this
-                );
-
+                Debug.LogError("GameUI has missing Inspector references.", this);
                 enabled = false;
                 return;
             }
 
             Bind();
+            ApplyLayout();
             RefreshFromCurrentState();
+            if (activeTheme != null) ApplyTheme(activeTheme);
         }
 
         private void EnsureCompletionControls()
         {
-            if (completionPanel == null)
+            if (completionPanel == null) return;
+
+            if (completionMoveCountText == null && moveCountText != null)
             {
-                return;
+                Transform existing = completionPanel.transform.Find(
+                    "CompletionMoveCountText"
+                );
+                completionMoveCountText = existing != null
+                    ? existing.GetComponent<TMP_Text>()
+                    : Instantiate(moveCountText, completionPanel.transform);
+                completionMoveCountText.name = "CompletionMoveCountText";
+                completionMoveCountText.alignment = TextAlignmentOptions.Center;
             }
 
-            if (completionMoveCountText == null &&
-                moveCountText != null)
+            if (completionRestartButton == null && restartButton != null)
             {
-                completionMoveCountText = Instantiate(
-                    moveCountText,
-                    completionPanel.transform
+                Transform existing = completionPanel.transform.Find(
+                    "CompletionRestartButton"
                 );
-
-                completionMoveCountText.name =
-                    "CompletionMoveCountText";
-                completionMoveCountText.fontSize = 30f;
-                completionMoveCountText.alignment =
-                    TextAlignmentOptions.Center;
-
-                ConfigureRect(
-                    completionMoveCountText.rectTransform,
-                    new Vector2(0f, 10f),
-                    new Vector2(420f, 50f)
-                );
-            }
-
-            if (completionRestartButton == null &&
-                restartButton != null)
-            {
-                completionRestartButton = Instantiate(
-                    restartButton,
-                    completionPanel.transform
-                );
-
-                completionRestartButton.name =
-                    "CompletionRestartButton";
-
-                ConfigureRect(
-                    completionRestartButton.GetComponent<RectTransform>(),
-                    new Vector2(-140f, -70f),
-                    new Vector2(220f, 64f)
-                );
-            }
-
-            if (completionText != null)
-            {
-                ConfigureRect(
-                    completionText.rectTransform,
-                    new Vector2(0f, 80f),
-                    new Vector2(600f, 80f)
-                );
-            }
-
-            if (nextButton != null)
-            {
-                ConfigureRect(
-                    nextButton.GetComponent<RectTransform>(),
-                    new Vector2(140f, -70f),
-                    new Vector2(220f, 64f)
-                );
+                completionRestartButton = existing != null
+                    ? existing.GetComponent<Button>()
+                    : Instantiate(restartButton, completionPanel.transform);
+                completionRestartButton.name = "CompletionRestartButton";
             }
         }
 
-        private static void ConfigureRect(
-            RectTransform rectTransform,
-            Vector2 anchoredPosition,
-            Vector2 sizeDelta)
+        private void EnsurePresentationObjects()
         {
-            if (rectTransform == null)
+            if (levelsButton == null)
             {
-                return;
+                Transform levels = FindDeepChild(transform, "LevelsButton");
+                if (levels != null) levelsButton = levels.GetComponent<Button>();
             }
 
-            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
-            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-            rectTransform.pivot = new Vector2(0.5f, 0.5f);
-            rectTransform.anchoredPosition = anchoredPosition;
-            rectTransform.sizeDelta = sizeDelta;
-            rectTransform.localScale = Vector3.one;
+            levelSurface = EnsureBacking(levelText, "LevelSurface");
+            movesSurface = EnsureBacking(moveCountText, "MovesSurface");
+
+            if (completionPanel == null || completionCard != null) return;
+            Transform existing = completionPanel.transform.Find("CompletionCard");
+            if (existing == null)
+            {
+                GameObject card = new(
+                    "CompletionCard",
+                    typeof(RectTransform),
+                    typeof(Image),
+                    typeof(Shadow)
+                );
+                card.transform.SetParent(completionPanel.transform, false);
+                existing = card.transform;
+            }
+
+            completionCard = existing.GetComponent<Image>();
+            existing.SetSiblingIndex(0);
         }
 
-        private bool HasRequiredReferences()
+        private void ApplyLayout()
         {
-            return gameController != null &&
-                   levelText != null &&
-                   moveCountText != null &&
-                   completionPanel != null &&
-                   completionText != null &&
-                   completionMoveCountText != null &&
-                   restartButton != null &&
-                   nextButton != null &&
-                   completionRestartButton != null;
+            ConfigureRect(
+                Rect(levelsButton),
+                new Vector2(0f, 1f),
+                new Vector2(0f, 1f),
+                new Vector2(32f, -32f),
+                new Vector2(156f, 52f)
+            );
+            ConfigureRect(
+                levelText != null ? levelText.rectTransform : null,
+                new Vector2(0.5f, 1f),
+                new Vector2(0.5f, 1f),
+                new Vector2(0f, -26f),
+                new Vector2(210f, 76f)
+            );
+            MatchBacking(levelSurface, levelText, new Vector2(24f, 8f));
+            ConfigureRect(
+                moveCountText != null ? moveCountText.rectTransform : null,
+                new Vector2(1f, 1f),
+                new Vector2(1f, 1f),
+                new Vector2(-32f, -30f),
+                new Vector2(156f, 50f)
+            );
+            MatchBacking(movesSurface, moveCountText, new Vector2(16f, 6f));
+            ConfigureRect(
+                Rect(restartButton),
+                new Vector2(1f, 1f),
+                new Vector2(1f, 1f),
+                new Vector2(-32f, -92f),
+                new Vector2(156f, 48f)
+            );
+            ConfigureRect(
+                completionCard != null ? completionCard.rectTransform : null,
+                new Vector2(0.5f, 0.5f),
+                new Vector2(0.5f, 0.5f),
+                Vector2.zero,
+                new Vector2(560f, 360f)
+            );
+            ConfigureRect(
+                completionText != null ? completionText.rectTransform : null,
+                new Vector2(0.5f, 0.5f),
+                new Vector2(0.5f, 0.5f),
+                new Vector2(0f, 92f),
+                new Vector2(480f, 70f)
+            );
+            ConfigureRect(
+                completionMoveCountText != null
+                    ? completionMoveCountText.rectTransform
+                    : null,
+                new Vector2(0.5f, 0.5f),
+                new Vector2(0.5f, 0.5f),
+                new Vector2(0f, 20f),
+                new Vector2(420f, 48f)
+            );
+            ConfigureRect(
+                Rect(completionRestartButton),
+                new Vector2(0.5f, 0.5f),
+                new Vector2(0.5f, 0.5f),
+                new Vector2(-118f, -82f),
+                new Vector2(200f, 54f)
+            );
+            ConfigureRect(
+                Rect(nextButton),
+                new Vector2(0.5f, 0.5f),
+                new Vector2(0.5f, 0.5f),
+                new Vector2(118f, -82f),
+                new Vector2(200f, 54f)
+            );
         }
+
+        private static RectTransform Rect(Button button) =>
+            button != null ? button.GetComponent<RectTransform>() : null;
+
+        private void BuildThemeSprites(WorldGameplayTheme theme)
+        {
+            DisposeThemeSprites();
+            Color accent = theme.PrimaryButtonColor;
+            Color border = new(accent.r, accent.g, accent.b, 0.48f);
+            Color surface = new(Ivory.r / 255f, Ivory.g / 255f, Ivory.b / 255f, 0.91f);
+
+            surfaceSprite = CreateRoundedSprite(
+                "Gameplay Paper Surface",
+                surface,
+                border,
+                9,
+                1.5f,
+                out surfaceTexture
+            );
+            secondaryButtonSprite = CreateRoundedSprite(
+                "Gameplay Secondary Button",
+                Color.white,
+                border,
+                8,
+                1.5f,
+                out secondaryButtonTexture
+            );
+            primaryButtonSprite = CreateRoundedSprite(
+                "Gameplay Primary Button",
+                Color.white,
+                new Color(
+                    accent.r * 0.72f,
+                    accent.g * 0.72f,
+                    accent.b * 0.72f,
+                    1f
+                ),
+                8,
+                1.5f,
+                out primaryButtonTexture
+            );
+            completionCardSprite = CreateRoundedSprite(
+                "Gameplay Completion Card",
+                new Color(1f, 0.985f, 0.96f, 0.99f),
+                border,
+                10,
+                1.5f,
+                out completionCardTexture
+            );
+        }
+
+        private void ApplyButtonStyle(Button button, bool primary, WorldGameplayTheme theme)
+        {
+            if (button == null) return;
+            Image image = button.GetComponent<Image>();
+            if (image != null)
+            {
+                image.sprite = primary ? primaryButtonSprite : secondaryButtonSprite;
+                image.type = Image.Type.Sliced;
+                image.color = primary
+                    ? theme.PrimaryButtonColor
+                    : QuietSecondary(theme.SecondaryButtonColor);
+            }
+
+            ColorBlock colors = button.colors;
+            colors.normalColor = Color.white;
+            colors.highlightedColor = Color.Lerp(Color.white, theme.PrimaryButtonColor, 0.12f);
+            colors.pressedColor = Color.Lerp(Color.white, theme.PrimaryButtonColor, 0.24f);
+            colors.selectedColor = colors.highlightedColor;
+            colors.disabledColor = new Color(0.72f, 0.7f, 0.7f, 0.58f);
+            colors.colorMultiplier = 1f;
+            colors.fadeDuration = 0.08f;
+            button.colors = colors;
+            button.targetGraphic = image;
+
+            Shadow shadow = button.GetComponent<Shadow>();
+            if (shadow != null)
+            {
+                shadow.effectColor = new Color(0f, 0f, 0f, 0.08f);
+                shadow.effectDistance = new Vector2(0f, -2f);
+            }
+
+            TMP_Text label = button.GetComponentInChildren<TMP_Text>(true);
+            StyleText(label, primary ? 25f : 23f, primary ? Color.white : (Color)Charcoal, FontStyles.Normal);
+        }
+
+        private static Color QuietSecondary(Color worldColor)
+        {
+            Color color = Color.Lerp((Color)Ivory, worldColor, 0.16f);
+            color.a = 0.96f;
+            return color;
+        }
+
+        private static void ConfigureSurface(Image image, Sprite sprite)
+        {
+            if (image == null) return;
+            image.sprite = sprite;
+            image.type = Image.Type.Sliced;
+            image.color = Color.white;
+            image.raycastTarget = false;
+        }
+
+        private static Image EnsureBacking(TMP_Text target, string name)
+        {
+            if (target == null) return null;
+            Transform existing = target.transform.parent.Find(name);
+            if (existing == null)
+            {
+                GameObject backing = new(name, typeof(RectTransform), typeof(Image));
+                backing.transform.SetParent(target.transform.parent, false);
+                existing = backing.transform;
+            }
+
+            Image image = existing.GetComponent<Image>();
+            image.raycastTarget = false;
+            if (existing.GetSiblingIndex() + 1 !=
+                target.transform.GetSiblingIndex())
+            {
+                existing.SetSiblingIndex(
+                    target.transform.GetSiblingIndex()
+                );
+                target.transform.SetSiblingIndex(
+                    existing.GetSiblingIndex() + 1
+                );
+            }
+            return image;
+        }
+
+        private static void MatchBacking(Image backing, TMP_Text target, Vector2 padding)
+        {
+            if (backing == null || target == null) return;
+            RectTransform targetRect = target.rectTransform;
+            RectTransform backingRect = backing.rectTransform;
+            backingRect.anchorMin = targetRect.anchorMin;
+            backingRect.anchorMax = targetRect.anchorMax;
+            backingRect.pivot = targetRect.pivot;
+            backingRect.anchoredPosition = targetRect.anchoredPosition;
+            backingRect.sizeDelta = targetRect.sizeDelta + padding;
+            backingRect.localScale = Vector3.one;
+        }
+
+        private static void ConfigureRect(RectTransform rect, Vector2 anchor, Vector2 pivot, Vector2 position, Vector2 size)
+        {
+            if (rect == null) return;
+            rect.anchorMin = anchor;
+            rect.anchorMax = anchor;
+            rect.pivot = pivot;
+            rect.anchoredPosition = position;
+            rect.sizeDelta = size;
+            rect.localScale = Vector3.one;
+        }
+
+        private static void StyleText(TMP_Text text, float maxSize, Color color, FontStyles style)
+        {
+            if (text == null) return;
+            text.color = color;
+            text.fontStyle = style;
+            text.alignment = TextAlignmentOptions.Center;
+            text.enableAutoSizing = true;
+            text.fontSizeMin = 16f;
+            text.fontSizeMax = maxSize;
+            text.characterSpacing = 0.5f;
+            text.raycastTarget = false;
+        }
+
+        private bool HasRequiredReferences() =>
+            gameController != null && levelText != null && moveCountText != null &&
+            completionPanel != null && completionText != null &&
+            completionMoveCountText != null && restartButton != null &&
+            nextButton != null && completionRestartButton != null;
 
         private void Bind()
         {
-            if (isBound)
-            {
-                return;
-            }
-
-            gameController.LevelLoaded +=
-                HandleLevelLoaded;
-
-            gameController.LevelCompleted +=
-                HandleLevelCompleted;
-
-            gameController.MoveCountChanged +=
-                HandleMoveCountChanged;
-
-            restartButton.onClick.AddListener(
-                gameController.RestartLevel
-            );
-
-            nextButton.onClick.AddListener(
-                gameController.LoadNextLevel
-            );
-
-            completionRestartButton.onClick.AddListener(
-                gameController.RestartLevel
-            );
-
+            if (isBound) return;
+            gameController.LevelLoaded += HandleLevelLoaded;
+            gameController.LevelCompleted += HandleLevelCompleted;
+            gameController.MoveCountChanged += HandleMoveCountChanged;
+            restartButton.onClick.AddListener(gameController.RestartLevel);
+            nextButton.onClick.AddListener(gameController.LoadNextLevel);
+            completionRestartButton.onClick.AddListener(gameController.RestartLevel);
             isBound = true;
         }
 
         private void RefreshFromCurrentState()
         {
             int levelNumber = gameController.CurrentLevelNumber;
-
-            if (levelNumber > 0)
-            {
-                levelText.text = $"LEVEL {levelNumber:00}";
-            }
-
-            HandleMoveCountChanged(
-                gameController.CurrentMoveCount
-            );
-
+            if (levelNumber > 0) SetLevelText(levelNumber);
+            HandleMoveCountChanged(gameController.CurrentMoveCount);
             if (gameController.IsCompleted)
-            {
-                HandleLevelCompleted(
-                    gameController.HasNextLevel
-                );
-            }
+                HandleLevelCompleted(gameController.HasNextLevel);
             else
-            {
                 completionPanel.SetActive(false);
-            }
         }
 
         private void HandleMoveCountChanged(int moveCount)
         {
-            moveCountText.text =
-                $"<size=22>MOVES</size>\n<size=38>{moveCount}</size>";
-            completionMoveCountText.text =
-                $"Moves: {moveCount}";
+            moveCountText.text = $"Moves  {moveCount}";
+            completionMoveCountText.text = $"Moves: {moveCount}";
         }
 
-        private void HandleLevelLoaded(
-            int levelNumber,
-            int _)
+        private void HandleLevelLoaded(int levelNumber, int _)
         {
-            levelText.text =
-                $"LEVEL {levelNumber:00}";
-
+            SetLevelText(levelNumber);
             completionPanel.SetActive(false);
         }
 
-        private void HandleLevelCompleted(
-            bool hasNextLevel)
+        private void SetLevelText(int levelNumber)
+        {
+            levelText.text = $"<size=17><color=#77717C>LEVEL</color></size>\n<size=34>{levelNumber:00}</size>";
+        }
+
+        private void HandleLevelCompleted(bool hasNextLevel)
         {
             completionPanel.SetActive(true);
-
-            if (hasNextLevel)
-            {
-                completionText.text =
-                    "LEVEL COMPLETE!";
-
-                nextButton.gameObject.SetActive(true);
-            }
-            else
-            {
-                completionText.text =
-                    "ALL LEVELS COMPLETE!";
-
-                nextButton.gameObject.SetActive(false);
-            }
+            completionText.text = hasNextLevel
+                ? "LEVEL COMPLETE"
+                : "ALL LEVELS COMPLETE";
+            nextButton.gameObject.SetActive(hasNextLevel);
         }
 
         private void OnDisable()
         {
-            if (!isBound)
-            {
-                return;
-            }
-
-            gameController.LevelLoaded -=
-                HandleLevelLoaded;
-
-            gameController.LevelCompleted -=
-                HandleLevelCompleted;
-
-            gameController.MoveCountChanged -=
-                HandleMoveCountChanged;
-
-            restartButton.onClick.RemoveListener(
-                gameController.RestartLevel
-            );
-
-            nextButton.onClick.RemoveListener(
-                gameController.LoadNextLevel
-            );
-
-            completionRestartButton.onClick.RemoveListener(
-                gameController.RestartLevel
-            );
-
+            if (!isBound) return;
+            gameController.LevelLoaded -= HandleLevelLoaded;
+            gameController.LevelCompleted -= HandleLevelCompleted;
+            gameController.MoveCountChanged -= HandleMoveCountChanged;
+            restartButton.onClick.RemoveListener(gameController.RestartLevel);
+            nextButton.onClick.RemoveListener(gameController.LoadNextLevel);
+            completionRestartButton.onClick.RemoveListener(gameController.RestartLevel);
             isBound = false;
+        }
+
+        private static Transform FindDeepChild(Transform parent, string name)
+        {
+            if (parent.name == name) return parent;
+            for (int index = 0; index < parent.childCount; index++)
+            {
+                Transform result = FindDeepChild(parent.GetChild(index), name);
+                if (result != null) return result;
+            }
+            return null;
+        }
+
+        private static Sprite CreateRoundedSprite(string name, Color fill, Color border, int radius, float borderWidth, out Texture2D texture)
+        {
+            const int size = 64;
+            texture = new Texture2D(size, size, TextureFormat.RGBA32, false);
+            texture.name = $"{name} Texture";
+            texture.filterMode = FilterMode.Bilinear;
+            texture.wrapMode = TextureWrapMode.Clamp;
+            Color[] pixels = new Color[size * size];
+            Vector2 center = new((size - 1) * 0.5f, (size - 1) * 0.5f);
+            Vector2 half = center;
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    Vector2 offset = new(Mathf.Abs(x - center.x), Mathf.Abs(y - center.y));
+                    Vector2 corner = new(
+                        Mathf.Max(offset.x - (half.x - radius), 0f),
+                        Mathf.Max(offset.y - (half.y - radius), 0f)
+                    );
+                    float signedDistance = corner.magnitude - radius;
+                    float outerAlpha = Mathf.Clamp01(0.75f - signedDistance);
+                    float innerAlpha = Mathf.Clamp01(0.75f - signedDistance - borderWidth);
+                    Color pixel = Color.Lerp(border, fill, innerAlpha);
+                    pixel.a *= outerAlpha;
+                    pixels[y * size + x] = pixel;
+                }
+            }
+            texture.SetPixels(pixels);
+            texture.Apply(false, false);
+            Sprite sprite = Sprite.Create(texture, new Rect(0f, 0f, size, size), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect, new Vector4(radius, radius, radius, radius));
+            sprite.name = name;
+            return sprite;
+        }
+
+        private void DisposeThemeSprites()
+        {
+            DestroyRuntimeObject(surfaceSprite);
+            DestroyRuntimeObject(secondaryButtonSprite);
+            DestroyRuntimeObject(primaryButtonSprite);
+            DestroyRuntimeObject(completionCardSprite);
+            DestroyRuntimeObject(surfaceTexture);
+            DestroyRuntimeObject(secondaryButtonTexture);
+            DestroyRuntimeObject(primaryButtonTexture);
+            DestroyRuntimeObject(completionCardTexture);
+            surfaceSprite = secondaryButtonSprite = primaryButtonSprite = completionCardSprite = null;
+            surfaceTexture = secondaryButtonTexture = primaryButtonTexture = completionCardTexture = null;
+        }
+
+        private static void DestroyRuntimeObject(Object target)
+        {
+            if (target == null) return;
+            if (Application.isPlaying) Destroy(target);
+            else DestroyImmediate(target);
+        }
+
+        private void OnDestroy()
+        {
+            DisposeThemeSprites();
         }
     }
 }
