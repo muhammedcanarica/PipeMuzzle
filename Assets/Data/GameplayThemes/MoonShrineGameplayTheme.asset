@@ -24,6 +24,6 @@ MonoBehaviour:
   crossSprite: {fileID: 21300000, guid: d871ef5af931bc647b057a54b527a8bb, type: 3}
   normalTint: {r: 1, g: 1, b: 1, a: 1}
   lockedTint: {r: 0.58, g: 0.58, b: 0.62, a: 1}
-  sourceGlowColor: {r: 0.2, g: 0.75, b: 1, a: 0.65}
-  targetGlowColor: {r: 0.4, g: 0.9, b: 1, a: 0.75}
-  poweredGlowColor: {r: 0.15, g: 0.8, b: 1, a: 0.6}
+  sourceGlowColor: {r: 0.2, g: 0.75, b: 1, a: 0.39}
+  targetGlowColor: {r: 0.4, g: 0.9, b: 1, a: 0.45}
+  poweredGlowColor: {r: 0.15, g: 0.8, b: 1, a: 0.36}

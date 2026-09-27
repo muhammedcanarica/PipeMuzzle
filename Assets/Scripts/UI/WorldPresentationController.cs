@@ -8,7 +8,7 @@ namespace PipeMuzzle.UI
     public sealed class WorldPresentationController : MonoBehaviour
     {
         private const string BackgroundObjectName = "WorldGameplayBackground";
-        private const float BackgroundOpacity = 0.74f;
+        private const float BackgroundOpacity = 0.4f;
 
         private SpriteRenderer backgroundRenderer;
         private WorldGameplayTheme activeTheme;
