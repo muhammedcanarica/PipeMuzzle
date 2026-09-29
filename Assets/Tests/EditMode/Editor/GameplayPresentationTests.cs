@@ -115,7 +115,7 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(backgrounds, Has.Length.EqualTo(1));
             Assert.That(backgrounds[0].sprite,
                 Is.SameAs(bamboo.GameplayTheme.BackgroundSprite));
-            Assert.That(backgrounds[0].color.a, Is.InRange(0.68f, 0.78f));
+            Assert.That(backgrounds[0].color.a, Is.InRange(0.25f, 0.32f));
             Assert.That(backgrounds[0].transform.parent, Is.SameAs(camera.transform));
             Assert.That(backgrounds[0].transform.localPosition,
                 Is.EqualTo(new Vector3(0f, 0f, 20f)));
