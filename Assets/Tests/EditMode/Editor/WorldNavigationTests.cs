@@ -73,6 +73,14 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(sakura.interactable, Is.True);
             Assert.That(bamboo.interactable, Is.False);
             Assert.That(moon.interactable, Is.False);
+            foreach (WorldDefinition world in new[] { Sakura(), Bamboo(), Moon() })
+            {
+                Image artwork = root.transform.Find(world.DisplayName)
+                    .Find("WorldArtwork")
+                    .GetComponent<Image>();
+                Assert.That(artwork.sprite, Is.SameAs(world.Story.Panels[0]));
+                Assert.That(artwork.preserveAspect, Is.True);
+            }
             Assert.That(Status(moon), Is.EqualTo("LOCKED"));
             sakura.onClick.Invoke();
             Assert.That(selected, Is.SameAs(Sakura()));
@@ -85,6 +93,8 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(root.transform.Find("Bamboo Workshop").GetComponent<Button>(), Is.SameAs(bamboo));
             Assert.That(bamboo.interactable, Is.True);
             Assert.That(Status(bamboo), Is.EqualTo("12 LEVELS"));
+            Assert.That(bamboo.transform.Find("WorldArtwork").GetComponent<Image>().color,
+                Is.EqualTo(Color.white));
             Image bambooSurface = bamboo.GetComponent<Image>();
             Assert.That(bambooSurface.sprite, Is.Not.Null);
             Assert.That(bambooSurface.type, Is.EqualTo(Image.Type.Sliced));
@@ -227,5 +237,8 @@ namespace PipeMuzzle.Tests.EditMode
 
         private static WorldDefinition Bamboo() => AssetDatabase.LoadAssetAtPath<WorldDefinition>(
             "Assets/Resources/Worlds/BambooWorkshop.asset");
+
+        private static WorldDefinition Moon() => AssetDatabase.LoadAssetAtPath<WorldDefinition>(
+            "Assets/Resources/Worlds/MoonShrine.asset");
     }
 }

@@ -25,6 +25,7 @@ namespace PipeMuzzle.UI
             public Button Button;
             public Image Background;
             public Image AccentBand;
+            public Image Artwork;
             public TMP_Text Status;
         }
 
@@ -86,6 +87,9 @@ namespace PipeMuzzle.UI
                 card.AccentBand.color = locked
                     ? new Color32(151, 141, 150, 255)
                     : Accent(card.World.WorldId);
+                card.Artwork.color = locked
+                    ? new Color(.55f, .53f, .58f, .62f)
+                    : Color.white;
                 card.Status.text = state switch
                 {
                     WorldAccessState.Locked => "LOCKED",
@@ -138,15 +142,34 @@ namespace PipeMuzzle.UI
 
             Image accentBand = CreateImage("AccentBand", rect, new Vector2(0f, 57f), Accent(world.WorldId), new Vector2(.5f, .5f), new Vector2(.5f, .5f));
             accentBand.rectTransform.sizeDelta = new Vector2(570f, 14f);
-            CreateText(WorldTagline(world.WorldId), rect, new Vector2(0f, 28f), 15f, Accent(world.WorldId));
-            CreateText(world.DisplayName, rect, new Vector2(0f, -2f), 30f, new Color32(73, 54, 70, 255));
 
-            Image statusSurface = CreateImage("StatusSurface", rect, new Vector2(0f, -48f), new Color(1f, 1f, 1f, .72f), new Vector2(.5f, .5f), new Vector2(.5f, .5f));
+            Image artworkFrame = CreateImage("WorldArtworkFrame", rect, new Vector2(-188f, -3f), new Color(1f, 1f, 1f, .92f), new Vector2(.5f, .5f), new Vector2(.5f, .5f));
+            artworkFrame.sprite = cardSprite;
+            artworkFrame.type = Image.Type.Sliced;
+            artworkFrame.rectTransform.sizeDelta = new Vector2(184f, 112f);
+            Shadow artworkShadow = artworkFrame.gameObject.AddComponent<Shadow>();
+            artworkShadow.effectColor = new Color(0.14f, .1f, .12f, .16f);
+            artworkShadow.effectDistance = new Vector2(0f, -2f);
+
+            Image artwork = CreateImage("WorldArtwork", artworkFrame.rectTransform, Vector2.zero, Color.white, new Vector2(.5f, .5f), new Vector2(.5f, .5f));
+            artwork.sprite = world.Story != null && world.Story.PanelCount > 0
+                ? world.Story.Panels[0]
+                : null;
+            artwork.preserveAspect = true;
+            artwork.rectTransform.sizeDelta = new Vector2(168f, 96f);
+
+            TMP_Text tagline = CreateText(WorldTagline(world.WorldId), rect, new Vector2(103f, 29f), 15f, Accent(world.WorldId));
+            tagline.rectTransform.sizeDelta = new Vector2(305f, 28f);
+            TMP_Text title = CreateText(world.DisplayName, rect, new Vector2(103f, -2f), 28f, new Color32(73, 54, 70, 255));
+            title.rectTransform.sizeDelta = new Vector2(330f, 44f);
+
+            Image statusSurface = CreateImage("StatusSurface", rect, new Vector2(103f, -48f), new Color(1f, 1f, 1f, .72f), new Vector2(.5f, .5f), new Vector2(.5f, .5f));
             statusSurface.sprite = cardSprite;
             statusSurface.type = Image.Type.Sliced;
-            statusSurface.rectTransform.sizeDelta = new Vector2(170f, 30f);
-            TMP_Text status = CreateText("LOCKED", rect, new Vector2(0f, -48f), 15f, new Color(0.24f, .2f, .25f, .82f));
-            cards.Add(new Card { World = world, Button = button, Background = image, AccentBand = accentBand, Status = status });
+            statusSurface.rectTransform.sizeDelta = new Vector2(210f, 30f);
+            TMP_Text status = CreateText("LOCKED", rect, new Vector2(103f, -48f), 15f, new Color(0.24f, .2f, .25f, .82f));
+            status.rectTransform.sizeDelta = new Vector2(200f, 30f);
+            cards.Add(new Card { World = world, Button = button, Background = image, AccentBand = accentBand, Artwork = artwork, Status = status });
         }
 
         private static void CreateRoute(RectTransform root, float y)
