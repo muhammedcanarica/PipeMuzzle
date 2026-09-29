@@ -22,6 +22,7 @@ namespace PipeMuzzle.UI
 
         private TMP_Text completionMoveCountText;
         private Button completionRestartButton;
+        private Button completionMapButton;
         private Button levelsButton;
         private Image levelSurface;
         private Image movesSurface;
@@ -81,6 +82,7 @@ namespace PipeMuzzle.UI
             ApplyButtonStyle(levelsButton, false, theme);
             ApplyButtonStyle(restartButton, false, theme);
             ApplyButtonStyle(completionRestartButton, false, theme);
+            ApplyButtonStyle(completionMapButton, false, theme);
             ApplyButtonStyle(nextButton, true, theme);
         }
 
@@ -128,6 +130,20 @@ namespace PipeMuzzle.UI
                     : Instantiate(restartButton, completionPanel.transform);
                 completionRestartButton.name = "CompletionRestartButton";
             }
+
+            if (completionMapButton == null && restartButton != null)
+            {
+                Transform existing = completionPanel.transform.Find(
+                    "CompletionMapButton"
+                );
+                completionMapButton = existing != null
+                    ? existing.GetComponent<Button>()
+                    : Instantiate(restartButton, completionPanel.transform);
+                completionMapButton.name = "CompletionMapButton";
+            }
+
+            SetButtonLabel(completionRestartButton, "REPLAY");
+            SetButtonLabel(completionMapButton, "BACK TO MAP");
         }
 
         private void EnsurePresentationObjects()
@@ -203,7 +219,7 @@ namespace PipeMuzzle.UI
                 new Vector2(0.5f, 0.5f),
                 new Vector2(0.5f, 0.5f),
                 new Vector2(0f, 92f),
-                new Vector2(480f, 70f)
+                new Vector2(480f, 100f)
             );
             ConfigureRect(
                 completionMoveCountText != null
@@ -219,6 +235,13 @@ namespace PipeMuzzle.UI
                 new Vector2(0.5f, 0.5f),
                 new Vector2(0.5f, 0.5f),
                 new Vector2(-118f, -82f),
+                new Vector2(200f, 54f)
+            );
+            ConfigureRect(
+                Rect(completionMapButton),
+                new Vector2(0.5f, 0.5f),
+                new Vector2(0.5f, 0.5f),
+                new Vector2(118f, -82f),
                 new Vector2(200f, 54f)
             );
             ConfigureRect(
@@ -393,11 +416,20 @@ namespace PipeMuzzle.UI
             text.raycastTarget = false;
         }
 
+        private static void SetButtonLabel(Button button, string value)
+        {
+            TMP_Text label = button != null
+                ? button.GetComponentInChildren<TMP_Text>(true)
+                : null;
+            if (label != null) label.text = value;
+        }
+
         private bool HasRequiredReferences() =>
             gameController != null && levelText != null && moveCountText != null &&
             completionPanel != null && completionText != null &&
             completionMoveCountText != null && restartButton != null &&
-            nextButton != null && completionRestartButton != null;
+            nextButton != null && completionRestartButton != null &&
+            completionMapButton != null;
 
         private void Bind()
         {
@@ -406,8 +438,8 @@ namespace PipeMuzzle.UI
             gameController.LevelCompleted += HandleLevelCompleted;
             gameController.MoveCountChanged += HandleMoveCountChanged;
             restartButton.onClick.AddListener(gameController.RestartLevel);
-            nextButton.onClick.AddListener(gameController.LoadNextLevel);
             completionRestartButton.onClick.AddListener(gameController.RestartLevel);
+            completionMapButton.onClick.AddListener(ReturnToWorldMap);
             isBound = true;
         }
 
@@ -442,10 +474,70 @@ namespace PipeMuzzle.UI
         private void HandleLevelCompleted(bool hasNextLevel)
         {
             completionPanel.SetActive(true);
-            completionText.text = hasNextLevel
-                ? "LEVEL COMPLETE"
-                : "ALL LEVELS COMPLETE";
-            nextButton.gameObject.SetActive(hasNextLevel);
+            bool worldComplete = !hasNextLevel && gameController.CurrentWorld != null;
+            WorldDefinition nextWorld = worldComplete ? FindNextWorld() : null;
+            completionText.text = worldComplete
+                ? $"WORLD COMPLETE\n<size=24>{gameController.CurrentWorld.DisplayName} Complete</size>"
+                : hasNextLevel ? "LEVEL COMPLETE" : "ALL LEVELS COMPLETE";
+            nextButton.gameObject.SetActive(hasNextLevel || nextWorld != null);
+            completionMapButton.gameObject.SetActive(worldComplete);
+            nextButton.onClick.RemoveListener(gameController.LoadNextLevel);
+            nextButton.onClick.RemoveListener(OpenNextWorld);
+            if (hasNextLevel)
+            {
+                SetButtonLabel(nextButton, "NEXT");
+                nextButton.onClick.AddListener(gameController.LoadNextLevel);
+            }
+            else if (nextWorld != null)
+            {
+                SetButtonLabel(nextButton, "NEXT WORLD");
+                nextButton.onClick.AddListener(OpenNextWorld);
+            }
+        }
+
+        private void ReturnToWorldMap()
+        {
+            gameController.CancelTransientVisuals();
+            ScreenManager screens = GetComponent<ScreenManager>() ??
+                GetComponentInParent<ScreenManager>();
+            if (screens == null)
+            {
+                Debug.LogWarning("GameUI cannot return to the world map without a ScreenManager.", this);
+                return;
+            }
+            screens.ShowWorldMap();
+        }
+
+        private void OpenNextWorld()
+        {
+            WorldDefinition nextWorld = FindNextWorld();
+            StoryNavigationCoordinator navigation =
+                GetComponent<StoryNavigationCoordinator>() ??
+                GetComponentInParent<StoryNavigationCoordinator>();
+            if (nextWorld == null || navigation == null)
+            {
+                ReturnToWorldMap();
+                return;
+            }
+            navigation.OpenWorld(nextWorld);
+        }
+
+        private WorldDefinition FindNextWorld()
+        {
+            if (gameController.CurrentWorld == null) return null;
+            WorldId? nextId = gameController.CurrentWorld.WorldId switch
+            {
+                WorldId.SakuraGarden => WorldId.BambooWorkshop,
+                WorldId.BambooWorkshop => WorldId.MoonShrine,
+                _ => null
+            };
+            if (!nextId.HasValue) return null;
+            foreach (WorldDefinition world in Resources.LoadAll<WorldDefinition>("Worlds"))
+            {
+                if (world != null && world.WorldId == nextId.Value && world.IsContentReady)
+                    return world;
+            }
+            return null;
         }
 
         private void OnDisable()
@@ -456,7 +548,9 @@ namespace PipeMuzzle.UI
             gameController.MoveCountChanged -= HandleMoveCountChanged;
             restartButton.onClick.RemoveListener(gameController.RestartLevel);
             nextButton.onClick.RemoveListener(gameController.LoadNextLevel);
+            nextButton.onClick.RemoveListener(OpenNextWorld);
             completionRestartButton.onClick.RemoveListener(gameController.RestartLevel);
+            completionMapButton.onClick.RemoveListener(ReturnToWorldMap);
             isBound = false;
         }
 

@@ -85,7 +85,12 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(root.transform.Find("Bamboo Workshop").GetComponent<Button>(), Is.SameAs(bamboo));
             Assert.That(bamboo.interactable, Is.True);
             Assert.That(Status(bamboo), Is.EqualTo("12 LEVELS"));
-            Assert.That(bamboo.GetComponent<Image>().color,
+            Image bambooSurface = bamboo.GetComponent<Image>();
+            Assert.That(bambooSurface.sprite, Is.Not.Null);
+            Assert.That(bambooSurface.type, Is.EqualTo(Image.Type.Sliced));
+            Assert.That(bamboo.GetComponent<Shadow>(), Is.Not.Null);
+            Assert.That(bamboo.transform.Find("AccentBand"), Is.Not.Null);
+            Assert.That(bamboo.transform.Find("AccentBand").GetComponent<Image>().color,
                 Is.EqualTo((Color)new Color32(103, 143, 86, 255)));
             Assert.That(Status(moon), Is.EqualTo("LOCKED"));
 

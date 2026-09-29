@@ -313,6 +313,52 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(loaded, Is.EqualTo(3));
         }
 
+        [Test]
+        public void FinalWorldCompletionOffersGenericReturnToMap()
+        {
+            GameController controller = CreateController();
+            Assert.That(controller.ConfigureWorld(World("SakuraGarden")), Is.True);
+
+            GameObject canvas = Create("UiRoot");
+            canvas.SetActive(false);
+            ScreenManager screens = canvas.AddComponent<ScreenManager>();
+            GameObject map = CreateUiObject("WorldMapPanel", canvas.transform);
+            GameObject comic = CreateUiObject("ComicPanel", canvas.transform);
+            GameObject select = CreateUiObject("LevelSelectPanel", canvas.transform);
+            GameObject gameplay = CreateUiObject("GameplayHud", canvas.transform);
+            GameUI gameUi = gameplay.AddComponent<GameUI>();
+            TMP_Text level = CreateText("LevelText", gameplay.transform);
+            TMP_Text moves = CreateText("MoveCountText", gameplay.transform);
+            GameObject completion = CreateUiObject("CompletionPanel", gameplay.transform);
+            completion.AddComponent<Image>();
+            TMP_Text completionText = CreateText("CompletionText", completion.transform);
+            Button restart = CreateButton("RestartButton", gameplay.transform);
+            Button next = CreateButton("NextButton", completion.transform);
+            screens.Configure(map, comic, select, gameplay);
+
+            SetField(gameUi, "gameController", controller);
+            SetField(gameUi, "levelText", level);
+            SetField(gameUi, "moveCountText", moves);
+            SetField(gameUi, "completionPanel", completion);
+            SetField(gameUi, "completionText", completionText);
+            SetField(gameUi, "restartButton", restart);
+            SetField(gameUi, "nextButton", next);
+
+            Invoke(gameUi, "OnEnable");
+            Invoke(gameUi, "HandleLevelCompleted", false);
+
+            Assert.That(completionText.text, Does.Contain("WORLD COMPLETE"));
+            Assert.That(completionText.text, Does.Contain("Sakura Garden Complete"));
+            Button mapButton = completion.transform
+                .Find("CompletionMapButton")
+                .GetComponent<Button>();
+            Assert.That(mapButton.gameObject.activeSelf, Is.True);
+
+            mapButton.onClick.Invoke();
+            Assert.That(map.activeSelf, Is.True);
+            Assert.That(gameplay.activeSelf, Is.False);
+        }
+
         private GameController CreateController()
         {
             GameObject boardObject = Create("TestBoardView");
@@ -441,6 +487,16 @@ namespace PipeMuzzle.Tests.EditMode
             );
             Assert.That(method, Is.Not.Null);
             method.Invoke(target, null);
+        }
+
+        private static void Invoke(object target, string methodName, bool argument)
+        {
+            MethodInfo method = target.GetType().GetMethod(
+                methodName,
+                BindingFlags.Instance | BindingFlags.NonPublic
+            );
+            Assert.That(method, Is.Not.Null);
+            method.Invoke(target, new object[] { argument });
         }
     }
 }
