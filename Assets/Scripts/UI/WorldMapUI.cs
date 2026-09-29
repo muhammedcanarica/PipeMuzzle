@@ -23,9 +23,9 @@ namespace PipeMuzzle.UI
         {
             public WorldDefinition World;
             public Button Button;
-            public Image Background;
+            public Image Destination;
+            public Image LabelSurface;
             public Image AccentBand;
-            public Image Artwork;
             public TMP_Text Status;
         }
 
@@ -81,15 +81,15 @@ namespace PipeMuzzle.UI
                 WorldAccessState state = progress.GetAccessState(card.World);
                 card.Button.interactable = state == WorldAccessState.Playable;
                 bool locked = state == WorldAccessState.Locked;
-                card.Background.color = locked
-                    ? new Color32(225, 219, 223, 255)
+                card.Destination.color = locked
+                    ? new Color(1f, 1f, 1f, .52f)
+                    : Color.white;
+                card.LabelSurface.color = locked
+                    ? new Color(0.88f, .85f, .88f, .94f)
                     : CardSurface(card.World.WorldId);
                 card.AccentBand.color = locked
                     ? new Color32(151, 141, 150, 255)
                     : Accent(card.World.WorldId);
-                card.Artwork.color = locked
-                    ? new Color(.55f, .53f, .58f, .62f)
-                    : Color.white;
                 card.Status.text = state switch
                 {
                     WorldAccessState.Locked => "LOCKED",
@@ -109,11 +109,11 @@ namespace PipeMuzzle.UI
             CreateText("PIPE MUZZLE", root, new Vector2(0, 410), 48, new Color32(73, 54, 70, 255));
             CreateText("WORLD MAP", root, new Vector2(0, 350), 24, new Color32(174, 105, 128, 255));
 
-            float[] positions = { -265f, 0f, 265f };
+            float[] positions = { -255f, -25f, 205f };
             for (int index = 0; index < worlds.Count && index < positions.Length; index++)
             {
                 WorldDefinition world = worlds[index];
-                if (index > 0) CreateRoute(root, positions[index - 1] + 120f);
+                if (index > 0) CreateRoute(root, positions[index - 1] + 115f);
                 CreateDestination(root, world, positions[index]);
             }
         }
@@ -125,57 +125,47 @@ namespace PipeMuzzle.UI
             RectTransform rect = card.GetComponent<RectTransform>();
             rect.anchorMin = rect.anchorMax = new Vector2(.5f, .5f);
             rect.anchoredPosition = new Vector2(0, y);
-            rect.sizeDelta = new Vector2(610, 154);
+            rect.sizeDelta = new Vector2(510, 230);
             Image image = card.GetComponent<Image>();
-            image.sprite = cardSprite;
-            image.type = Image.Type.Sliced;
-            image.color = CardSurface(world.WorldId);
+            image.sprite = DestinationSprite(world.WorldId);
+            image.type = Image.Type.Simple;
+            image.preserveAspect = true;
+            image.color = Color.white;
             Button button = card.GetComponent<Button>();
             button.targetGraphic = image;
             button.onClick.AddListener(() => WorldSelected?.Invoke(world));
             Shadow shadow = card.AddComponent<Shadow>();
-            shadow.effectColor = new Color(0.18f, 0.13f, 0.16f, .14f);
+            shadow.effectColor = new Color(0.16f, 0.1f, 0.15f, .18f);
             shadow.effectDistance = new Vector2(0f, -4f);
-            Outline outline = card.AddComponent<Outline>();
-            outline.effectColor = new Color(0.22f, 0.17f, 0.2f, .12f);
-            outline.effectDistance = new Vector2(1f, -1f);
 
-            Image accentBand = CreateImage("AccentBand", rect, new Vector2(0f, 57f), Accent(world.WorldId), new Vector2(.5f, .5f), new Vector2(.5f, .5f));
-            accentBand.rectTransform.sizeDelta = new Vector2(570f, 14f);
+            Image labelSurface = CreateImage("WorldLabelBubble", rect, new Vector2(118f, -63f), CardSurface(world.WorldId), new Vector2(.5f, .5f), new Vector2(.5f, .5f));
+            labelSurface.sprite = cardSprite;
+            labelSurface.type = Image.Type.Sliced;
+            labelSurface.rectTransform.sizeDelta = new Vector2(245f, 70f);
+            Shadow labelShadow = labelSurface.gameObject.AddComponent<Shadow>();
+            labelShadow.effectColor = new Color(0.14f, .1f, .12f, .12f);
+            labelShadow.effectDistance = new Vector2(0f, -2f);
 
-            Image artworkFrame = CreateImage("WorldArtworkFrame", rect, new Vector2(-188f, -3f), new Color(1f, 1f, 1f, .92f), new Vector2(.5f, .5f), new Vector2(.5f, .5f));
-            artworkFrame.sprite = cardSprite;
-            artworkFrame.type = Image.Type.Sliced;
-            artworkFrame.rectTransform.sizeDelta = new Vector2(184f, 112f);
-            Shadow artworkShadow = artworkFrame.gameObject.AddComponent<Shadow>();
-            artworkShadow.effectColor = new Color(0.14f, .1f, .12f, .16f);
-            artworkShadow.effectDistance = new Vector2(0f, -2f);
-
-            Image artwork = CreateImage("WorldArtwork", artworkFrame.rectTransform, Vector2.zero, Color.white, new Vector2(.5f, .5f), new Vector2(.5f, .5f));
-            artwork.sprite = world.Story != null && world.Story.PanelCount > 0
-                ? world.Story.Panels[0]
-                : null;
-            artwork.preserveAspect = true;
-            artwork.rectTransform.sizeDelta = new Vector2(168f, 96f);
-
-            TMP_Text tagline = CreateText(WorldTagline(world.WorldId), rect, new Vector2(103f, 29f), 15f, Accent(world.WorldId));
-            tagline.rectTransform.sizeDelta = new Vector2(305f, 28f);
-            TMP_Text title = CreateText(world.DisplayName, rect, new Vector2(103f, -2f), 28f, new Color32(73, 54, 70, 255));
-            title.rectTransform.sizeDelta = new Vector2(330f, 44f);
-
-            Image statusSurface = CreateImage("StatusSurface", rect, new Vector2(103f, -48f), new Color(1f, 1f, 1f, .72f), new Vector2(.5f, .5f), new Vector2(.5f, .5f));
-            statusSurface.sprite = cardSprite;
-            statusSurface.type = Image.Type.Sliced;
-            statusSurface.rectTransform.sizeDelta = new Vector2(210f, 30f);
-            TMP_Text status = CreateText("LOCKED", rect, new Vector2(103f, -48f), 15f, new Color(0.24f, .2f, .25f, .82f));
-            status.rectTransform.sizeDelta = new Vector2(200f, 30f);
-            cards.Add(new Card { World = world, Button = button, Background = image, AccentBand = accentBand, Artwork = artwork, Status = status });
+            Image accentBand = CreateImage("AccentBand", labelSurface.rectTransform, new Vector2(-103f, 0f), Accent(world.WorldId), new Vector2(.5f, .5f), new Vector2(.5f, .5f));
+            accentBand.sprite = cardSprite;
+            accentBand.type = Image.Type.Sliced;
+            accentBand.rectTransform.sizeDelta = new Vector2(9f, 42f);
+            TMP_Text title = CreateText(world.DisplayName, labelSurface.rectTransform, new Vector2(8f, 12f), 19f, new Color32(73, 54, 70, 255));
+            title.rectTransform.sizeDelta = new Vector2(205f, 30f);
+            TMP_Text status = CreateText("LOCKED", labelSurface.rectTransform, new Vector2(8f, -16f), 13f, new Color(0.24f, .2f, .25f, .82f));
+            status.rectTransform.sizeDelta = new Vector2(205f, 24f);
+            cards.Add(new Card { World = world, Button = button, Destination = image, LabelSurface = labelSurface, AccentBand = accentBand, Status = status });
         }
 
-        private static void CreateRoute(RectTransform root, float y)
+        private void CreateRoute(RectTransform root, float y)
         {
-            Image route = CreateImage("JourneyPath", root, new Vector2(0, y), new Color32(228, 158, 178, 255), new Vector2(.5f, .5f), new Vector2(.5f, .5f));
-            route.rectTransform.sizeDelta = new Vector2(10, 140);
+            for (int index = -2; index <= 2; index++)
+            {
+                Image dot = CreateImage("JourneyPath", root, new Vector2(0, y + index * 13f), new Color32(228, 158, 178, 230), new Vector2(.5f, .5f), new Vector2(.5f, .5f));
+                dot.sprite = cardSprite;
+                dot.type = Image.Type.Sliced;
+                dot.rectTransform.sizeDelta = new Vector2(index == 0 ? 16f : 8f, index == 0 ? 16f : 8f);
+            }
         }
 
         private static Image CreateImage(string name, RectTransform parent, Vector2 position, Color color, Vector2 anchorMin, Vector2 anchorMax)
@@ -216,12 +206,12 @@ namespace PipeMuzzle.UI
             _ => new Color32(237, 241, 250, 255)
         };
 
-        private static string WorldTagline(WorldId world) => world switch
+        private static Sprite DestinationSprite(WorldId world) => Resources.Load<Sprite>(world switch
         {
-            WorldId.SakuraGarden => "PETAL PATH",
-            WorldId.BambooWorkshop => "BAMBOO WORKSHOP",
-            _ => "MOONLIT STEPS"
-        };
+            WorldId.SakuraGarden => "WorldMap/SakuraDestination",
+            WorldId.BambooWorkshop => "WorldMap/BambooDestination",
+            _ => "WorldMap/MoonDestination"
+        });
 
         private void EnsureCardSprite()
         {
