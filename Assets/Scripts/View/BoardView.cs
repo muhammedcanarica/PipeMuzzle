@@ -23,6 +23,8 @@ namespace PipeMuzzle.View
         private readonly Dictionary<Vector2Int, TileView> tileViews = new();
         private readonly List<Vector3> flowPathPositions = new();
         private WorldGameplayTheme gameplayTheme;
+        private int boardWidth;
+        private int boardHeight;
 
         public event Action<TileView> TileClicked;
 
@@ -52,6 +54,9 @@ namespace PipeMuzzle.View
             }
 
             Clear();
+
+            boardWidth = board.Width;
+            boardHeight = board.Height;
 
             float centerX =
                 (board.Width - 1) * cellSize * 0.5f;
@@ -103,6 +108,8 @@ namespace PipeMuzzle.View
             }
 
             tileViews.Clear();
+            boardWidth = 0;
+            boardHeight = 0;
         }
 
         public void RefreshPoweredTiles(bool animated)
@@ -164,6 +171,22 @@ namespace PipeMuzzle.View
             }
 
             return hasBounds;
+        }
+
+        public bool TryGetGridBounds(out Bounds bounds)
+        {
+            bounds = default;
+            if (boardWidth <= 0 || boardHeight <= 0) return false;
+
+            bounds = new Bounds(
+                transform.position,
+                new Vector3(
+                    boardWidth * cellSize,
+                    boardHeight * cellSize,
+                    0f
+                )
+            );
+            return true;
         }
 
         private void CreateTile(

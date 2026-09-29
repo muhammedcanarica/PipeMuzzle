@@ -8,6 +8,7 @@ namespace PipeMuzzle.Data
         [Header("Gameplay")]
         [SerializeField] private Sprite backgroundSprite;
         [SerializeField] private Color cameraBackgroundColor = Color.black;
+        [SerializeField] private Color boardPanelColor = new(1f, 1f, 1f, .75f);
 
         [Header("HUD")]
         [SerializeField] private Color textColor = Color.white;
@@ -28,6 +29,7 @@ namespace PipeMuzzle.Data
 
         public Sprite BackgroundSprite => backgroundSprite;
         public Color CameraBackgroundColor => cameraBackgroundColor;
+        public Color BoardPanelColor => boardPanelColor;
         public Color TextColor => textColor;
         public Color PanelColor => panelColor;
         public Color PrimaryButtonColor => primaryButtonColor;

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.Data.WorldGameplayTheme
   backgroundSprite: {fileID: 21300000, guid: 5d149512a3e124b49be22f1e8edc387d, type: 3}
   cameraBackgroundColor: {r: 0.7921569, g: 0.8627451, b: 0.69411767, a: 1}
+  boardPanelColor: {r: 0.9411765, g: 0.8509804, b: 0.64705884, a: 0.93}
   textColor: {r: 0.1882353, g: 0.2901961, b: 0.16470589, a: 1}
   panelColor: {r: 0.9607843, g: 0.92156863, b: 0.7882353, a: 0.8627451}
   primaryButtonColor: {r: 0.43529412, g: 0.5803922, b: 0.3137255, a: 1}

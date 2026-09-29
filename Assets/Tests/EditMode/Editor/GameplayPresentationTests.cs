@@ -86,7 +86,7 @@ namespace PipeMuzzle.Tests.EditMode
         }
 
         [Test]
-        public void ReconfiguringWorldKeepsOneCalmedBackground()
+        public void ReconfiguringWorldKeepsOneFullyVisibleBackground()
         {
             GameObject cameraObject = Create("PresentationCamera");
             cameraObject.tag = "MainCamera";
@@ -115,7 +115,7 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(backgrounds, Has.Length.EqualTo(1));
             Assert.That(backgrounds[0].sprite,
                 Is.SameAs(bamboo.GameplayTheme.BackgroundSprite));
-            Assert.That(backgrounds[0].color.a, Is.InRange(0.25f, 0.32f));
+            Assert.That(backgrounds[0].color.a, Is.InRange(.95f, 1f));
             Assert.That(backgrounds[0].transform.parent, Is.SameAs(camera.transform));
             Assert.That(backgrounds[0].transform.localPosition,
                 Is.EqualTo(new Vector3(0f, 0f, 20f)));
@@ -124,6 +124,87 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(backgrounds[0].sortingOrder, Is.EqualTo(-1000));
             Assert.That(camera.backgroundColor,
                 Is.EqualTo(bamboo.GameplayTheme.CameraBackgroundColor));
+        }
+
+        [Test]
+        public void ReconfiguringWorldKeepsOneRoundedBoardPanelBehindTiles()
+        {
+            GameObject cameraObject = Create("PresentationCamera");
+            cameraObject.tag = "MainCamera";
+            Camera camera = cameraObject.AddComponent<Camera>();
+            camera.orthographic = true;
+
+            GameObject boardObject = Create("Board");
+            BoardView boardView = boardObject.AddComponent<BoardView>();
+            SetIntField(boardView, "boardWidth", 3);
+            SetIntField(boardView, "boardHeight", 2);
+            GameObject tile = Create("BoardTile");
+            tile.transform.SetParent(boardObject.transform, false);
+            SpriteRenderer tileRenderer = tile.AddComponent<SpriteRenderer>();
+            tileRenderer.sprite = Sprite.Create(
+                Texture2D.whiteTexture,
+                new Rect(0f, 0f, 1f, 1f),
+                new Vector2(.5f, .5f)
+            );
+            tile.transform.localScale = new Vector3(3f, 2f, 1f);
+
+            GameObject controllerObject = Create("PresentationController");
+            WorldPresentationController controller =
+                controllerObject.AddComponent<WorldPresentationController>();
+            WorldDefinition sakura = World("SakuraGarden");
+            WorldDefinition moon = World("MoonShrine");
+
+            controller.Configure(sakura);
+            Invoke(controller, "LateUpdate");
+
+            SpriteRenderer[] panels = camera
+                .GetComponentsInChildren<SpriteRenderer>(true)
+                .Where(renderer =>
+                    renderer.gameObject.name == "WorldGameplayBoardPanel")
+                .ToArray();
+
+            Assert.That(panels, Has.Length.EqualTo(1));
+            Assert.That(panels[0].color,
+                Is.EqualTo(sakura.GameplayTheme.BoardPanelColor));
+            Assert.That(panels[0].color.a, Is.GreaterThan(.9f));
+            Assert.That(panels[0].sortingOrder, Is.EqualTo(-10));
+            Assert.That(panels[0].sprite.texture.GetPixel(0, 0).a,
+                Is.LessThan(.01f));
+            Assert.That(panels[0].sprite.texture.GetPixel(48, 48).a,
+                Is.GreaterThan(.99f));
+            Assert.That(panels[0].bounds.Contains(tileRenderer.bounds.min),
+                Is.True);
+            Assert.That(panels[0].bounds.Contains(tileRenderer.bounds.max),
+                Is.True);
+
+            SpriteRenderer[] borders = camera
+                .GetComponentsInChildren<SpriteRenderer>(true)
+                .Where(renderer =>
+                    renderer.gameObject.name == "WorldGameplayBoardPanelBorder")
+                .ToArray();
+            Assert.That(borders, Has.Length.EqualTo(1));
+            Assert.That(borders[0].sortingOrder, Is.EqualTo(-11));
+            Assert.That(borders[0].bounds.Contains(panels[0].bounds.min),
+                Is.True);
+            Assert.That(borders[0].bounds.Contains(panels[0].bounds.max),
+                Is.True);
+
+            Vector3 panelPosition = panels[0].transform.localPosition;
+            Vector3 panelScale = panels[0].transform.localScale;
+            tile.transform.localRotation = Quaternion.Euler(0f, 0f, 45f);
+            tile.transform.localScale = new Vector3(4f, .25f, 1f);
+            Invoke(controller, "LateUpdate");
+
+            Assert.That(panels[0].transform.localPosition,
+                Is.EqualTo(panelPosition));
+            Assert.That(panels[0].transform.localScale,
+                Is.EqualTo(panelScale));
+
+            controller.Configure(moon);
+            Invoke(controller, "LateUpdate");
+
+            Assert.That(panels[0].color,
+                Is.EqualTo(moon.GameplayTheme.BoardPanelColor));
         }
 
         [Test]
@@ -330,6 +411,19 @@ namespace PipeMuzzle.Tests.EditMode
             object target,
             string fieldName,
             Object value)
+        {
+            FieldInfo field = target.GetType().GetField(
+                fieldName,
+                BindingFlags.Instance | BindingFlags.NonPublic
+            );
+            Assert.That(field, Is.Not.Null);
+            field.SetValue(target, value);
+        }
+
+        private static void SetIntField(
+            object target,
+            string fieldName,
+            int value)
         {
             FieldInfo field = target.GetType().GetField(
                 fieldName,
