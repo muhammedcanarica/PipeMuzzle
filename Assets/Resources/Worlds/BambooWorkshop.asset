@@ -28,6 +28,17 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4ef3358cca7cc2f53d4b2c10820baed8, type: 2}
   - {fileID: 11400000, guid: b55e78138e3718230a4a10bba814d573, type: 2}
   story: {fileID: 11400000, guid: d2542f8775cc4aef9e2f3b7c88b9a672, type: 2}
+  storyCheckpoints:
+  - completedLevelNumber: 0
+    story: {fileID: 11400000, guid: 17e2c35464b04e1caaa1f1e9d3db8d0b, type: 2}
+  - completedLevelNumber: 3
+    story: {fileID: 11400000, guid: 0e1e81d76cb94fe1a917a3f5772c98d0, type: 2}
+  - completedLevelNumber: 6
+    story: {fileID: 11400000, guid: e64a0eee1d1e48148c8fa9955e7536be, type: 2}
+  - completedLevelNumber: 9
+    story: {fileID: 11400000, guid: 1494cca38a244c29bb69c45ace94a498, type: 2}
+  - completedLevelNumber: 12
+    story: {fileID: 11400000, guid: 0d836fee22d843d0b4c391df2c0862d0, type: 2}
   levelSelectTheme: {fileID: 11400000, guid: ee6369efdb566504291edd99a4d4032e, type: 2}
   levelPathLayout: {fileID: 11400000, guid: 6c6082a77ac2ce54caa98b93a5cbf867, type: 2}
   gameplayTheme: {fileID: 11400000, guid: bb9be0228da425b4fb5cc5f6e4a9cbc9, type: 2}

@@ -119,7 +119,16 @@ namespace PipeMuzzle.UI
 
         private void ShowPanel(Sprite panel)
         {
-            if (panelImage != null) panelImage.sprite = panel;
+            if (panelImage != null)
+            {
+                // Reuse one Image for every step, including during the fade transition.
+                panelImage.overrideSprite = null;
+                panelImage.sprite = panel;
+                panelImage.type = Image.Type.Simple;
+                panelImage.preserveAspect = true;
+                panelImage.enabled = panel != null;
+                panelImage.raycastTarget = false;
+            }
             if (panelCanvasGroup != null) panelCanvasGroup.alpha = 1f;
             if (continueLabel != null) continueLabel.gameObject.SetActive(true);
         }
@@ -155,19 +164,23 @@ namespace PipeMuzzle.UI
             if (panelImage != null || transform.Find("ComicFrame") != null) return;
 
             CreateImage("Background", transform, new Color32(35, 29, 44, 255), true);
-            GameObject frame = new("ComicFrame", typeof(RectTransform), typeof(Image), typeof(CanvasGroup));
+            GameObject frame = new("ComicFrame", typeof(RectTransform), typeof(CanvasGroup));
             frame.transform.SetParent(transform, false);
             RectTransform frameRect = frame.GetComponent<RectTransform>();
-            frameRect.anchorMin = frameRect.anchorMax = new Vector2(.5f, .5f);
-            frameRect.sizeDelta = new Vector2(1120f, 800f);
-            frame.GetComponent<Image>().color = new Color32(255, 248, 246, 255);
+            frameRect.Stretch();
+            // Fit inside the screen with space for navigation and the continue hint.
+            // The unused space reveals the backdrop instead of an opaque page frame.
+            frameRect.offsetMin = new Vector2(32f, 92f);
+            frameRect.offsetMax = new Vector2(-32f, -104f);
 
             panelImage = CreateImage("PanelImage", frame.transform, Color.white, true);
             panelImage.preserveAspect = true;
             panelCanvasGroup = frame.GetComponent<CanvasGroup>();
 
             advanceButton = CreateButton("AdvanceButton", transform, Color.clear, Vector2.zero, Vector2.zero, Vector2.one, Vector2.zero);
-            continueLabel = CreateText("ContinueLabel", transform, "Tap to continue", new Vector2(0f, -440f), new Vector2(520f, 48f), 24f);
+            continueLabel = CreateText("ContinueLabel", transform, "Tap to continue", new Vector2(0f, 30f), new Vector2(520f, 48f), 24f);
+            continueLabel.rectTransform.anchorMin = continueLabel.rectTransform.anchorMax = new Vector2(.5f, 0f);
+            continueLabel.rectTransform.pivot = new Vector2(.5f, 0f);
             continueLabel.raycastTarget = false;
             backButton = CreateButton("BackButton", transform, new Color32(238, 126, 164, 255), new Vector2(44f, -42f), new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(142f, 52f));
             skipButton = CreateButton("SkipButton", transform, new Color32(238, 126, 164, 255), new Vector2(-44f, -42f), new Vector2(1f, 1f), new Vector2(1f, 1f), new Vector2(142f, 52f));

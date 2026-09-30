@@ -157,10 +157,10 @@ TextureImporter:
       name: Moon_Story_01
       rect:
         serializedVersion: 2
-        x: 0
-        y: 966
-        width: 543
-        height: 482
+        x: 9
+        y: 965
+        width: 530
+        height: 474
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -179,10 +179,10 @@ TextureImporter:
       name: Moon_Story_02
       rect:
         serializedVersion: 2
-        x: 543
-        y: 966
-        width: 543
-        height: 482
+        x: 547
+        y: 965
+        width: 529
+        height: 474
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -201,10 +201,10 @@ TextureImporter:
       name: Moon_Story_03
       rect:
         serializedVersion: 2
-        x: 0
-        y: 483
-        width: 543
-        height: 483
+        x: 10
+        y: 497
+        width: 529
+        height: 464
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -223,10 +223,10 @@ TextureImporter:
       name: Moon_Story_04
       rect:
         serializedVersion: 2
-        x: 543
-        y: 483
-        width: 543
-        height: 483
+        x: 546
+        y: 497
+        width: 530
+        height: 463
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -245,10 +245,10 @@ TextureImporter:
       name: Moon_Story_05
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 543
-        height: 483
+        x: 10
+        y: 17
+        width: 527
+        height: 476
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -267,10 +267,10 @@ TextureImporter:
       name: Moon_Story_06
       rect:
         serializedVersion: 2
-        x: 543
-        y: 0
-        width: 543
-        height: 483
+        x: 546
+        y: 17
+        width: 530
+        height: 476
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

@@ -1,25 +1,31 @@
 fileFormatVersion: 2
-guid: 3281bf46231b4f1ea95c57421c7e8b3c
+guid: 0a04de17bf354c4fb7e251df278c11fb
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -702000000000000001
-    second: Bamboo_Story_01
+      213: -710000000000000001
+    second: Moon_Checkpoint_01
   - first:
-      213: -702000000000000002
-    second: Bamboo_Story_02
+      213: -710000000000000002
+    second: Moon_Checkpoint_02
   - first:
-      213: -702000000000000003
-    second: Bamboo_Story_03
+      213: -710000000000000003
+    second: Moon_Checkpoint_03
   - first:
-      213: -702000000000000004
-    second: Bamboo_Story_04
+      213: -710000000000000004
+    second: Moon_Checkpoint_04
   - first:
-      213: -702000000000000005
-    second: Bamboo_Story_05
+      213: -710000000000000005
+    second: Moon_Checkpoint_05
   - first:
-      213: -702000000000000006
-    second: Bamboo_Story_06
+      213: -710000000000000006
+    second: Moon_Checkpoint_06
+  - first:
+      213: -710000000000000007
+    second: Moon_Checkpoint_07
+  - first:
+      213: -710000000000000008
+    second: Moon_Checkpoint_08
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -63,7 +69,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -90,7 +96,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -103,7 +109,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -116,7 +122,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -129,7 +135,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -142,7 +148,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -154,159 +160,205 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Bamboo_Story_01
+      name: Moon_Checkpoint_01
       rect:
         serializedVersion: 2
-        x: 18
-        y: 947
-        width: 535
-        height: 444
+        x: 21
+        y: 736
+        width: 463
+        height: 255
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
+      customData:
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 92ce48e085d945a4b963db9ad4e87d01
-      internalID: -702000000000000001
+      spriteID: ea8506d9005546acae2f58d3cf73dd78
+      internalID: -710000000000000001
       vertices: []
-      indices: 
+      indices:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bamboo_Story_02
+      name: Moon_Checkpoint_02
       rect:
         serializedVersion: 2
-        x: 568
-        y: 947
-        width: 537
-        height: 444
+        x: 511
+        y: 736
+        width: 615
+        height: 255
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
+      customData:
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 92ce48e085d945a4b963db9ad4e87d02
-      internalID: -702000000000000002
+      spriteID: b692dafb145b44b391f102dc6ea3e338
+      internalID: -710000000000000002
       vertices: []
-      indices: 
+      indices:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bamboo_Story_03
+      name: Moon_Checkpoint_03
       rect:
         serializedVersion: 2
-        x: 19
-        y: 536
-        width: 532
-        height: 401
+        x: 1153
+        y: 736
+        width: 362
+        height: 255
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
+      customData:
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 92ce48e085d945a4b963db9ad4e87d03
-      internalID: -702000000000000003
+      spriteID: 02c38f6135ab48e9be29d60a6376d9d8
+      internalID: -710000000000000003
       vertices: []
-      indices: 
+      indices:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bamboo_Story_04
+      name: Moon_Checkpoint_04
       rect:
         serializedVersion: 2
-        x: 566
-        y: 536
-        width: 536
-        height: 401
+        x: 22
+        y: 481
+        width: 504
+        height: 221
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
+      customData:
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 92ce48e085d945a4b963db9ad4e87d04
-      internalID: -702000000000000004
+      spriteID: 70941f1a146f4eb0be510b1ec96dea66
+      internalID: -710000000000000004
       vertices: []
-      indices: 
+      indices:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bamboo_Story_05
+      name: Moon_Checkpoint_05
       rect:
         serializedVersion: 2
-        x: 19
-        y: 22
-        width: 492
-        height: 505
+        x: 553
+        y: 481
+        width: 466
+        height: 221
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
+      customData:
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 92ce48e085d945a4b963db9ad4e87d05
-      internalID: -702000000000000005
+      spriteID: 522f25ad2988412b89f11c241171b1ae
+      internalID: -710000000000000005
       vertices: []
-      indices: 
+      indices:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bamboo_Story_06
+      name: Moon_Checkpoint_06
       rect:
         serializedVersion: 2
-        x: 526
-        y: 22
-        width: 577
-        height: 505
+        x: 1048
+        y: 481
+        width: 466
+        height: 221
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
+      customData:
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 92ce48e085d945a4b963db9ad4e87d06
-      internalID: -702000000000000006
+      spriteID: 53c5040847324b36acfc07ee9e3915c8
+      internalID: -710000000000000006
       vertices: []
-      indices: 
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Moon_Checkpoint_07
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 36
+        width: 629
+        height: 410
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d71d1c7ac6a04aca9c5a8d071d4c3789
+      internalID: -710000000000000007
+      vertices: []
+      indices:
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Moon_Checkpoint_08
+      rect:
+        serializedVersion: 2
+        x: 679
+        y: 36
+        width: 835
+        height: 410
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData:
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e057cc9568f74843b0429e3bc711d0ff
+      internalID: -710000000000000008
+      vertices: []
+      indices:
       edges: []
       weights: []
     outline: []
-    customData: 
+    customData:
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID:
     internalID: 0
     vertices: []
-    indices: 
+    indices:
     edges: []
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Bamboo_Story_01: -702000000000000001
-      Bamboo_Story_02: -702000000000000002
-      Bamboo_Story_03: -702000000000000003
-      Bamboo_Story_04: -702000000000000004
-      Bamboo_Story_05: -702000000000000005
-      Bamboo_Story_06: -702000000000000006
-  mipmapLimitGroupName: 
+      Moon_Checkpoint_01: -710000000000000001
+      Moon_Checkpoint_02: -710000000000000002
+      Moon_Checkpoint_03: -710000000000000003
+      Moon_Checkpoint_04: -710000000000000004
+      Moon_Checkpoint_05: -710000000000000005
+      Moon_Checkpoint_06: -710000000000000006
+      Moon_Checkpoint_07: -710000000000000007
+      Moon_Checkpoint_08: -710000000000000008
+  mipmapLimitGroupName:
   pSDRemoveMatte: 0
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 
+  userData:
+  assetBundleName:
+  assetBundleVariant:

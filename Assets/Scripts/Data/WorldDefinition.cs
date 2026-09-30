@@ -20,6 +20,7 @@ namespace PipeMuzzle.Data
         [SerializeField] private string displayName;
         [SerializeField] private List<LevelDefinition> levels = new();
         [SerializeField] private ComicStoryDefinition story;
+        [SerializeField] private List<StoryCheckpoint> storyCheckpoints = new();
         [SerializeField] private WorldLevelSelectTheme levelSelectTheme;
         [SerializeField] private LevelPathLayoutDefinition levelPathLayout;
         [SerializeField] private WorldGameplayTheme gameplayTheme;
@@ -32,6 +33,10 @@ namespace PipeMuzzle.Data
             levels.All(level => level != null) &&
             levels.Distinct().Count() == ExpectedLevelCount;
         public ComicStoryDefinition Story => story;
+        public IReadOnlyList<StoryCheckpoint> StoryCheckpoints => storyCheckpoints;
+        public StoryCheckpoint GetStoryCheckpoint(int completedLevelNumber) =>
+            storyCheckpoints?.FirstOrDefault(checkpoint => checkpoint != null &&
+                checkpoint.CompletedLevelNumber == completedLevelNumber);
         public WorldLevelSelectTheme LevelSelectTheme => levelSelectTheme;
         public LevelPathLayoutDefinition LevelPathLayout => levelPathLayout;
         public WorldGameplayTheme GameplayTheme => gameplayTheme;

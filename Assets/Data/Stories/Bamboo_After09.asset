@@ -1,0 +1,11 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f59f29a9a6743e8a984c5d328c57ce3, type: 3}
+  m_Name: Bamboo_After09
+  m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.Data.ComicStoryDefinition
+  storyId: bamboo_after09
+  panels:
+  - {fileID: -710000000000000008, guid: 93b8050ef3094a9fa0552c049cccbc26, type: 3}

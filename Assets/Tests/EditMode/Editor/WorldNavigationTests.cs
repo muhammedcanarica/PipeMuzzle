@@ -67,45 +67,13 @@ namespace PipeMuzzle.Tests.EditMode
             WorldDefinition selected = null;
             map.WorldSelected += world => selected = world;
 
-            Transform artwork = root.transform.Find("MapSafeArea/MapArtwork");
-            Image background = root.transform.Find("Background").GetComponent<Image>();
-            Assert.That(background.sprite, Is.Null);
-            Assert.That(background.color, Is.EqualTo((Color)new Color32(255, 249, 246, 255)));
-            Assert.That(artwork, Is.Not.Null);
-            Button sakura = artwork.Find("Sakura Garden").GetComponent<Button>();
-            Button bamboo = artwork.Find("Bamboo Workshop").GetComponent<Button>();
-            Button moon = artwork.Find("Moon Shrine").GetComponent<Button>();
-            Vector2 sakuraPosition = ((RectTransform)sakura.transform).anchoredPosition;
-            Vector2 bambooPosition = ((RectTransform)bamboo.transform).anchoredPosition;
-            Vector2 moonPosition = ((RectTransform)moon.transform).anchoredPosition;
-            Assert.That(sakuraPosition.x, Is.LessThan(-100f));
-            Assert.That(bambooPosition.x, Is.GreaterThan(100f));
-            Assert.That(moonPosition.x, Is.LessThan(0f));
-            Assert.That(sakuraPosition.y, Is.LessThan(bambooPosition.y));
-            Assert.That(bambooPosition.y, Is.LessThan(moonPosition.y));
-            Assert.That(artwork.GetComponentsInChildren<Image>(true)
-                .Count(image => image.name == "JourneyPath"), Is.GreaterThanOrEqualTo(20));
-            Assert.That(artwork.GetComponentsInChildren<Image>(true)
-                .Count(image => image.name == "JourneyNode"), Is.EqualTo(2));
+            Button sakura = root.transform.Find("Sakura Garden").GetComponent<Button>();
+            Button bamboo = root.transform.Find("Bamboo Workshop").GetComponent<Button>();
+            Button moon = root.transform.Find("Moon Shrine").GetComponent<Button>();
             Assert.That(sakura.interactable, Is.True);
             Assert.That(bamboo.interactable, Is.False);
             Assert.That(moon.interactable, Is.False);
-            foreach (WorldDefinition world in new[] { Sakura(), Bamboo(), Moon() })
-            {
-                Image destination = artwork.Find(world.DisplayName)
-                    .GetComponent<Image>();
-                Assert.That(destination.sprite,
-                    Is.SameAs(Resources.Load<Sprite>(DestinationPath(world.WorldId))));
-                Assert.That(destination.preserveAspect, Is.True);
-                Assert.That(artwork.Find(world.DisplayName)
-                    .Find("WorldArtwork"), Is.Null);
-                Assert.That(artwork.Find(world.DisplayName)
-                    .Find("WorldLabelBubble"), Is.Not.Null);
-            }
-            Assert.That(Status(moon), Is.EqualTo("12 LEVELS"));
-            Assert.That(moon.transform.Find("WorldLabelBubble/IconBadge/LockIcon").gameObject.activeSelf, Is.True);
-            Assert.That(bamboo.transform.Find("WorldLabelBubble/IconBadge/LockIcon").gameObject.activeSelf, Is.True);
-            Assert.That(sakura.transform.Find("WorldLabelBubble/IconBadge/FlowerIcon").gameObject.activeSelf, Is.True);
+            Assert.That(Status(moon), Is.EqualTo("LOCKED"));
             sakura.onClick.Invoke();
             Assert.That(selected, Is.SameAs(Sakura()));
 
@@ -114,17 +82,17 @@ namespace PipeMuzzle.Tests.EditMode
             map.Refresh();
 
             Assert.That(root.transform.childCount, Is.EqualTo(childCount));
-            Assert.That(artwork.Find("Bamboo Workshop").GetComponent<Button>(), Is.SameAs(bamboo));
+            Assert.That(root.transform.Find("Bamboo Workshop").GetComponent<Button>(), Is.SameAs(bamboo));
             Assert.That(bamboo.interactable, Is.True);
             Assert.That(Status(bamboo), Is.EqualTo("12 LEVELS"));
-            Assert.That(bamboo.GetComponent<Image>().color,
-                Is.EqualTo(Color.white));
             Image bambooSurface = bamboo.GetComponent<Image>();
             Assert.That(bambooSurface.sprite, Is.Not.Null);
-            Assert.That(bambooSurface.type, Is.EqualTo(Image.Type.Simple));
-            Assert.That(bamboo.transform.Find("WorldLabelBubble/IconBadge/LockIcon").gameObject.activeSelf, Is.False);
-            Assert.That(bamboo.transform.Find("WorldLabelBubble/IconBadge/FlowerIcon").gameObject.activeSelf, Is.True);
-            Assert.That(moon.transform.Find("WorldLabelBubble/IconBadge/LockIcon").gameObject.activeSelf, Is.True);
+            Assert.That(bambooSurface.type, Is.EqualTo(Image.Type.Sliced));
+            Assert.That(bamboo.GetComponent<Shadow>(), Is.Not.Null);
+            Assert.That(bamboo.transform.Find("AccentBand"), Is.Not.Null);
+            Assert.That(bamboo.transform.Find("AccentBand").GetComponent<Image>().color,
+                Is.EqualTo((Color)new Color32(103, 143, 86, 255)));
+            Assert.That(Status(moon), Is.EqualTo("LOCKED"));
 
             bamboo.onClick.Invoke();
             Assert.That(selected, Is.SameAs(Bamboo()));
@@ -133,7 +101,7 @@ namespace PipeMuzzle.Tests.EditMode
         [TestCase(1920f, 1080f)]
         [TestCase(1080f, 1920f)]
         [TestCase(2560f, 1080f)]
-        public void MapPresentationKeepsArtworkAndLabelsSeparatedAndInsideScreen(float width, float height)
+        public void MapPresentationRestoresRoundedCardsAndSimpleRoutes(float width, float height)
         {
             GameObject root = new("WorldMapLayoutTest", typeof(RectTransform));
             created.Add(root);
@@ -141,36 +109,46 @@ namespace PipeMuzzle.Tests.EditMode
             rootRect.sizeDelta = new Vector2(width, height);
             WorldMapUI map = root.AddComponent<WorldMapUI>();
             map.Initialize();
-            Transform artwork = root.transform.Find("MapSafeArea/MapArtwork");
-            Button[] destinations = artwork.GetComponentsInChildren<Button>(true);
+            Image background = root.transform.Find("Background").GetComponent<Image>();
+            Assert.That(background.sprite, Is.Null);
+            Assert.That(background.color, Is.EqualTo((Color)new Color32(255, 242, 237, 255)));
+            Assert.That(root.transform.Find("SoftBackdrop"), Is.Null);
+            Assert.That(root.transform.Find("MapSafeArea"), Is.Null);
+            Button[] destinations = root.GetComponentsInChildren<Button>(true);
             Assert.That(destinations.Length, Is.EqualTo(3));
             List<Rect> visibleBounds = new();
-            foreach (Button destination in destinations)
+            float[] positions = { -265f, 0f, 265f };
+            for (int index = 0; index < destinations.Length; index++)
             {
-                foreach (RectTransform element in new[]
-                {
-                    (RectTransform)destination.transform,
-                    (RectTransform)destination.transform.Find("WorldLabelBubble")
-                })
-                {
-                    Vector3[] corners = new Vector3[4];
-                    element.GetWorldCorners(corners);
-                    Vector2 min = rootRect.InverseTransformPoint(corners[0]);
-                    Vector2 max = rootRect.InverseTransformPoint(corners[2]);
-                    Rect bounds = Rect.MinMaxRect(min.x, min.y, max.x, max.y);
-                    Assert.That(rootRect.rect.Contains(min), Is.True, element.name + " leaves screen");
-                    Assert.That(rootRect.rect.Contains(max), Is.True, element.name + " leaves screen");
-                    foreach (Rect other in visibleBounds)
-                        Assert.That(bounds.Overlaps(other), Is.False, element.name + " overlaps another destination or label");
-                    visibleBounds.Add(bounds);
-                }
+                Button destination = destinations[index];
+                RectTransform element = (RectTransform)destination.transform;
+                Assert.That(element.parent, Is.SameAs(root.transform));
+                Assert.That(element.anchoredPosition, Is.EqualTo(new Vector2(0f, positions[index])));
+                Assert.That(element.sizeDelta, Is.EqualTo(new Vector2(610f, 154f)));
+                Image surface = destination.GetComponent<Image>();
+                Assert.That(surface.type, Is.EqualTo(Image.Type.Sliced));
+                Assert.That(surface.sprite.name, Is.EqualTo("World Map Rounded Card"));
+                Assert.That(destination.transform.Find("AccentBand"), Is.Not.Null);
+                Assert.That(destination.transform.Find("StatusSurface"), Is.Not.Null);
+                Assert.That(destination.transform.Find("WorldLabelBubble"), Is.Null);
+                Vector3[] corners = new Vector3[4];
+                element.GetWorldCorners(corners);
+                Vector2 min = rootRect.InverseTransformPoint(corners[0]);
+                Vector2 max = rootRect.InverseTransformPoint(corners[2]);
+                Rect bounds = Rect.MinMaxRect(min.x, min.y, max.x, max.y);
+                Assert.That(rootRect.rect.Contains(min), Is.True, element.name + " leaves screen");
+                Assert.That(rootRect.rect.Contains(max), Is.True, element.name + " leaves screen");
+                foreach (Rect other in visibleBounds)
+                    Assert.That(bounds.Overlaps(other), Is.False, element.name + " overlaps another card");
+                visibleBounds.Add(bounds);
             }
+            Assert.That(root.GetComponentsInChildren<Image>(true)
+                .Count(image => image.name == "JourneyPath"), Is.EqualTo(2));
             Assert.That(root.GetComponentsInChildren<Canvas>(true), Is.Empty);
-            Button[] original = destinations;
+            Assert.That(root.GetComponentsInChildren<TMP_Text>(true).All(text => !text.raycastTarget), Is.True);
             rootRect.sizeDelta = new Vector2(height, width);
-            typeof(WorldMapUI).GetMethod("FitArtwork", BindingFlags.Instance | BindingFlags.NonPublic)
-                .Invoke(map, null);
-            Assert.That(artwork.GetComponentsInChildren<Button>(true), Is.EquivalentTo(original));
+            map.Refresh();
+            Assert.That(root.GetComponentsInChildren<Button>(true), Is.EquivalentTo(destinations));
         }
 
         [Test]
@@ -306,11 +284,6 @@ namespace PipeMuzzle.Tests.EditMode
         private static WorldDefinition Moon() => AssetDatabase.LoadAssetAtPath<WorldDefinition>(
             "Assets/Resources/Worlds/MoonShrine.asset");
 
-        private static string DestinationPath(WorldId worldId) => worldId switch
-        {
-            WorldId.SakuraGarden => "WorldMap/FinalSakuraGarden",
-            WorldId.BambooWorkshop => "WorldMap/FinalBambooWorkshop",
-            _ => "WorldMap/FinalMoonShrine"
-        };
+
     }
 }

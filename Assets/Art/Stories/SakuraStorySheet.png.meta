@@ -157,10 +157,10 @@ TextureImporter:
       name: Sakura_Story_01
       rect:
         serializedVersion: 2
-        x: 0
-        y: 935
-        width: 561
-        height: 467
+        x: 18
+        y: 939
+        width: 529
+        height: 451
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -179,10 +179,10 @@ TextureImporter:
       name: Sakura_Story_02
       rect:
         serializedVersion: 2
-        x: 561
-        y: 935
-        width: 561
-        height: 467
+        x: 560
+        y: 939
+        width: 539
+        height: 450
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -201,10 +201,10 @@ TextureImporter:
       name: Sakura_Story_03
       rect:
         serializedVersion: 2
-        x: 0
-        y: 468
-        width: 561
-        height: 467
+        x: 20
+        y: 532
+        width: 525
+        height: 400
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -223,10 +223,10 @@ TextureImporter:
       name: Sakura_Story_04
       rect:
         serializedVersion: 2
-        x: 561
-        y: 468
-        width: 561
-        height: 467
+        x: 553
+        y: 532
+        width: 544
+        height: 400
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -245,10 +245,10 @@ TextureImporter:
       name: Sakura_Story_05
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 561
-        height: 468
+        x: 20
+        y: 30
+        width: 487
+        height: 495
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -267,10 +267,10 @@ TextureImporter:
       name: Sakura_Story_06
       rect:
         serializedVersion: 2
-        x: 561
-        y: 0
-        width: 561
-        height: 468
+        x: 520
+        y: 30
+        width: 579
+        height: 495
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
