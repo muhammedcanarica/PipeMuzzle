@@ -37,7 +37,6 @@ namespace PipeMuzzle.UI
         private Texture2D primaryButtonTexture;
         private Texture2D completionCardTexture;
         private bool isBound;
-        private bool levelWasAlreadyCompleted;
 
         public void ApplyTheme(WorldGameplayTheme theme)
         {
@@ -463,14 +462,6 @@ namespace PipeMuzzle.UI
 
         private void HandleLevelLoaded(int levelNumber, int _)
         {
-            WorldDefinition world = gameController.CurrentWorld;
-            if (world != null)
-            {
-                // Read existing progress before CompleteLevel unlocks the next level.
-                levelWasAlreadyCompleted = levelNumber == world.LevelCount
-                    ? new WorldProgressService().IsWorldCompleted(world.WorldId)
-                    : new ProgressService(world.WorldId, world.LevelCount).HighestUnlockedLevelIndex >= levelNumber;
-            }
             SetLevelText(levelNumber);
             completionPanel.SetActive(false);
         }
@@ -485,8 +476,7 @@ namespace PipeMuzzle.UI
             StoryNavigationCoordinator navigation = GetComponent<StoryNavigationCoordinator>() ??
                 GetComponentInParent<StoryNavigationCoordinator>(true);
             if (navigation != null && navigation.TryPlayLevelCheckpoint(gameController.CurrentWorld,
-                    gameController.CurrentLevelNumber, !levelWasAlreadyCompleted,
-                    () => ShowCompletion(hasNextLevel))) return;
+                    gameController.CurrentLevelNumber, () => ShowCompletion(hasNextLevel))) return;
             ShowCompletion(hasNextLevel);
         }
 

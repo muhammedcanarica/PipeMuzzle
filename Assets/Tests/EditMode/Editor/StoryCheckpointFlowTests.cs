@@ -152,9 +152,10 @@ namespace PipeMuzzle.Tests.EditMode
         [TestCase("SakuraGarden")]
         [TestCase("BambooWorkshop")]
         [TestCase("MoonShrine")]
-        public void WorldEntryShowsAssignedIntroOnceAndSkipReturnsToSelectedWorld(string worldName)
+        public void WorldMapEntry_AlwaysPlaysIntro(string worldName)
         {
             WorldDefinition world = LoadWorld(worldName);
+            string introKey = $"PipeMuzzle.Story.World.{worldName}.Checkpoint.0.Viewed";
             PlayerPrefs.SetInt(ProgressKey(worldName, "Unlocked"), 1);
             StoryNavigationCoordinator navigation = screens.GetComponent<StoryNavigationCoordinator>();
             navigation.OpenWorld(world);
@@ -164,7 +165,7 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(GetField<ComicStoryDefinition>(viewer, "currentStory"),
                 Is.SameAs(world.GetStoryCheckpoint(0).Story));
             Assert.That(panelImage.sprite, Is.SameAs(world.GetStoryCheckpoint(0).Story.Panels[0]));
-            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, 0), Is.True);
+            Assert.That(PlayerPrefs.HasKey(introKey), Is.False);
 
             viewer.Skip();
 
@@ -175,13 +176,38 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(controller.CurrentWorld, Is.SameAs(world));
 
             screens.ShowWorldMap();
+            PlayerPrefs.SetInt(introKey, 1); // Existing saves may retain the old Intro flag.
             navigation.OpenWorld(world);
 
-            Assert.That(comic.activeSelf, Is.False);
+            Assert.That(comic.activeSelf, Is.True);
+            Assert.That(select.activeSelf, Is.False);
+            Assert.That(GetField<ComicStoryDefinition>(viewer, "currentStory"),
+                Is.SameAs(world.GetStoryCheckpoint(0).Story));
+            Assert.That(PlayerPrefs.GetInt(introKey), Is.EqualTo(1));
+            viewer.Skip();
             Assert.That(select.activeSelf, Is.True);
-            Assert.That(GetField<ComicStoryDefinition>(viewer, "currentStory"), Is.Null);
             Assert.That(levelSelect.CurrentWorld, Is.SameAs(world));
             Assert.That(controller.CurrentWorld, Is.SameAs(world));
+        }
+
+        [TestCase("SakuraGarden")]
+        [TestCase("BambooWorkshop")]
+        [TestCase("MoonShrine")]
+        public void Intro_DoesNotCreateViewedPersistence(string worldName)
+        {
+            WorldDefinition world = LoadWorld(worldName);
+            string introKey = $"PipeMuzzle.Story.World.{worldName}.Checkpoint.0.Viewed";
+            PlayerPrefs.SetInt(ProgressKey(worldName, "Unlocked"), 1);
+            StoryNavigationCoordinator navigation = screens.GetComponent<StoryNavigationCoordinator>();
+            Assert.That(PlayerPrefs.HasKey(introKey), Is.False);
+
+            navigation.OpenWorld(world);
+            viewer.Skip();
+            screens.ShowWorldMap();
+            navigation.OpenWorld(world);
+
+            Assert.That(comic.activeSelf, Is.True);
+            Assert.That(PlayerPrefs.HasKey(introKey), Is.False);
         }
 
         [TestCaseSource(nameof(ProgressCases))]
@@ -203,21 +229,34 @@ namespace PipeMuzzle.Tests.EditMode
         }
 
         [TestCaseSource(nameof(ProgressCases))]
-        public void ExistingCompletionProgressSuppressesUnviewedCheckpoint(string worldName, int checkpoint)
+        public void UnviewedCheckpointPlaysEvenIfLevelWasPreviouslyUnlocked(string worldName, int checkpoint)
         {
             WorldDefinition world = PrepareLevel(worldName, checkpoint, true);
             Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.False);
             Invoke(controller, "CompleteLevel");
 
-            Assert.That(comic.activeSelf, Is.False);
-            Assert.That(completion.activeSelf, Is.True);
-            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.False);
+            Assert.That(comic.activeSelf, Is.True);
+            Assert.That(completion.activeSelf, Is.False);
+            Assert.That(GetField<ComicStoryDefinition>(viewer, "currentStory"),
+                Is.SameAs(world.GetStoryCheckpoint(checkpoint).Story));
+            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.True);
+            viewer.Skip();
+            if (checkpoint < world.LevelCount)
+            {
+                Assert.That(select.activeSelf, Is.True);
+                Assert.That(levelSelect.CurrentWorld, Is.SameAs(world));
+            }
+            else
+            {
+                Assert.That(completion.activeSelf, Is.True);
+                Assert.That(completionText.text, Does.Contain("WORLD COMPLETE"));
+            }
         }
 
         [TestCase(3)]
         [TestCase(6)]
         [TestCase(9)]
-        public void MigratedLegacySakuraProgressSuppressesCheckpoint(int checkpoint)
+        public void MigratedLegacySakuraProgressDoesNotSuppressUnviewedCheckpoint(int checkpoint)
         {
             PlayerPrefs.SetInt("PipeMuzzle.HighestUnlockedLevel", checkpoint);
             WorldDefinition world = LoadWorld("SakuraGarden");
@@ -227,9 +266,8 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(controller.CurrentLevelNumber, Is.EqualTo(checkpoint));
             Invoke(controller, "CompleteLevel");
 
-            Assert.That(comic.activeSelf, Is.False);
-            Assert.That(completion.activeSelf, Is.True);
-            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.False);
+            Assert.That(comic.activeSelf, Is.True);
+            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.True);
         }
 
         private WorldDefinition PrepareLevel(string worldName, int checkpoint, bool completedBefore)

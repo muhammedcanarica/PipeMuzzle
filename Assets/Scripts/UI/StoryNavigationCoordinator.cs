@@ -65,24 +65,17 @@ namespace PipeMuzzle.UI
             presentationController.Configure(selectedWorld);
             playingLevelCheckpoint = false;
             finalCompletion = null;
-            if (checkpointProgress.TryBegin(world, 0, out StoryCheckpoint intro))
-            {
-                screenManager.ShowComic();
-                comicViewerUi.Play(intro.Story);
-            }
-            else if (world.GetStoryCheckpoint(0) == null)
-            {
-                // Preserve legacy/custom world definitions until checkpoint data is assigned.
-                screenManager.ShowComic();
-                comicViewerUi.Play(world.Story);
-            }
-            else ShowLevelSelect();
+            StoryCheckpoint intro = world.GetStoryCheckpoint(0);
+            ComicStoryDefinition entryStory = intro?.Story != null && intro.Story.PanelCount > 0
+                ? intro.Story : world.Story;
+            screenManager.ShowComic();
+            comicViewerUi.Play(entryStory);
         }
 
         public bool TryPlayLevelCheckpoint(WorldDefinition world, int completedLevelNumber,
-            bool firstCompletion, Action onFinalCompleted)
+            Action onFinalCompleted)
         {
-            if (!firstCompletion || world == null || screenManager == null || comicViewerUi == null ||
+            if (world == null || screenManager == null || comicViewerUi == null ||
                 completedLevelNumber <= 0 || playingLevelCheckpoint) return false;
             levelSelectUi ??= GetComponent<LevelSelectUI>();
             if (levelSelectUi == null || !checkpointProgress.TryBegin(world, completedLevelNumber, out StoryCheckpoint checkpoint))

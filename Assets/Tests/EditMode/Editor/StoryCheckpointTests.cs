@@ -52,17 +52,14 @@ namespace PipeMuzzle.Tests.EditMode
                 Assert.That(checkpoint.Story.PanelCount, Is.GreaterThan(0));
         }
 
-        [TestCase("SakuraGarden", 0)]
         [TestCase("SakuraGarden", 3)]
         [TestCase("SakuraGarden", 6)]
         [TestCase("SakuraGarden", 9)]
         [TestCase("SakuraGarden", 12)]
-        [TestCase("BambooWorkshop", 0)]
         [TestCase("BambooWorkshop", 3)]
         [TestCase("BambooWorkshop", 6)]
         [TestCase("BambooWorkshop", 9)]
         [TestCase("BambooWorkshop", 12)]
-        [TestCase("MoonShrine", 0)]
         [TestCase("MoonShrine", 3)]
         [TestCase("MoonShrine", 6)]
         [TestCase("MoonShrine", 9)]
@@ -75,6 +72,21 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(checkpoint, Is.SameAs(world.GetStoryCheckpoint(trigger)));
             Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, trigger), Is.True);
             Assert.That(new StoryCheckpointProgress().TryBegin(world, trigger, out _), Is.False);
+        }
+
+        [TestCase("SakuraGarden")]
+        [TestCase("BambooWorkshop")]
+        [TestCase("MoonShrine")]
+        public void IntroIsNotManagedAsPersistentCheckpoint(string name)
+        {
+            WorldDefinition world = World(name);
+            string key = $"PipeMuzzle.Story.World.{name}.Checkpoint.0.Viewed";
+            PlayerPrefs.SetInt(key, 1); // An older save may already contain this key.
+            StoryCheckpointProgress progress = new();
+
+            Assert.That(progress.HasViewed(world.WorldId, 0), Is.False);
+            Assert.That(progress.TryBegin(world, 0, out _), Is.False);
+            Assert.That(PlayerPrefs.GetInt(key), Is.EqualTo(1));
         }
 
         [Test]

@@ -6,12 +6,12 @@ namespace PipeMuzzle.Gameplay
     public sealed class StoryCheckpointProgress
     {
         public bool HasViewed(WorldId world, int completedLevelNumber) =>
-            PlayerPrefs.GetInt(Key(world, completedLevelNumber), 0) == 1;
+            completedLevelNumber > 0 && PlayerPrefs.GetInt(Key(world, completedLevelNumber), 0) == 1;
 
         public bool TryBegin(WorldDefinition world, int completedLevelNumber, out StoryCheckpoint checkpoint)
         {
             checkpoint = null;
-            if (world == null || HasViewed(world.WorldId, completedLevelNumber)) return false;
+            if (world == null || completedLevelNumber <= 0 || HasViewed(world.WorldId, completedLevelNumber)) return false;
             checkpoint = world.GetStoryCheckpoint(completedLevelNumber);
             if (checkpoint?.Story == null || checkpoint.Story.PanelCount == 0)
             {
