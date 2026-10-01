@@ -8,4 +8,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.Data.ComicStoryDefinition
   storyId: sakura_after06
   panels:
-  - {fileID: -710000000000000007, guid: 81069478ba05415c9fc6e7e45276ba28, type: 3}
+  - {fileID: 21300000, guid: 229d226ab4c5b034cad8133d707e40ca, type: 3}
+  - {fileID: 21300000, guid: de9c0c12528c52a4a8d1681a9f47a54b, type: 3}

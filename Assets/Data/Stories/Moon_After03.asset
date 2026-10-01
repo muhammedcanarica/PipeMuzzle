@@ -8,4 +8,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.Data.ComicStoryDefinition
   storyId: moon_after03
   panels:
-  - {fileID: -710000000000000004, guid: 0a04de17bf354c4fb7e251df278c11fb, type: 3}
+  - {fileID: 21300000, guid: e1182742713f8404da0755b9c2754329, type: 3}
