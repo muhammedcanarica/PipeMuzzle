@@ -110,6 +110,76 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(progress.HasViewed(WorldId.SakuraGarden, 3), Is.False);
         }
 
+        [TestCase(WorldId.SakuraGarden)]
+        [TestCase(WorldId.BambooWorkshop)]
+        [TestCase(WorldId.MoonShrine)]
+        public void ResetViewedCheckpointsOnlyClearsSelectedWorldLevelStories(WorldId selectedWorld)
+        {
+            Dictionary<string, int> preserved = new();
+            foreach (WorldId world in new[] { WorldId.SakuraGarden, WorldId.BambooWorkshop, WorldId.MoonShrine })
+            {
+                foreach (int trigger in new[] { 0, 3, 4, 6, 9, 12 })
+                {
+                    string key = $"PipeMuzzle.Story.World.{world}.Checkpoint.{trigger}.Viewed";
+                    SeedValue(key, 1);
+                    if (world != selectedWorld || trigger is 0 or 4) preserved[key] = 1;
+                }
+                foreach (string suffix in new[] { "HighestUnlockedLevel", "Unlocked", "Completed" })
+                {
+                    string key = $"PipeMuzzle.Progress.World.{world}.{suffix}";
+                    int value = suffix == "HighestUnlockedLevel" ? 11 : 1;
+                    SeedValue(key, value);
+                    preserved[key] = value;
+                }
+            }
+            foreach (string key in new[] { "PipeMuzzle.HighestUnlockedLevel",
+                         "PipeMuzzle.Progress.Migration.LegacyHighestUnlockedLevelToSakura.V1",
+                         "PipeMuzzle.Tests.UnrelatedCheckpointResetPreference" })
+            {
+                SeedValue(key, 7);
+                preserved[key] = 7;
+            }
+
+            StoryCheckpointProgress.ResetViewedCheckpointsForWorld(selectedWorld);
+            StoryCheckpointProgress.ResetViewedCheckpointsForWorld(selectedWorld); // Resetting missing flags is harmless.
+
+            foreach (int trigger in new[] { 3, 6, 9, 12 })
+            {
+                string key = $"PipeMuzzle.Story.World.{selectedWorld}.Checkpoint.{trigger}.Viewed";
+                Assert.That(PlayerPrefs.HasKey(key), Is.False, key);
+                Assert.That(new StoryCheckpointProgress().HasViewed(selectedWorld, trigger), Is.False);
+            }
+            foreach (var entry in preserved)
+            {
+                Assert.That(PlayerPrefs.HasKey(entry.Key), Is.True, entry.Key);
+                Assert.That(PlayerPrefs.GetInt(entry.Key), Is.EqualTo(entry.Value), entry.Key);
+            }
+            foreach (int trigger in new[] { 3, 6, 9, 12 })
+            {
+                StoryCheckpointProgress progress = new();
+                Assert.That(progress.TryBegin(World(selectedWorld.ToString()), trigger, out _), Is.True);
+                Assert.That(progress.TryBegin(World(selectedWorld.ToString()), trigger, out _), Is.False);
+            }
+        }
+
+        [TestCase(WorldId.SakuraGarden)]
+        [TestCase(WorldId.BambooWorkshop)]
+        [TestCase(WorldId.MoonShrine)]
+        public void ResetAbsentCheckpointsDoesNotCreateViewedFlags(WorldId world)
+        {
+            StoryCheckpointProgress.ResetViewedCheckpointsForWorld(world);
+            foreach (int trigger in Triggers)
+                Assert.That(PlayerPrefs.HasKey($"PipeMuzzle.Story.World.{world}.Checkpoint.{trigger}.Viewed"),
+                    Is.False);
+        }
+
+        private void SeedValue(string key, int value)
+        {
+            if (!saves.ContainsKey(key))
+                saves[key] = (PlayerPrefs.HasKey(key), PlayerPrefs.GetInt(key));
+            PlayerPrefs.SetInt(key, value);
+        }
+
         private static WorldDefinition World(string name) =>
             AssetDatabase.LoadAssetAtPath<WorldDefinition>($"Assets/Resources/Worlds/{name}.asset");
     }
