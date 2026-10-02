@@ -9,6 +9,7 @@
 /[Bb]uild/
 /[Bb]uilds/
 # Local Unity player build output
+/v1/
 /v2/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
