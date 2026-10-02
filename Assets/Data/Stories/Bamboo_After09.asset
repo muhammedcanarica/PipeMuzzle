@@ -8,4 +8,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.Data.ComicStoryDefinition
   storyId: bamboo_after09
   panels:
-  - {fileID: -710000000000000008, guid: 93b8050ef3094a9fa0552c049cccbc26, type: 3}
+  - {fileID: 21300000, guid: dcbfd9791f2f7d744b210bc96bf6d3b4, type: 3}
