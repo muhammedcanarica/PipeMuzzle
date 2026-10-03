@@ -334,7 +334,7 @@ namespace PipeMuzzle.Gameplay
                 solvedPath
             );
 
-            if (!hasSolvedPath || !boardView.PlayCompletionFeedback(solvedPath, HandleFlowCompleted))
+            if (!hasSolvedPath || !boardView.PlayCompletionFeedback(solvedPath, HandleFlowCompleted, currentWorld?.WorldId.ToString()))
                 HandleFlowCompleted();
         }
 

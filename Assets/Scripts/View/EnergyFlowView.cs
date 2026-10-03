@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PipeMuzzle.Data;
+using PipeMuzzle.Feedback;
 using UnityEngine;
 
 namespace PipeMuzzle.View
@@ -25,6 +26,7 @@ namespace PipeMuzzle.View
         private Material runtimeMaterial;
         private TileView targetTile;
         private Action completed;
+        private Action targetReachedCallback;
         private float totalDistance;
         private float elapsed;
         private float travelDuration;
@@ -40,7 +42,8 @@ namespace PipeMuzzle.View
             if (fillRenderer != null) ApplyColor();
         }
 
-        public bool Play(IReadOnlyList<Vector3> worldPath, TileView target, Action onCompleted = null)
+        public bool Play(IReadOnlyList<Vector3> worldPath, TileView target, Action onCompleted = null,
+            string worldId = null, Action onTargetReached = null)
         {
             StopAndClear();
             if (!isActiveAndEnabled || worldPath == null || worldPath.Count < 2 || target == null)
@@ -59,12 +62,14 @@ namespace PipeMuzzle.View
             if (totalDistance <= Mathf.Epsilon) { StopAndClear(); return false; }
             targetTile = target;
             completed = onCompleted;
+            targetReachedCallback = onTargetReached;
             travelDuration = Mathf.Clamp(totalDistance / travelSpeed, .5f, 1.05f);
             playing = true;
             fillRenderer.enabled = true;
             headRenderer.enabled = true;
             ApplyColor();
             DrawSection(fillRenderer, 0f, 0f);
+            GameFeedback.StartFlow(this, worldId, travelDuration);
             return true;
         }
 
@@ -84,8 +89,12 @@ namespace PipeMuzzle.View
                 headRenderer.enabled = false;
                 if (targetTile != null && Application.isPlaying)
                     targetTile.PlayTargetImpact(targetPulseScale, targetPulseDuration);
+                GameFeedback.PlayTargetReached(this);
+                Action arrivalCallback = targetReachedCallback;
+                targetReachedCallback = null;
                 // Start the hold at visible arrival, even when a slow frame overshoots both thresholds.
                 elapsed = travelDuration;
+                arrivalCallback?.Invoke();
                 return;
             }
             if (elapsed < Duration) return;
@@ -93,15 +102,18 @@ namespace PipeMuzzle.View
             targetTile = null;
             Action callback = completed;
             completed = null;
+            GameFeedback.StopFlow(this);
             // The filled channel stays visible until restart, next level or screen navigation.
             callback?.Invoke();
         }
 
         public void StopAndClear()
         {
+            GameFeedback.StopFlow(this);
             playing = false;
             arrived = false;
             completed = null;
+            targetReachedCallback = null;
             targetTile = null;
             elapsed = totalDistance = travelDuration = 0f;
             pathPositions.Clear();

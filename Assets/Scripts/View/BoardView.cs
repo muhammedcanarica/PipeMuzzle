@@ -141,9 +141,9 @@ namespace PipeMuzzle.View
         }
 
         public bool PlayCompletionFeedback(
-            IReadOnlyList<TileState> solvedPath, Action onCompleted = null)
+            IReadOnlyList<TileState> solvedPath, Action onCompleted = null, string worldId = null)
         {
-            return PlayEnergyFlow(solvedPath, onCompleted);
+            return PlayEnergyFlow(solvedPath, onCompleted, worldId);
         }
 
         public void StopTransientEffects()
@@ -241,7 +241,7 @@ namespace PipeMuzzle.View
         }
 
         private bool PlayEnergyFlow(
-            IReadOnlyList<TileState> solvedPath, Action onCompleted)
+            IReadOnlyList<TileState> solvedPath, Action onCompleted, string worldId)
         {
             if (energyFlowView == null ||
                 solvedPath == null ||
@@ -277,7 +277,7 @@ namespace PipeMuzzle.View
                     out TileView targetTile))
             {
                 energyFlowView.Configure(gameplayTheme);
-                return energyFlowView.Play(flowPathPositions, targetTile, onCompleted);
+                return energyFlowView.Play(flowPathPositions, targetTile, onCompleted, worldId);
             }
             return false;
         }

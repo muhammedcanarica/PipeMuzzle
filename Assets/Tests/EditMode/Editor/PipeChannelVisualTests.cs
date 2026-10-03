@@ -126,5 +126,37 @@ namespace PipeMuzzle.Tests.EditMode
 
         private static WorldGameplayTheme Theme(string world) => AssetDatabase.LoadAssetAtPath<WorldGameplayTheme>(
             "Assets/Data/GameplayThemes/" + world + "GameplayTheme.asset");
+
+        [Test]
+        public void TargetArrivalOccursOnceBeforeCompletionAndCancellationSuppressesIt()
+        {
+            GameObject root = new("ArrivalOrderTest");
+            GameObject targetObject = Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/TilePrefab.prefab"));
+            try
+            {
+                TileView target = targetObject.GetComponent<TileView>();
+                target.Initialize(new TileState(1, 0, TileShape.Straight, TileRole.Target, 0, true));
+                EnergyFlowView flow = root.AddComponent<EnergyFlowView>();
+                List<string> order = new();
+                System.Action complete = () => order.Add("complete");
+                System.Action arrive = () => order.Add("target");
+                Vector3[] path = { Vector3.zero, Vector3.right };
+                Assert.That(flow.Play(path, target, complete, "SakuraGarden", arrive), Is.True);
+                flow.Advance(.49f);
+                Assert.That(order, Is.Empty);
+                flow.Advance(2f); // Overshooting must still preserve the visible arrival hold.
+                Assert.That(order, Is.EqualTo(new[] { "target" }));
+                flow.Advance(.11f);
+                Assert.That(order, Is.EqualTo(new[] { "target" }));
+                flow.Advance(.02f);
+                flow.Advance(2f);
+                Assert.That(order, Is.EqualTo(new[] { "target", "complete" }));
+                flow.Play(path, target, complete, "SakuraGarden", arrive);
+                flow.StopAndClear();
+                flow.Advance(2f);
+                Assert.That(order, Is.EqualTo(new[] { "target", "complete" }));
+            }
+            finally { Object.DestroyImmediate(root); Object.DestroyImmediate(targetObject); }
+        }
     }
 }

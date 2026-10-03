@@ -38,6 +38,49 @@ namespace PipeMuzzle.Feedback
             return CreateClip("Level complete (procedural)", samples);
         }
 
+        public static AudioClip CreateFlowClip(string worldId, float duration)
+        {
+            if (float.IsNaN(duration) || float.IsInfinity(duration) || duration <= 0f)
+                throw new System.ArgumentOutOfRangeException(nameof(duration));
+            duration = Mathf.Clamp(duration, .05f, 2f);
+            bool bamboo = worldId == "BambooWorkshop";
+            bool moon = worldId == "MoonShrine";
+            float frequency = bamboo ? 430f : moon ? 880f : 650f;
+            float noiseLevel = bamboo ? .075f : moon ? .035f : .055f;
+            float[] samples = new float[Mathf.RoundToInt(SampleRate * duration)];
+            uint noiseState = 317u;
+            float filteredNoise = 0f;
+            for (int i = 0; i < samples.Length; i++)
+            {
+                float time = i / (float)SampleRate;
+                noiseState = unchecked(noiseState * 1664525u + 1013904223u);
+                float noise = (noiseState >> 8) / 8388607.5f - 1f;
+                filteredNoise = Mathf.Lerp(filteredNoise, noise, .045f);
+                // Rounded droplets over low-pass water noise, with a faint airy Moon overtone.
+                float droplets = Mathf.Pow(.5f + .5f * Mathf.Sin(TwoPi * (bamboo ? 7f : 9f) * time), 4f);
+                float phase = TwoPi * (frequency * time + 8f * Mathf.Sin(TwoPi * 2f * time));
+                float water = .045f * Mathf.Sin(phase) * droplets + noiseLevel * filteredNoise;
+                if (moon) water += .012f * Mathf.Sin(TwoPi * 1320f * time);
+                samples[i] = water * Envelope(time, duration, .04f, .07f, 0f);
+            }
+            return CreateClip("Flow " + worldId + " (procedural)", samples);
+        }
+
+        public static AudioClip CreateTargetReachedClip(string worldId)
+        {
+            const float duration = .08f;
+            float frequency = worldId == "BambooWorkshop" ? 700f : worldId == "MoonShrine" ? 1100f : 900f;
+            float[] samples = new float[Mathf.RoundToInt(SampleRate * duration)];
+            for (int i = 0; i < samples.Length; i++)
+            {
+                float time = i / (float)SampleRate;
+                float phase = TwoPi * (frequency * time - 900f * time * time);
+                float drop = .10f * Mathf.Sin(phase) + .012f * Mathf.Sin(2f * phase);
+                samples[i] = drop * Envelope(time, duration, .004f, .025f, 18f);
+            }
+            return CreateClip("Target reached " + worldId + " (procedural)", samples);
+        }
+
         private static float ChimeNote(float time, float frequency, float duration)
         {
             if (time < 0f || time >= duration) return 0f;

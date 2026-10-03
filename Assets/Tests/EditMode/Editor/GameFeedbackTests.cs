@@ -54,6 +54,9 @@ namespace PipeMuzzle.Tests.EditMode
             GameFeedback.PlayPipeRotate();
             GameFeedback.PlayLevelComplete();
             GameFeedback.SetAudioClips(null, null);
+            GameFeedback.StartFlow(null, "SakuraGarden", .5f);
+            GameFeedback.PlayTargetReached(null);
+            GameFeedback.StopFlow(null);
             Assert.That(Resources.FindObjectsOfTypeAll<GameFeedback>().Length, Is.EqualTo(before));
             Assert.That(PlayerPrefs.HasKey(SoundKey), Is.False);
             Assert.That(PlayerPrefs.HasKey(HapticsKey), Is.False);
@@ -61,6 +64,54 @@ namespace PipeMuzzle.Tests.EditMode
 
         private static void ResetServiceSettings() => typeof(GameFeedback)
             .GetMethod("ResetStatics", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, null);
+
+        [TestCase("SakuraGarden", .5f)]
+        [TestCase("BambooWorkshop", .8f)]
+        [TestCase("MoonShrine", 1.05f)]
+        public void FlowClipMatchesTravelTimeAndHasSoftFiniteSamples(string world, float duration)
+        {
+            AudioClip clip = ProceduralFeedbackClips.CreateFlowClip(world, duration);
+            try
+            {
+                Assert.That(clip.length, Is.EqualTo(duration).Within(1f / 44100));
+                AssertSoftSamples(clip);
+            }
+            finally { Object.DestroyImmediate(clip); }
+        }
+
+        [TestCase("SakuraGarden")]
+        [TestCase("BambooWorkshop")]
+        [TestCase("MoonShrine")]
+        public void TargetReachedClipEndsBeforeTheExistingArrivalHold(string world)
+        {
+            AudioClip clip = ProceduralFeedbackClips.CreateTargetReachedClip(world);
+            try
+            {
+                Assert.That(clip.length, Is.InRange(.05f, .10f), "Leave room before the existing 120 ms completion hold ends.");
+                AssertSoftSamples(clip);
+            }
+            finally { Object.DestroyImmediate(clip); }
+        }
+
+        private static void AssertSoftSamples(AudioClip clip)
+        {
+            Assert.That(clip.channels, Is.EqualTo(1));
+            Assert.That(clip.frequency, Is.EqualTo(44100));
+            float[] samples = new float[clip.samples];
+            Assert.That(clip.GetData(samples, 0), Is.True);
+            float peak = 0f;
+            float jump = 0f;
+            for (int i = 0; i < samples.Length; i++)
+            {
+                Assert.That(float.IsNaN(samples[i]) || float.IsInfinity(samples[i]), Is.False);
+                peak = Mathf.Max(peak, Mathf.Abs(samples[i]));
+                if (i > 0) jump = Mathf.Max(jump, Mathf.Abs(samples[i] - samples[i - 1]));
+            }
+            Assert.That(peak, Is.InRange(.01f, .30f));
+            Assert.That(jump, Is.LessThan(.05f), "Soft boundaries must not pop.");
+            Assert.That(samples[0], Is.Zero);
+            Assert.That(samples[samples.Length - 1], Is.Zero);
+        }
 
         [Test]
         public void BothSettingsDefaultToEnabledWithoutCreatingPreferenceKeys()
