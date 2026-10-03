@@ -167,9 +167,9 @@ MonoBehaviour:
     isLocked: 0
   - x: 4
     y: 2
-    shape: 0
+    shape: 2
     role: 0
-    startRotation: 0
+    startRotation: 1
     isLocked: 0
   - x: 5
     y: 2
@@ -209,7 +209,7 @@ MonoBehaviour:
     isLocked: 0
   - x: 4
     y: 1
-    shape: 0
+    shape: 1
     role: 0
     startRotation: 0
     isLocked: 0

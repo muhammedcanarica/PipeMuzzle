@@ -5,12 +5,14 @@
     "width": 3,
     "height": 3,
     "route": [[1, 0], [1, 1], [1, 2]],
-    "metrics": {"world": "Sakura", "level": 1, "board": "3x3", "pipes": 3, "density": 0.333, "route": 3, "distractors": 0, "minimum_moves": 1, "routes": 1, "corners": 0, "threeways": 0, "crosses": 0, "search_complete": true},
+    "metrics": {"world": "Sakura", "level": 1, "board": "3x3", "pipes": 5, "density": 0.556, "route": 3, "distractors": 2, "minimum_moves": 1, "routes": 1, "corners": 1, "threeways": 0, "crosses": 0, "search_complete": true},
     "candidate": 0,
     "tiles": [
       {"x": 1, "y": 0, "shape": 2, "role": 1, "startRotation": 0, "isLocked": 1},
       {"x": 1, "y": 1, "shape": 1, "role": 0, "startRotation": 3, "isLocked": 0},
-      {"x": 1, "y": 2, "shape": 2, "role": 2, "startRotation": 1, "isLocked": 1}
+      {"x": 1, "y": 2, "shape": 2, "role": 2, "startRotation": 1, "isLocked": 1},
+      {"x": 2, "y": 0, "shape": 2, "role": 0, "startRotation": 3, "isLocked": 0},
+      {"x": 2, "y": 1, "shape": 1, "role": 0, "startRotation": 0, "isLocked": 0}
     ]
   },
   {
@@ -19,10 +21,12 @@
     "width": 4,
     "height": 3,
     "route": [[2, 2], [3, 2], [3, 1], [2, 1], [2, 0]],
-    "metrics": {"world": "Sakura", "level": 2, "board": "4x3", "pipes": 6, "density": 0.5, "route": 5, "distractors": 1, "minimum_moves": 3, "routes": 1, "corners": 4, "threeways": 0, "crosses": 0, "search_complete": true},
+    "metrics": {"world": "Sakura", "level": 2, "board": "4x3", "pipes": 8, "density": 0.667, "route": 5, "distractors": 3, "minimum_moves": 3, "routes": 1, "corners": 6, "threeways": 0, "crosses": 0, "search_complete": true},
     "candidate": 0,
     "tiles": [
-      {"x": 1, "y": 1, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
+      {"x": 0, "y": 2, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
+      {"x": 1, "y": 1, "shape": 2, "role": 0, "startRotation": 3, "isLocked": 0},
+      {"x": 1, "y": 2, "shape": 2, "role": 0, "startRotation": 2, "isLocked": 0},
       {"x": 2, "y": 0, "shape": 2, "role": 2, "startRotation": 3, "isLocked": 1},
       {"x": 2, "y": 1, "shape": 2, "role": 0, "startRotation": 3, "isLocked": 0},
       {"x": 2, "y": 2, "shape": 2, "role": 1, "startRotation": 1, "isLocked": 1},
@@ -55,7 +59,7 @@
     "width": 4,
     "height": 4,
     "route": [[0, 3], [0, 2], [1, 2], [1, 1], [0, 1], [0, 0], [1, 0], [2, 0]],
-    "metrics": {"world": "Sakura", "level": 4, "board": "4x4", "pipes": 10, "density": 0.625, "route": 8, "distractors": 2, "minimum_moves": 6, "routes": 1, "corners": 6, "threeways": 0, "crosses": 0, "search_complete": true},
+    "metrics": {"world": "Sakura", "level": 4, "board": "4x4", "pipes": 13, "density": 0.812, "route": 8, "distractors": 5, "minimum_moves": 6, "routes": 1, "corners": 8, "threeways": 0, "crosses": 0, "search_complete": true},
     "candidate": 2,
     "tiles": [
       {"x": 0, "y": 0, "shape": 2, "role": 0, "startRotation": 0, "isLocked": 0},
@@ -67,7 +71,10 @@
       {"x": 1, "y": 2, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
       {"x": 1, "y": 3, "shape": 2, "role": 0, "startRotation": 2, "isLocked": 0},
       {"x": 2, "y": 0, "shape": 2, "role": 2, "startRotation": 3, "isLocked": 1},
-      {"x": 2, "y": 1, "shape": 1, "role": 0, "startRotation": 3, "isLocked": 0}
+      {"x": 2, "y": 1, "shape": 1, "role": 0, "startRotation": 3, "isLocked": 0},
+      {"x": 2, "y": 2, "shape": 1, "role": 0, "startRotation": 1, "isLocked": 0},
+      {"x": 3, "y": 2, "shape": 2, "role": 0, "startRotation": 3, "isLocked": 0},
+      {"x": 3, "y": 3, "shape": 2, "role": 0, "startRotation": 2, "isLocked": 0}
     ]
   },
   {
@@ -123,7 +130,7 @@
     "width": 5,
     "height": 4,
     "route": [[2, 1], [1, 1], [1, 2], [0, 2], [0, 3], [1, 3], [2, 3], [2, 2], [3, 2], [3, 3], [4, 3]],
-    "metrics": {"world": "Sakura", "level": 7, "board": "5x4", "pipes": 15, "density": 0.75, "route": 11, "distractors": 4, "minimum_moves": 10, "routes": 1, "corners": 7, "threeways": 1, "crosses": 0, "search_complete": true},
+    "metrics": {"world": "Sakura", "level": 7, "board": "5x4", "pipes": 17, "density": 0.85, "route": 11, "distractors": 6, "minimum_moves": 10, "routes": 1, "corners": 9, "threeways": 1, "crosses": 0, "search_complete": true},
     "candidate": 0,
     "tiles": [
       {"x": 0, "y": 1, "shape": 1, "role": 0, "startRotation": 2, "isLocked": 0},
@@ -137,9 +144,11 @@
       {"x": 2, "y": 1, "shape": 2, "role": 1, "startRotation": 2, "isLocked": 1},
       {"x": 2, "y": 2, "shape": 2, "role": 0, "startRotation": 2, "isLocked": 0},
       {"x": 2, "y": 3, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
+      {"x": 3, "y": 0, "shape": 2, "role": 0, "startRotation": 0, "isLocked": 0},
       {"x": 3, "y": 1, "shape": 1, "role": 0, "startRotation": 0, "isLocked": 0},
       {"x": 3, "y": 2, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
       {"x": 3, "y": 3, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
+      {"x": 4, "y": 0, "shape": 2, "role": 0, "startRotation": 3, "isLocked": 0},
       {"x": 4, "y": 3, "shape": 2, "role": 2, "startRotation": 2, "isLocked": 1}
     ]
   },
@@ -234,7 +243,7 @@
     "width": 5,
     "height": 5,
     "route": [[4, 1], [4, 0], [3, 0], [3, 1], [2, 1], [1, 1], [1, 2], [0, 2], [0, 3], [0, 4], [1, 4], [1, 3], [2, 3], [2, 2], [3, 2]],
-    "metrics": {"world": "Sakura", "level": 11, "board": "5x5", "pipes": 20, "density": 0.8, "route": 15, "distractors": 5, "minimum_moves": 15, "routes": 1, "corners": 8, "threeways": 3, "crosses": 0, "search_complete": true},
+    "metrics": {"world": "Sakura", "level": 11, "board": "5x5", "pipes": 22, "density": 0.88, "route": 15, "distractors": 7, "minimum_moves": 15, "routes": 1, "corners": 10, "threeways": 3, "crosses": 0, "search_complete": true},
     "candidate": 0,
     "tiles": [
       {"x": 0, "y": 1, "shape": 1, "role": 0, "startRotation": 2, "isLocked": 0},
@@ -256,7 +265,9 @@
       {"x": 3, "y": 2, "shape": 2, "role": 2, "startRotation": 3, "isLocked": 1},
       {"x": 3, "y": 4, "shape": 1, "role": 0, "startRotation": 3, "isLocked": 0},
       {"x": 4, "y": 0, "shape": 2, "role": 0, "startRotation": 3, "isLocked": 0},
-      {"x": 4, "y": 1, "shape": 2, "role": 1, "startRotation": 2, "isLocked": 1}
+      {"x": 4, "y": 1, "shape": 2, "role": 1, "startRotation": 2, "isLocked": 1},
+      {"x": 4, "y": 3, "shape": 2, "role": 0, "startRotation": 3, "isLocked": 0},
+      {"x": 4, "y": 4, "shape": 2, "role": 0, "startRotation": 2, "isLocked": 0}
     ]
   },
   {
@@ -382,13 +393,15 @@
     "width": 5,
     "height": 5,
     "route": [[0, 3], [0, 2], [1, 2], [1, 3], [2, 3], [2, 4], [3, 4], [4, 4], [4, 3], [3, 3], [3, 2], [4, 2], [4, 1], [3, 1], [3, 0]],
-    "metrics": {"world": "Bamboo", "level": 4, "board": "5x5", "pipes": 20, "density": 0.8, "route": 15, "distractors": 5, "minimum_moves": 19, "routes": 1, "corners": 12, "threeways": 3, "crosses": 0, "search_complete": true},
+    "metrics": {"world": "Bamboo", "level": 4, "board": "5x5", "pipes": 22, "density": 0.88, "route": 15, "distractors": 7, "minimum_moves": 19, "routes": 1, "corners": 14, "threeways": 3, "crosses": 0, "search_complete": true},
     "candidate": 1,
     "tiles": [
+      {"x": 0, "y": 0, "shape": 2, "role": 0, "startRotation": 0, "isLocked": 0},
       {"x": 0, "y": 1, "shape": 1, "role": 0, "startRotation": 2, "isLocked": 0},
       {"x": 0, "y": 2, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
       {"x": 0, "y": 3, "shape": 2, "role": 1, "startRotation": 1, "isLocked": 1},
       {"x": 0, "y": 4, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
+      {"x": 1, "y": 0, "shape": 2, "role": 0, "startRotation": 3, "isLocked": 0},
       {"x": 1, "y": 1, "shape": 2, "role": 0, "startRotation": 0, "isLocked": 0},
       {"x": 1, "y": 2, "shape": 3, "role": 0, "startRotation": 1, "isLocked": 0},
       {"x": 1, "y": 3, "shape": 2, "role": 0, "startRotation": 0, "isLocked": 0},
@@ -478,17 +491,19 @@
     "width": 6,
     "height": 5,
     "route": [[0, 4], [0, 3], [0, 2], [0, 1], [1, 1], [2, 1], [2, 2], [3, 2], [3, 3], [4, 3], [4, 4], [5, 4], [5, 3], [5, 2], [5, 1], [4, 1], [4, 0], [3, 0]],
-    "metrics": {"world": "Bamboo", "level": 7, "board": "6x5", "pipes": 24, "density": 0.8, "route": 18, "distractors": 6, "minimum_moves": 24, "routes": 1, "corners": 11, "threeways": 4, "crosses": 0, "search_complete": true},
+    "metrics": {"world": "Bamboo", "level": 7, "board": "6x5", "pipes": 26, "density": 0.867, "route": 18, "distractors": 8, "minimum_moves": 24, "routes": 1, "corners": 12, "threeways": 4, "crosses": 0, "search_complete": true},
     "candidate": 0,
     "tiles": [
       {"x": 0, "y": 1, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
       {"x": 0, "y": 2, "shape": 1, "role": 0, "startRotation": 0, "isLocked": 0},
       {"x": 0, "y": 3, "shape": 1, "role": 0, "startRotation": 0, "isLocked": 0},
       {"x": 0, "y": 4, "shape": 2, "role": 1, "startRotation": 1, "isLocked": 1},
+      {"x": 1, "y": 0, "shape": 1, "role": 0, "startRotation": 1, "isLocked": 0},
       {"x": 1, "y": 1, "shape": 3, "role": 0, "startRotation": 0, "isLocked": 0},
       {"x": 1, "y": 2, "shape": 1, "role": 0, "startRotation": 3, "isLocked": 0},
       {"x": 1, "y": 3, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
       {"x": 1, "y": 4, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
+      {"x": 2, "y": 0, "shape": 2, "role": 0, "startRotation": 3, "isLocked": 0},
       {"x": 2, "y": 1, "shape": 3, "role": 0, "startRotation": 0, "isLocked": 0},
       {"x": 2, "y": 2, "shape": 3, "role": 0, "startRotation": 2, "isLocked": 0},
       {"x": 2, "y": 4, "shape": 1, "role": 0, "startRotation": 3, "isLocked": 0},
@@ -586,13 +601,16 @@
     "width": 6,
     "height": 6,
     "route": [[3, 3], [3, 2], [4, 2], [4, 1], [3, 1], [3, 0], [4, 0], [5, 0], [5, 1], [5, 2], [5, 3], [4, 3], [4, 4], [3, 4], [3, 5], [2, 5], [2, 4], [1, 4], [1, 3], [0, 3], [0, 2]],
-    "metrics": {"world": "Bamboo", "level": 10, "board": "6x6", "pipes": 28, "density": 0.778, "route": 21, "distractors": 7, "minimum_moves": 29, "routes": 1, "corners": 16, "threeways": 5, "crosses": 0, "search_complete": true},
+    "metrics": {"world": "Bamboo", "level": 10, "board": "6x6", "pipes": 31, "density": 0.861, "route": 21, "distractors": 10, "minimum_moves": 29, "routes": 1, "corners": 19, "threeways": 5, "crosses": 0, "search_complete": true},
     "candidate": 0,
     "tiles": [
+      {"x": 0, "y": 0, "shape": 2, "role": 0, "startRotation": 0, "isLocked": 0},
+      {"x": 0, "y": 1, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
       {"x": 0, "y": 2, "shape": 2, "role": 2, "startRotation": 0, "isLocked": 1},
       {"x": 0, "y": 3, "shape": 2, "role": 0, "startRotation": 0, "isLocked": 0},
       {"x": 0, "y": 4, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
       {"x": 0, "y": 5, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
+      {"x": 1, "y": 0, "shape": 2, "role": 0, "startRotation": 3, "isLocked": 0},
       {"x": 1, "y": 1, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
       {"x": 1, "y": 3, "shape": 3, "role": 0, "startRotation": 0, "isLocked": 0},
       {"x": 1, "y": 4, "shape": 3, "role": 0, "startRotation": 2, "isLocked": 0},
@@ -957,7 +975,7 @@
     "width": 7,
     "height": 6,
     "route": [[5, 2], [6, 2], [6, 3], [5, 3], [5, 4], [6, 4], [6, 5], [5, 5], [4, 5], [4, 4], [3, 4], [3, 3], [2, 3], [2, 2], [2, 1], [3, 1], [3, 0], [2, 0], [1, 0], [1, 1], [0, 1], [0, 2], [1, 2], [1, 3], [1, 4], [0, 4], [0, 5]],
-    "metrics": {"world": "Moon", "level": 7, "board": "7x6", "pipes": 34, "density": 0.81, "route": 27, "distractors": 7, "minimum_moves": 39, "routes": 1, "corners": 18, "threeways": 5, "crosses": 2, "search_complete": true},
+    "metrics": {"world": "Moon", "level": 7, "board": "7x6", "pipes": 36, "density": 0.857, "route": 27, "distractors": 9, "minimum_moves": 39, "routes": 1, "corners": 19, "threeways": 5, "crosses": 2, "search_complete": true},
     "candidate": 10,
     "tiles": [
       {"x": 0, "y": 0, "shape": 2, "role": 0, "startRotation": 0, "isLocked": 0},
@@ -981,6 +999,8 @@
       {"x": 3, "y": 4, "shape": 3, "role": 0, "startRotation": 2, "isLocked": 0},
       {"x": 3, "y": 5, "shape": 1, "role": 0, "startRotation": 3, "isLocked": 0},
       {"x": 4, "y": 0, "shape": 2, "role": 0, "startRotation": 3, "isLocked": 0},
+      {"x": 4, "y": 1, "shape": 1, "role": 0, "startRotation": 0, "isLocked": 0},
+      {"x": 4, "y": 2, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
       {"x": 4, "y": 4, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
       {"x": 4, "y": 5, "shape": 2, "role": 0, "startRotation": 2, "isLocked": 0},
       {"x": 5, "y": 0, "shape": 2, "role": 0, "startRotation": 3, "isLocked": 0},
@@ -1097,7 +1117,7 @@
     "width": 7,
     "height": 7,
     "route": [[0, 3], [0, 4], [1, 4], [2, 4], [2, 5], [1, 5], [1, 6], [2, 6], [3, 6], [3, 5], [4, 5], [4, 6], [5, 6], [5, 5], [6, 5], [6, 4], [5, 4], [4, 4], [4, 3], [3, 3], [3, 2], [4, 2], [4, 1], [3, 1], [3, 0], [2, 0], [2, 1], [1, 1], [1, 2], [2, 2]],
-    "metrics": {"world": "Moon", "level": 10, "board": "7x7", "pipes": 39, "density": 0.796, "route": 30, "distractors": 9, "minimum_moves": 45, "routes": 1, "corners": 24, "threeways": 5, "crosses": 3, "search_complete": true},
+    "metrics": {"world": "Moon", "level": 10, "board": "7x7", "pipes": 41, "density": 0.837, "route": 30, "distractors": 11, "minimum_moves": 45, "routes": 1, "corners": 25, "threeways": 5, "crosses": 3, "search_complete": true},
     "candidate": 9,
     "tiles": [
       {"x": 0, "y": 0, "shape": 2, "role": 0, "startRotation": 0, "isLocked": 0},
@@ -1136,6 +1156,8 @@
       {"x": 5, "y": 5, "shape": 2, "role": 0, "startRotation": 2, "isLocked": 0},
       {"x": 5, "y": 6, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},
       {"x": 6, "y": 1, "shape": 2, "role": 0, "startRotation": 2, "isLocked": 0},
+      {"x": 6, "y": 2, "shape": 2, "role": 0, "startRotation": 3, "isLocked": 0},
+      {"x": 6, "y": 3, "shape": 1, "role": 0, "startRotation": 0, "isLocked": 0},
       {"x": 6, "y": 4, "shape": 2, "role": 0, "startRotation": 2, "isLocked": 0},
       {"x": 6, "y": 5, "shape": 2, "role": 0, "startRotation": 3, "isLocked": 0},
       {"x": 6, "y": 6, "shape": 2, "role": 0, "startRotation": 2, "isLocked": 0}
@@ -1147,9 +1169,11 @@
     "width": 7,
     "height": 7,
     "route": [[2, 6], [1, 6], [1, 5], [2, 5], [2, 4], [1, 4], [1, 3], [1, 2], [2, 2], [2, 1], [2, 0], [3, 0], [3, 1], [4, 1], [4, 0], [5, 0], [5, 1], [6, 1], [6, 2], [5, 2], [5, 3], [4, 3], [3, 3], [3, 4], [4, 4], [4, 5], [4, 6], [5, 6], [5, 5], [6, 5], [6, 4]],
-    "metrics": {"world": "Moon", "level": 11, "board": "7x7", "pipes": 40, "density": 0.816, "route": 31, "distractors": 9, "minimum_moves": 47, "routes": 1, "corners": 24, "threeways": 5, "crosses": 3, "search_complete": true},
+    "metrics": {"world": "Moon", "level": 11, "board": "7x7", "pipes": 42, "density": 0.857, "route": 31, "distractors": 11, "minimum_moves": 47, "routes": 1, "corners": 25, "threeways": 5, "crosses": 3, "search_complete": true},
     "candidate": 4,
     "tiles": [
+      {"x": 0, "y": 0, "shape": 2, "role": 0, "startRotation": 0, "isLocked": 0},
+      {"x": 0, "y": 1, "shape": 1, "role": 0, "startRotation": 0, "isLocked": 0},
       {"x": 0, "y": 2, "shape": 1, "role": 0, "startRotation": 2, "isLocked": 0},
       {"x": 0, "y": 3, "shape": 1, "role": 0, "startRotation": 2, "isLocked": 0},
       {"x": 0, "y": 4, "shape": 2, "role": 0, "startRotation": 1, "isLocked": 0},

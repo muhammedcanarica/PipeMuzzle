@@ -17,15 +17,15 @@ MonoBehaviour:
   tiles:
   - x: 0
     y: 2
-    shape: 0
+    shape: 2
     role: 0
-    startRotation: 0
+    startRotation: 1
     isLocked: 0
   - x: 1
     y: 2
-    shape: 0
+    shape: 2
     role: 0
-    startRotation: 0
+    startRotation: 2
     isLocked: 0
   - x: 2
     y: 2
@@ -49,7 +49,7 @@ MonoBehaviour:
     y: 1
     shape: 2
     role: 0
-    startRotation: 1
+    startRotation: 3
     isLocked: 0
   - x: 2
     y: 1

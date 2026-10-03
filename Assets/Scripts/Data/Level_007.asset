@@ -125,13 +125,13 @@ MonoBehaviour:
     isLocked: 0
   - x: 3
     y: 0
-    shape: 0
+    shape: 2
     role: 0
     startRotation: 0
     isLocked: 0
   - x: 4
     y: 0
-    shape: 0
+    shape: 2
     role: 0
-    startRotation: 0
+    startRotation: 3
     isLocked: 0

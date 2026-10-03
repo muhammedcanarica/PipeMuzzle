@@ -35,9 +35,9 @@ MonoBehaviour:
     isLocked: 0
   - x: 3
     y: 3
-    shape: 0
+    shape: 2
     role: 0
-    startRotation: 0
+    startRotation: 2
     isLocked: 0
   - x: 0
     y: 2
@@ -53,15 +53,15 @@ MonoBehaviour:
     isLocked: 0
   - x: 2
     y: 2
-    shape: 0
+    shape: 1
     role: 0
-    startRotation: 0
+    startRotation: 1
     isLocked: 0
   - x: 3
     y: 2
-    shape: 0
+    shape: 2
     role: 0
-    startRotation: 0
+    startRotation: 3
     isLocked: 0
   - x: 0
     y: 1
