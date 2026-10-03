@@ -3523,6 +3523,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1942539215}
   m_CullTransparentMesh: 1
+--- !u!114 &820000010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2000881445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81b7c9818d7fc1042b002e5d39447dd6, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PipeMuzzle.UI.FirstLevelTutorial
+  gameController: {fileID: 479332890}
+  boardView: {fileID: 1140884900}
+  gameplayCamera: {fileID: 1135455755}
+  pulseScale: 1.05
+  pulsePeriod: 1.6
+  fadeDuration: 0.25
 --- !u!1 &2000881445
 GameObject:
   m_ObjectHideFlags: 0
@@ -3532,6 +3550,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2000881446}
+  - component: {fileID: 820000010}
   m_Layer: 5
   m_Name: GameplayHUD
   m_TagString: Untagged
