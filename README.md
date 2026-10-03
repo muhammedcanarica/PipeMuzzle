@@ -12,7 +12,7 @@
 
 Oyuncu, boru parçalarını 90 derecelik adımlarla döndürerek kaynak ile namlu arasında kesintisiz bir bağlantı kurar. Doğru rota tamamlandığında Source'tan Target'a gerçek çözüm yolunu izleyen kısa bir enerji akışı oynar ve bölüm çözülür.
 
-Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. On iki veri odaklı bölüm; görsel tahta üretimi, tıklayarak karo döndürme, otomatik kamera uyumu, yeniden başlatma, bölüm seçimi ve kalıcı açılma ilerlemesiyle oynanabilir durumdadır.
+Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. Sakura Garden, Bamboo Workshop ve Moon Shrine dünyalarında **12'şer bölüm, toplam 36 bölüm** bulunur. Dünya bazlı ilerleme ve 3/6/9/12 story checkpoint'leri korunur. Yeni zorluk eğrisi ve doğrulama ayrıntıları [level design raporundadır](docs/level-design-pass.md).
 
 ### Öne çıkan teknik özellikler
 
@@ -32,9 +32,10 @@ Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. On i
 - Gerçek Source → Target rotasını tile merkezlerinden takip eden enerji projectile / flow animasyonu
 - `BoxCollider2D` destekli tile etkileşimi ve kilitli Source/Target kontrolü
 - Bölüm çözüldükten sonra yeni tile inputlarını engelleyen tamamlama kilidi
-- On iki bölümü düzenli bir grid'de sunan `LevelSelectUI`, yeniden başlatma, bölüm bilgisi, hamle sayacı ve tamamlama panelini yöneten sade oyun UI'ı
+- Her dünyanın 12 bölümünü sunan `LevelSelectUI`, World Map ve comic navigation; yeniden başlatma, bölüm bilgisi, hamle sayacı ve tamamlama panelini yöneten oyun UI'ı
 - `PlayerPrefs` ile kalıcı tutulan level açılma ilerlemesi
 - İlk Android APK denemesi için hazırlanan build yapılandırması
+- Başarılı pipe dönüşünde procedural tick; target'a ulaşan flow tamamlandıktan sonra tek completion chime. `GameFeedback.SetSoundEnabled` ve `SetHapticsEnabled` tercihleri `PlayerPrefs` ile saklar. Android completion titreşimi 40 ms'dir; fiziksel cihaz doğrulaması bekler.
 
 ### Mimari
 
@@ -54,7 +55,7 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 - C#
 - Universal Render Pipeline (2D Renderer)
 - Unity Input System `1.18.0`
-- Unity Test Framework `1.6.0` *(test altyapısı mevcut, otomatik proje testleri henüz eklenmedi)*
+- Unity Test Framework `1.6.0`; EditMode içerik, progression, flow, UI ve audio testleri
 
 ### Projeyi çalıştırma
 
@@ -81,7 +82,7 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 - [x] Bölüm verisinden `BoardState` oluşturma
 - [x] Temel `BoardView` ve `TileView` bileşenleri
 - [x] Karo şekline göre değişen pipe sprite'larıyla `TilePrefab`
-- [x] On iki farklı oynanabilir bölümün içerik ve sahne bağlantıları
+- [x] Üç dünyada toplam 36 oynanabilir bölümün içerik ve sahne bağlantıları
 - [x] Gameplay sahnesine bağlı bölüm seçim ekranı
 - [x] `PlayerPrefs` ile kaydedilen level açılma ilerlemesi
 - [x] Bölüm tamamlanınca sonraki level'ın açılması
@@ -96,8 +97,9 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 - [x] Source / Target / locked görsel ayrımı ve Source'tan ulaşılabilir karolarda powered feedback
 - [x] Powered hat üzerinde kısa bölüm tamamlama pulse'ı
 - [x] Source → Target çözüm rotasını takip eden enerji projectile / flow animasyonu
-- [ ] Ses ve titreşim geri bildirimi
-- [ ] Edit Mode / Play Mode otomatik testleri
+- [x] Procedural ses ve Android titreşim geri bildirimi implementasyonu
+- [x] EditMode level, progression, flow, UI ve audio testleri (bilinen üç Comic Viewer test hatası raporda)
+- [ ] Play Mode otomatik testleri ve fiziksel cihaz doğrulaması
 - [ ] Mobil cihaz doğrulaması ve Android build hazırlığı
 
 ### Hızlı doğrulama
@@ -121,15 +123,15 @@ Son bölüm çözülünce            ALL LEVELS COMPLETE!
 
 #### V1 — Oynanabilir prototip
 
-Tamamlandı: temel puzzle akışı, on iki bölüm, bölüm seçimi ve kalıcı açılma ilerlemesi.
+Tamamlandı: temel puzzle akışı, üç dünyada 36 bölüm, dünya/bölüm seçimi ve kalıcı açılma ilerlemesi.
 
 #### V2 — İçerik ve ilerleme
 
-Kısmen tamamlandı: on iki elle hazırlanmış bölüm, bölüm seçimi ve kayıtlı açılma ilerlemesi mevcut; 15 bölüm, yıldızlar ve en iyi hamle kayıtları henüz yok.
+Tamamlandı: 36 bölümlük zorluk geçişi, world progression ve hikâye checkpoint'leri. Yıldızlar ve en iyi hamle kayıtları henüz yok.
 
 #### V3 — Sunum ve mobil yayın
 
-Devam ediyor: Android build yapılandırması ve enerji akışı hazır; fiziksel cihaz testi, ses, titreşim ve final görsel polish henüz tamamlanmadı.
+Devam ediyor: enerji akışı, gecikmeli completion, dünya bazlı pipe/UI polish ve ses/titreşim kodu hazır; fiziksel cihaz, Android ve WebGL yayın doğrulaması bekler.
 
 ---
 
@@ -139,7 +141,7 @@ Devam ediyor: Android build yapılandırması ve enerji akışı hazır; fizikse
 
 PipeMuzzle is a data-driven 2D mobile puzzle game prototype built with Unity. Players rotate pipe tiles in 90-degree steps to form a continuous connection between a source and a muzzle. Completing the route sends a short energy flow along the real Source-to-Target path and solves the level.
 
-The project is currently in **pre-alpha / playable core prototype** development. Twelve data-driven levels are playable with visual board generation, click-to-rotate interaction, automatic camera fitting, restart, level selection, and persistent unlock progression.
+The project is currently in **pre-alpha / playable core prototype** development. Sakura Garden, Bamboo Workshop and Moon Shrine contain **12 levels each, 36 in total**, with world progression and story checkpoints at 3/6/9/12. See the [level design report](docs/level-design-pass.md) for difficulty progression and validation.
 
 ### Technical highlights
 
@@ -159,9 +161,10 @@ The project is currently in **pre-alpha / playable core prototype** development.
 - An energy projectile / flow animation that follows tile centers along the real Source-to-Target route
 - `BoxCollider2D`-based tile interaction with locked Source/Target handling
 - A completion lock that prevents additional tile input after the puzzle is solved
-- `LevelSelectUI` for navigating a regular twelve-level grid, plus a compact game UI for restart, level progress, move count, and completion states
+- `LevelSelectUI` for each world's twelve levels, World Map and comic navigation, plus gameplay UI for restart, level progress, move count, and completion states
 - Persistent level-unlock progress stored with `PlayerPrefs`
 - Build configuration prepared for an initial Android APK attempt
+- A procedural tick after a successful pipe rotation and a single completion chime after flow reaches the target. `GameFeedback.SetSoundEnabled` and `SetHapticsEnabled` persist preferences through `PlayerPrefs`. Android completion vibration lasts 40 ms; physical-device validation remains pending.
 
 ### Architecture
 
@@ -179,7 +182,7 @@ The project is currently in **pre-alpha / playable core prototype** development.
 - C#
 - Universal Render Pipeline with the 2D Renderer
 - Unity Input System `1.18.0`
-- Unity Test Framework `1.6.0` *(available in the project; automated project tests are not implemented yet)*
+- Unity Test Framework `1.6.0` with EditMode content, progression, flow, UI and audio tests
 
 ### Getting started
 
@@ -206,7 +209,7 @@ The project is currently in **pre-alpha / playable core prototype** development.
 - [x] Runtime `BoardState` creation from level data
 - [x] Basic `BoardView` and `TileView` components
 - [x] Shape-specific pipe sprites configured on `TilePrefab`
-- [x] Twelve distinct playable levels with content and scene wiring
+- [x] 36 playable levels across three worlds, with content and scene wiring
 - [x] Level selection screen wired to the Gameplay scene
 - [x] Level-unlock progress saved with `PlayerPrefs`
 - [x] Unlocking the next level after completing the current one
@@ -221,8 +224,9 @@ The project is currently in **pre-alpha / playable core prototype** development.
 - [x] Source / Target / locked visual distinction and Source-reachable powered feedback
 - [x] Short completion pulse across the powered route
 - [x] Source-to-Target energy projectile / flow animation
-- [ ] Audio and haptic feedback
-- [ ] Edit Mode / Play Mode automated tests
+- [x] Procedural audio and Android haptic feedback implementation
+- [x] EditMode level, progression, flow, UI and audio tests (three known Comic Viewer test failures are documented)
+- [ ] Automated Play Mode tests and physical-device validation
 - [ ] Mobile device validation and Android build preparation
 
 ### Quick verification
@@ -246,16 +250,18 @@ Final level solved          ALL LEVELS COMPLETE!
 
 #### V1 — Playable prototype
 
-Completed: core puzzle flow, twelve levels, level selection, and persistent unlock progression.
+Completed: core puzzle flow, 36 levels across three worlds, world/level selection, and persistent unlock progression.
 
 #### V2 — Content and progression
 
-Partially completed: twelve handcrafted levels, level selection, and saved unlock progression are available; 15 levels, star ratings, and best-move records are not implemented.
+Completed: difficulty progression across 36 levels, world progression and story checkpoints. Star ratings and best-move records are not implemented.
 
 #### V3 — Presentation and mobile release
 
-In progress: Android build configuration and the energy flow are ready; physical-device testing, audio, haptics, and final visual polish are pending.
+In progress: energy flow, delayed completion, world-specific pipe/UI polish and audio/haptics code are ready; physical-device, Android and WebGL release validation remains pending.
 
 ## Repository
+
+Development uses only `main`. Use changes → tests → commit → `git push origin main`; create another branch only if explicitly requested. See [AGENTS.md](AGENTS.md) and the [consolidation audit](docs/single-main-consolidation.md). Existing backups remain outside the repository.
 
 [github.com/muhammedcanarica/PipeMuzzle](https://github.com/muhammedcanarica/PipeMuzzle)

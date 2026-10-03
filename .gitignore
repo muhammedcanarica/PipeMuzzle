@@ -10,7 +10,10 @@
 /[Bb]uilds/
 # Local Unity player build output
 /v1/
+/v1.zip
 /v2/
+/v[0-9]*/
+/v[0-9]*.zip
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 *.log

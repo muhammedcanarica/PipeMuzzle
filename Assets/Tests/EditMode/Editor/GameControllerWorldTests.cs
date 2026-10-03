@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using PipeMuzzle.Data;
+using PipeMuzzle.Board;
 using PipeMuzzle.Gameplay;
 using PipeMuzzle.View;
 using UnityEditor;
@@ -182,6 +183,104 @@ namespace PipeMuzzle.Tests.EditMode
         private static WorldDefinition Sakura() =>
             AssetDatabase.LoadAssetAtPath<WorldDefinition>(
                 "Assets/Resources/Worlds/SakuraGarden.asset");
+
+        [TestCase(1)]
+        [TestCase(3)]
+        [TestCase(6)]
+        [TestCase(9)]
+        [TestCase(12)]
+        public void SolvedBoardWaitsForFlowBeforeCompletionAndProgress(int levelNumber)
+        {
+            GameController controller = CreateController();
+            new ProgressService(WorldId.SakuraGarden, 12).UnlockLevel(levelNumber - 1);
+            controller.ConfigureWorld(Sakura());
+            controller.LoadLevelByIndex(levelNumber - 1);
+            BoardView view = GetField<BoardView>(controller, "boardView");
+            EnergyFlowView flow = view.GetComponent<EnergyFlowView>();
+            Assert.That(flow.IsPlaying, Is.False, "Unsolved boards must remain empty.");
+            int completed = 0;
+            controller.LevelCompleted += _ => completed++;
+            PrepareSolvedBoard(controller, view);
+            Invoke(controller, "BeginCompletion");
+
+            Assert.That(flow.IsPlaying, Is.True);
+            Assert.That(controller.IsCompleted, Is.False);
+            Assert.That(completed, Is.Zero);
+            if (levelNumber < 12) Assert.That(controller.IsLevelUnlocked(levelNumber), Is.False);
+            Assert.That(new WorldProgressService().IsWorldCompleted(WorldId.SakuraGarden), Is.False);
+            Advance(flow, .1f);
+            Assert.That(completed, Is.Zero);
+            Advance(flow, 2f);
+            Assert.That(completed, Is.Zero, "Even a long frame must leave target arrival visible.");
+            Advance(flow, .13f);
+            Assert.That(completed, Is.EqualTo(1));
+            Assert.That(controller.IsCompleted, Is.True);
+            if (levelNumber < 12) Assert.That(controller.IsLevelUnlocked(levelNumber), Is.True);
+            else Assert.That(new WorldProgressService().IsWorldCompleted(WorldId.SakuraGarden), Is.True);
+            Advance(flow, 2f);
+            Assert.That(completed, Is.EqualTo(1), "Completion must be emitted exactly once.");
+            if (levelNumber < 12)
+            {
+                controller.LoadNextLevel();
+                Assert.That(flow.IsPlaying, Is.False);
+                Assert.That(view.GetComponent<LineRenderer>().positionCount, Is.Zero,
+                    "The next board must not inherit filled channels.");
+            }
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void LeavingOrRestartingCancelsPendingFlow(bool restart)
+        {
+            GameController controller = CreateController();
+            controller.ConfigureWorld(Sakura());
+            controller.LoadLevelByIndex(0);
+            BoardView view = GetField<BoardView>(controller, "boardView");
+            EnergyFlowView flow = view.GetComponent<EnergyFlowView>();
+            PrepareSolvedBoard(controller, view);
+            int completed = 0;
+            controller.LevelCompleted += _ => completed++;
+            Invoke(controller, "BeginCompletion");
+            Advance(flow, .1f);
+            if (restart) controller.RestartLevel();
+            else controller.CancelTransientVisuals();
+            Advance(flow, 2f);
+            Assert.That(flow.IsPlaying, Is.False);
+            Assert.That(completed, Is.Zero);
+            Assert.That(controller.IsCompleted, Is.False);
+            Assert.That(controller.CurrentMoveCount, Is.Zero);
+            Assert.That(controller.IsLevelUnlocked(1), Is.False);
+        }
+
+        private static void PrepareSolvedBoard(GameController controller, BoardView view)
+        {
+            // A small fixture changes runtime state only; authored level data stays untouched.
+            BoardState board = new(3, 1);
+            board.SetTile(new TileState(0, 0, TileShape.Straight, TileRole.Source, 1, true));
+            board.SetTile(new TileState(1, 0, TileShape.Straight, TileRole.Normal, 1, false));
+            board.SetTile(new TileState(2, 0, TileShape.Straight, TileRole.Target, 1, true));
+            Assert.That(ConnectionChecker.Evaluate(board), Is.True);
+            typeof(GameController).GetField("board", BindingFlags.Instance | BindingFlags.NonPublic)
+                .SetValue(controller, board);
+            view.Build(board);
+        }
+
+        private static T GetField<T>(object target, string name) =>
+            (T)target.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic).GetValue(target);
+
+        private static void Invoke(object target, string name)
+        {
+            MethodInfo method = target.GetType().GetMethod(name, BindingFlags.Instance | BindingFlags.NonPublic);
+            Assert.That(method, Is.Not.Null, name + " is required for the delayed completion path.");
+            method.Invoke(target, null);
+        }
+
+        private static void Advance(EnergyFlowView flow, float delta)
+        {
+            MethodInfo method = typeof(EnergyFlowView).GetMethod("Advance");
+            Assert.That(method, Is.Not.Null, "Flow needs a deterministic animation clock.");
+            method.Invoke(flow, new object[] { delta });
+        }
 
         private WorldDefinition CreateCompleteWorld(WorldId id)
         {

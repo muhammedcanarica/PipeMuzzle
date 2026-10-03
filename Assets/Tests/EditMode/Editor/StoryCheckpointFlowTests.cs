@@ -90,10 +90,11 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(GetField<ComicStoryDefinition>(viewer, "currentStory"),
                 Is.SameAs(world.GetStoryCheckpoint(checkpoint).Story));
             Assert.That(panelImage.sprite, Is.SameAs(world.GetStoryCheckpoint(checkpoint).Story.Panels[0]));
-            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.True);
+            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.False);
 
             FinishComic(skip);
 
+            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.True);
             Assert.That(comic.activeSelf, Is.False);
             Assert.That(controller.CurrentWorld, Is.SameAs(world));
             if (checkpoint < world.LevelCount)
@@ -126,6 +127,7 @@ namespace PipeMuzzle.Tests.EditMode
             WorldDefinition world = PrepareLevel(worldName, checkpoint, false);
             Invoke(controller, "CompleteLevel");
             Assert.That(comic.activeSelf, Is.True);
+            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.False);
             viewer.Back();
 
             Assert.That(comic.activeSelf, Is.False);
@@ -239,8 +241,9 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(completion.activeSelf, Is.False);
             Assert.That(GetField<ComicStoryDefinition>(viewer, "currentStory"),
                 Is.SameAs(world.GetStoryCheckpoint(checkpoint).Story));
-            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.True);
+            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.False);
             viewer.Skip();
+            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.True);
             if (checkpoint < world.LevelCount)
             {
                 Assert.That(select.activeSelf, Is.True);
@@ -267,7 +270,63 @@ namespace PipeMuzzle.Tests.EditMode
             Invoke(controller, "CompleteLevel");
 
             Assert.That(comic.activeSelf, Is.True);
+            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.False);
+            viewer.Skip();
             Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.True);
+        }
+
+        [TestCaseSource(nameof(ProgressCases))]
+        public void LevelEntryDoesNotPlayAndResetRearmsCompletedCheckpoint(string worldName, int checkpoint)
+        {
+            WorldDefinition world = PrepareLevel(worldName, checkpoint, false);
+            Assert.That(comic.activeSelf, Is.False);
+            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.False);
+            Invoke(controller, "CompleteLevel");
+            viewer.Skip();
+            StoryCheckpointProgress.ResetViewedCheckpointsForWorld(world.WorldId);
+            PrepareLevel(worldName, checkpoint, true);
+            Invoke(controller, "CompleteLevel");
+            Assert.That(comic.activeSelf, Is.True);
+            Assert.That(GetField<ComicStoryDefinition>(viewer, "currentStory"), Is.SameAs(world.GetStoryCheckpoint(checkpoint).Story));
+            viewer.Skip();
+            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.True);
+        }
+
+        [TestCaseSource(nameof(ProgressCases))]
+        public void InterruptedCheckpointRemainsUnviewedAndCanReplay(string worldName, int checkpoint)
+        {
+            WorldDefinition world = PrepareLevel(worldName, checkpoint, false);
+            Invoke(controller, "CompleteLevel");
+            screens.ShowWorldMap();
+            viewer.Skip(); // A late terminal event from a hidden comic must not consume it.
+            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.False);
+            PrepareLevel(worldName, checkpoint, true);
+            Invoke(controller, "CompleteLevel");
+            Assert.That(comic.activeSelf, Is.True);
+            viewer.Back();
+            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, checkpoint), Is.True);
+        }
+
+        [Test]
+        public void MissingPresentationDoesNotConsumeCheckpointAndUsesNormalCompletion()
+        {
+            WorldDefinition world = PrepareLevel("SakuraGarden", 3, false);
+            SetField(viewer, "panelImage", null);
+            Invoke(controller, "CompleteLevel");
+            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, 3), Is.False);
+            Assert.That(comic.activeSelf, Is.False);
+            Assert.That(completion.activeSelf, Is.True);
+        }
+
+        [Test]
+        public void OpeningIntroAbandonsCheckpointWithoutConsumingIt()
+        {
+            WorldDefinition world = PrepareLevel("SakuraGarden", 3, false);
+            Invoke(controller, "CompleteLevel");
+            screens.GetComponent<StoryNavigationCoordinator>().OpenWorld(world);
+            viewer.Skip();
+            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, 3), Is.False);
+            Assert.That(select.activeSelf, Is.True);
         }
 
         private WorldDefinition PrepareLevel(string worldName, int checkpoint, bool completedBefore)

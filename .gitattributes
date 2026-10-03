@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Unity writes trailing spaces for empty YAML values in generated metadata.
+# Preserve importer bytes/GUIDs; continue checking whitespace in source and docs.
+*.meta whitespace=-blank-at-eol

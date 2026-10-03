@@ -11,7 +11,12 @@ namespace PipeMuzzle.Gameplay
         public bool TryBegin(WorldDefinition world, int completedLevelNumber, out StoryCheckpoint checkpoint)
         {
             checkpoint = null;
-            if (world == null || completedLevelNumber <= 0 || HasViewed(world.WorldId, completedLevelNumber)) return false;
+            if (world == null || completedLevelNumber <= 0) return false;
+            if (HasViewed(world.WorldId, completedLevelNumber))
+            {
+                Log($"Story checkpoint already viewed: {world.WorldId} / Level {completedLevelNumber}");
+                return false;
+            }
             checkpoint = world.GetStoryCheckpoint(completedLevelNumber);
             if (checkpoint?.Story == null || checkpoint.Story.PanelCount == 0)
             {
@@ -19,11 +24,20 @@ namespace PipeMuzzle.Gameplay
                 return false;
             }
 
-            // Consume on presentation, including skip/back, so replay can never repeat it.
-            PlayerPrefs.SetInt(Key(world.WorldId, completedLevelNumber), 1);
-            PlayerPrefs.Save();
             return true;
         }
+
+        public void MarkViewed(WorldId world, int completedLevelNumber)
+        {
+            // Intro is replayable and never participates in checkpoint persistence.
+            if (completedLevelNumber <= 0 || HasViewed(world, completedLevelNumber)) return;
+            PlayerPrefs.SetInt(Key(world, completedLevelNumber), 1);
+            PlayerPrefs.Save();
+        }
+
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
+        [System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
+        internal static void Log(string message) => Debug.Log(message);
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         // Re-arm story checkpoints for testing without changing world or level progress.

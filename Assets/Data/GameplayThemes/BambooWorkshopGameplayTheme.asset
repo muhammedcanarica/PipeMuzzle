@@ -19,12 +19,15 @@ MonoBehaviour:
   panelColor: {r: 0.9607843, g: 0.92156863, b: 0.7882353, a: 0.8627451}
   primaryButtonColor: {r: 0.43529412, g: 0.5803922, b: 0.3137255, a: 1}
   secondaryButtonColor: {r: 0.9098039, g: 0.8509804, b: 0.6509804, a: 1}
-  straightSprite: {fileID: 21300000, guid: 57d44669a011af74db0e87e8d771ac53, type: 3}
-  cornerSprite: {fileID: 21300000, guid: 35c68235d467a674faf16ed4d275ffa5, type: 3}
-  threeWaySprite: {fileID: 21300000, guid: 854499edbc7c51d488627cdda9457fc6, type: 3}
-  crossSprite: {fileID: 21300000, guid: 40bf6dda3b4402346b3e8f1c3b30e995, type: 3}
+  straightSprite: {fileID: 21300000, guid: 0b51cc45b5365fa39a87bbf4325c69cc, type: 3}
+  cornerSprite: {fileID: 21300000, guid: 1751646e1ecc5e7cb88db5cd06c5281f, type: 3}
+  threeWaySprite: {fileID: 21300000, guid: 3100fb2ef543593eaea7818428c6c8c4, type: 3}
+  crossSprite: {fileID: 21300000, guid: 5ac60abbf67452c1b1aa63c8607c1a1e, type: 3}
+  sourceMarker: {fileID: 21300000, guid: 58a73f8772225e11a9439ba88d906f9f, type: 3}
+  targetMarker: {fileID: 21300000, guid: 24a0742e65805452a1a165023e038d4a, type: 3}
+  flowColor: {r: 0.28235295, g: 0.7137255, b: 0.6666667, a: 1}
   normalTint: {r: 1, g: 1, b: 1, a: 1}
-  lockedTint: {r: 0.58, g: 0.58, b: 0.62, a: 1}
-  sourceGlowColor: {r: 0.2, g: 0.75, b: 1, a: 0.39}
-  targetGlowColor: {r: 0.4, g: 0.9, b: 1, a: 0.45}
+  lockedTint: {r: 0.83, g: 0.83, b: 0.88, a: 1}
+  sourceGlowColor: {r: 0.28235295, g: 0.7137255, b: 0.6666667, a: 0.28}
+  targetGlowColor: {r: 0.28235295, g: 0.7137255, b: 0.6666667, a: 0.25}
   poweredGlowColor: {r: 0.15, g: 0.8, b: 1, a: 0.36}

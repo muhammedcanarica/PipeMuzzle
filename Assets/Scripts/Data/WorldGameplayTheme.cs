@@ -21,6 +21,9 @@ namespace PipeMuzzle.Data
         [SerializeField] private Sprite cornerSprite;
         [SerializeField] private Sprite threeWaySprite;
         [SerializeField] private Sprite crossSprite;
+        [SerializeField] private Sprite sourceMarker;
+        [SerializeField] private Sprite targetMarker;
+        [SerializeField] private Color flowColor = new(.2f, .85f, .95f, 1f);
         [SerializeField] private Color normalTint = Color.white;
         [SerializeField] private Color lockedTint = Color.gray;
         [SerializeField] private Color sourceGlowColor = Color.cyan;
@@ -38,6 +41,9 @@ namespace PipeMuzzle.Data
         public Sprite CornerSprite => cornerSprite;
         public Sprite ThreeWaySprite => threeWaySprite;
         public Sprite CrossSprite => crossSprite;
+        public Sprite SourceMarker => sourceMarker;
+        public Sprite TargetMarker => targetMarker;
+        public Color FlowColor => flowColor;
         public Color NormalTint => normalTint;
         public Color LockedTint => lockedTint;
         public Color SourceGlowColor => sourceGlowColor;

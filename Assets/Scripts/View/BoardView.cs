@@ -28,12 +28,28 @@ namespace PipeMuzzle.View
 
         public event Action<TileView> TileClicked;
 
+        public bool HasPendingRotations
+        {
+            get
+            {
+                foreach (TileView tile in tileViews.Values)
+                    if (tile.HasPendingRotation) return true;
+                return false;
+            }
+        }
+
         public void SetGameplayTheme(WorldGameplayTheme theme)
         {
             gameplayTheme = theme;
+            if (energyFlowView != null) energyFlowView.Configure(theme);
         }
 
         private void Awake()
+        {
+            EnsureFlowView();
+        }
+
+        private void EnsureFlowView()
         {
             if (energyFlowView == null)
             {
@@ -53,6 +69,7 @@ namespace PipeMuzzle.View
                 throw new ArgumentNullException(nameof(board));
             }
 
+            EnsureFlowView();
             Clear();
 
             boardWidth = board.Width;
@@ -95,10 +112,10 @@ namespace PipeMuzzle.View
                 TileView tileView =
                     child.GetComponent<TileView>();
 
-                if (tileView != null)
-                {
-                    tileView.Clicked -= HandleTileClicked;
-                }
+                // Flow renderers belong to EnergyFlowView and are reused across levels.
+                if (tileView == null) continue;
+
+                tileView.Clicked -= HandleTileClicked;
 
                 child.SetActive(false);
                 if (Application.isPlaying)
@@ -123,15 +140,10 @@ namespace PipeMuzzle.View
             }
         }
 
-        public void PlayCompletionFeedback(
-            IReadOnlyList<TileState> solvedPath)
+        public bool PlayCompletionFeedback(
+            IReadOnlyList<TileState> solvedPath, Action onCompleted = null)
         {
-            foreach (TileView tileView in tileViews.Values)
-            {
-                tileView.PlayCompletionPulse();
-            }
-
-            PlayEnergyFlow(solvedPath);
+            return PlayEnergyFlow(solvedPath, onCompleted);
         }
 
         public void StopTransientEffects()
@@ -142,6 +154,7 @@ namespace PipeMuzzle.View
             }
 
             flowPathPositions.Clear();
+            foreach (TileView tile in tileViews.Values) tile.Refresh();
         }
 
         public bool TryGetWorldBounds(out Bounds bounds)
@@ -227,14 +240,14 @@ namespace PipeMuzzle.View
             );
         }
 
-        private void PlayEnergyFlow(
-            IReadOnlyList<TileState> solvedPath)
+        private bool PlayEnergyFlow(
+            IReadOnlyList<TileState> solvedPath, Action onCompleted)
         {
             if (energyFlowView == null ||
                 solvedPath == null ||
                 solvedPath.Count < 2)
             {
-                return;
+                return false;
             }
 
             flowPathPositions.Clear();
@@ -249,7 +262,7 @@ namespace PipeMuzzle.View
                         out TileView tileView))
                 {
                     flowPathPositions.Clear();
-                    return;
+                    return false;
                 }
 
                 flowPathPositions.Add(tileView.transform.position);
@@ -263,8 +276,10 @@ namespace PipeMuzzle.View
                     targetCoordinate,
                     out TileView targetTile))
             {
-                energyFlowView.Play(flowPathPositions, targetTile);
+                energyFlowView.Configure(gameplayTheme);
+                return energyFlowView.Play(flowPathPositions, targetTile, onCompleted);
             }
+            return false;
         }
 
         private void HandleTileClicked(TileView tileView)

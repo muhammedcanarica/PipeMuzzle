@@ -64,12 +64,15 @@ namespace PipeMuzzle.Tests.EditMode
         [TestCase("MoonShrine", 6)]
         [TestCase("MoonShrine", 9)]
         [TestCase("MoonShrine", 12)]
-        public void FirstReachPlaysOnceAndPersistsAcrossServiceInstances(string name, int trigger)
+        public void BeginningDoesNotConsumeAndMarkViewedPersistsAcrossServiceInstances(string name, int trigger)
         {
             WorldDefinition world = World(name);
             StoryCheckpointProgress progress = new();
             Assert.That(progress.TryBegin(world, trigger, out StoryCheckpoint checkpoint), Is.True);
             Assert.That(checkpoint, Is.SameAs(world.GetStoryCheckpoint(trigger)));
+            Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, trigger), Is.False);
+            Assert.That(new StoryCheckpointProgress().TryBegin(world, trigger, out _), Is.True);
+            progress.MarkViewed(world.WorldId, trigger);
             Assert.That(new StoryCheckpointProgress().HasViewed(world.WorldId, trigger), Is.True);
             Assert.That(new StoryCheckpointProgress().TryBegin(world, trigger, out _), Is.False);
         }
@@ -86,6 +89,7 @@ namespace PipeMuzzle.Tests.EditMode
 
             Assert.That(progress.HasViewed(world.WorldId, 0), Is.False);
             Assert.That(progress.TryBegin(world, 0, out _), Is.False);
+            progress.MarkViewed(world.WorldId, 0);
             Assert.That(PlayerPrefs.GetInt(key), Is.EqualTo(1));
         }
 
@@ -94,6 +98,7 @@ namespace PipeMuzzle.Tests.EditMode
         {
             StoryCheckpointProgress progress = new();
             Assert.That(progress.TryBegin(World("SakuraGarden"), 3, out _), Is.True);
+            progress.MarkViewed(WorldId.SakuraGarden, 3);
             Assert.That(progress.HasViewed(WorldId.BambooWorkshop, 3), Is.False);
             Assert.That(progress.HasViewed(WorldId.MoonShrine, 3), Is.False);
             Assert.That(progress.HasViewed(WorldId.SakuraGarden, 6), Is.False);
@@ -158,6 +163,8 @@ namespace PipeMuzzle.Tests.EditMode
             {
                 StoryCheckpointProgress progress = new();
                 Assert.That(progress.TryBegin(World(selectedWorld.ToString()), trigger, out _), Is.True);
+                Assert.That(progress.HasViewed(selectedWorld, trigger), Is.False);
+                progress.MarkViewed(selectedWorld, trigger);
                 Assert.That(progress.TryBegin(World(selectedWorld.ToString()), trigger, out _), Is.False);
             }
         }
@@ -171,6 +178,34 @@ namespace PipeMuzzle.Tests.EditMode
             foreach (int trigger in Triggers)
                 Assert.That(PlayerPrefs.HasKey($"PipeMuzzle.Story.World.{world}.Checkpoint.{trigger}.Viewed"),
                     Is.False);
+        }
+
+        [Test]
+        public void EditorResetAllClearsOnlyTheTwelveCheckpointKeys()
+        {
+            Dictionary<string, int> preserved = new();
+            foreach (WorldId world in new[] { WorldId.SakuraGarden, WorldId.BambooWorkshop, WorldId.MoonShrine })
+            {
+                foreach (int trigger in Triggers)
+                    SeedValue($"PipeMuzzle.Story.World.{world}.Checkpoint.{trigger}.Viewed", 1);
+                foreach (string suffix in new[] { "HighestUnlockedLevel", "Unlocked", "Completed" })
+                    preserved[$"PipeMuzzle.Progress.World.{world}.{suffix}"] = suffix == "HighestUnlockedLevel" ? 11 : 1;
+                preserved[$"PipeMuzzle.Story.World.{world}.Checkpoint.0.Viewed"] = 1;
+                preserved[$"PipeMuzzle.Story.World.{world}.Checkpoint.4.Viewed"] = 7;
+            }
+            preserved["PipeMuzzle.HighestUnlockedLevel"] = 9;
+            preserved["PipeMuzzle.Progress.Migration.LegacyHighestUnlockedLevelToSakura.V1"] = 1;
+            preserved["PipeMuzzle.Tests.UnrelatedCheckpointResetPreference"] = 7;
+            foreach (var entry in preserved) SeedValue(entry.Key, entry.Value);
+
+            PipeMuzzle.Editor.PipeMuzzleStoryDebugMenu.ResetAll();
+            PipeMuzzle.Editor.PipeMuzzleStoryDebugMenu.ResetAll();
+
+            foreach (WorldId world in new[] { WorldId.SakuraGarden, WorldId.BambooWorkshop, WorldId.MoonShrine })
+            foreach (int trigger in new[] { 3, 6, 9, 12 })
+                Assert.That(PlayerPrefs.HasKey($"PipeMuzzle.Story.World.{world}.Checkpoint.{trigger}.Viewed"), Is.False);
+            foreach (var entry in preserved)
+                Assert.That(PlayerPrefs.GetInt(entry.Key, -1), Is.EqualTo(entry.Value), entry.Key);
         }
 
         private void SeedValue(string key, int value)

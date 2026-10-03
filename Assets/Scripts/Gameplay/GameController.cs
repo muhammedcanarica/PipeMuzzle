@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using PipeMuzzle.Board;
 using PipeMuzzle.Data;
+using PipeMuzzle.Feedback;
 using PipeMuzzle.View;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -26,6 +28,8 @@ namespace PipeMuzzle.Gameplay
 
         private int currentLevelIndex;
         private bool isCompleted;
+        private bool isCompleting;
+        private Coroutine completionCoroutine;
 
         public event Action<int, int> LevelLoaded;
         public event Action<bool> LevelCompleted;
@@ -37,6 +41,7 @@ namespace PipeMuzzle.Gameplay
             board == null ? 0 : currentLevelIndex + 1;
         public int CurrentMoveCount => board?.MoveCount ?? 0;
         public bool IsCompleted => isCompleted;
+        public bool IsCompletionPending => isCompleting;
         public bool HasNextLevel =>
             board != null && currentLevelIndex < LevelCount - 1;
 
@@ -112,7 +117,7 @@ namespace PipeMuzzle.Gameplay
 
         private void HandleTileClicked(TileView tileView)
         {
-            if (isCompleted ||
+            if (isCompleted || isCompleting ||
                 board == null ||
                 tileView == null ||
                 tileView.State == null)
@@ -133,6 +138,7 @@ namespace PipeMuzzle.Gameplay
             }
 
             tileView.PlayRotationFeedback();
+            GameFeedback.PlayPipeRotate();
 
             MoveCountChanged?.Invoke(board.MoveCount);
 
@@ -151,8 +157,7 @@ namespace PipeMuzzle.Gameplay
 
             if (solved)
             {
-                PlayCompletionFeedback();
-                CompleteLevel();
+                BeginCompletion();
             }
         }
 
@@ -164,6 +169,8 @@ namespace PipeMuzzle.Gameplay
             }
 
             isCompleted = true;
+            GameFeedback.PlayLevelComplete();
+            isCompleting = false;
 
             bool hasNextLevel = HasNextLevel;
 
@@ -193,6 +200,9 @@ namespace PipeMuzzle.Gameplay
 
         public void CancelTransientVisuals()
         {
+            if (completionCoroutine != null) StopCoroutine(completionCoroutine);
+            completionCoroutine = null;
+            isCompleting = false;
             if (boardView != null)
             {
                 boardView.StopTransientEffects();
@@ -263,6 +273,7 @@ namespace PipeMuzzle.Gameplay
                 return;
             }
 
+            CancelTransientVisuals();
             currentLevelIndex = levelIndex;
             isCompleted = false;
 
@@ -296,25 +307,47 @@ namespace PipeMuzzle.Gameplay
 
             if (solved)
             {
-                PlayCompletionFeedback();
-                CompleteLevel();
+                BeginCompletion();
             }
         }
 
-        private void PlayCompletionFeedback()
+        private void BeginCompletion()
+        {
+            if (board == null || isCompleted || isCompleting) return;
+            isCompleting = true;
+            if (Application.isPlaying && boardView.HasPendingRotations)
+                completionCoroutine = StartCoroutine(WaitForRotationAndStartFlow());
+            else StartCompletionFlow();
+        }
+
+        private IEnumerator WaitForRotationAndStartFlow()
+        {
+            while (boardView.HasPendingRotations) yield return null;
+            completionCoroutine = null;
+            StartCompletionFlow();
+        }
+
+        private void StartCompletionFlow()
         {
             bool hasSolvedPath = ConnectionChecker.TryGetSolvedPath(
                 board,
                 solvedPath
             );
 
-            boardView.PlayCompletionFeedback(
-                hasSolvedPath ? solvedPath : null
-            );
+            if (!hasSolvedPath || !boardView.PlayCompletionFeedback(solvedPath, HandleFlowCompleted))
+                HandleFlowCompleted();
         }
+
+        private void HandleFlowCompleted()
+        {
+            if (isCompleting) CompleteLevel();
+        }
+
+        private void OnDisable() => CancelTransientVisuals();
 
         private void OnDestroy()
         {
+            CancelTransientVisuals();
             if (boardView != null)
             {
                 boardView.TileClicked -=

@@ -72,8 +72,12 @@ namespace PipeMuzzle.View
         private Coroutine completionCoroutine;
         private int queuedQuarterTurns;
         private float visualRotationDegrees;
+        private Sprite sourceMarker;
+        private Sprite targetMarker;
+        private SpriteRenderer roleRenderer;
 
         public TileState State => tileState;
+        public bool HasPendingRotation => rotationCoroutine != null || queuedQuarterTurns > 0;
 
         public event Action<TileView> Clicked;
 
@@ -85,6 +89,8 @@ namespace PipeMuzzle.View
             cornerSprite = theme.CornerSprite;
             threeWaySprite = theme.ThreeWaySprite;
             crossSprite = theme.CrossSprite;
+            sourceMarker = theme.SourceMarker;
+            targetMarker = theme.TargetMarker;
             normalColor = theme.NormalTint;
             lockedTint = theme.LockedTint;
             sourceGlowColor = theme.SourceGlowColor;
@@ -101,6 +107,7 @@ namespace PipeMuzzle.View
 
             tileState = state;
             EnsureGlowRenderer();
+            EnsureRoleRenderer();
             Refresh();
         }
 
@@ -125,6 +132,7 @@ namespace PipeMuzzle.View
             transform.localScale = Vector3.one;
 
             RefreshBaseColor();
+            RefreshRoleMarker();
             SetPowered(tileState.IsPowered, false);
         }
 
@@ -228,6 +236,35 @@ namespace PipeMuzzle.View
             glowRenderer.sortingOrder = spriteRenderer.sortingOrder + 1;
         }
 
+        private void EnsureRoleRenderer()
+        {
+            if (roleRenderer != null || spriteRenderer == null) return;
+            GameObject roleObject = new("RoleVisual");
+            roleObject.transform.SetParent(transform, false);
+            roleRenderer = roleObject.AddComponent<SpriteRenderer>();
+            roleRenderer.sharedMaterial = spriteRenderer.sharedMaterial;
+            roleRenderer.sortingLayerID = spriteRenderer.sortingLayerID;
+            roleRenderer.sortingOrder = spriteRenderer.sortingOrder + 4;
+        }
+
+        private void RefreshRoleMarker()
+        {
+            if (roleRenderer == null) return;
+            roleRenderer.sprite = tileState.Role == TileRole.Source ? sourceMarker
+                : tileState.Role == TileRole.Target ? targetMarker : null;
+            roleRenderer.enabled = roleRenderer.sprite != null;
+            roleRenderer.transform.localRotation = Quaternion.Inverse(transform.localRotation);
+            if (glowRenderer != null)
+                glowRenderer.transform.localRotation = roleRenderer.enabled
+                    ? roleRenderer.transform.localRotation : Quaternion.identity;
+        }
+
+        private void LateUpdate()
+        {
+            if (roleRenderer != null && roleRenderer.enabled)
+                roleRenderer.transform.localRotation = Quaternion.Inverse(transform.localRotation);
+        }
+
         private void RefreshSprite()
         {
             Sprite sprite = tileState.Shape switch
@@ -244,7 +281,8 @@ namespace PipeMuzzle.View
 
             if (glowRenderer != null)
             {
-                glowRenderer.sprite = sprite;
+                glowRenderer.sprite = tileState.Role == TileRole.Source && sourceMarker != null ? sourceMarker
+                    : tileState.Role == TileRole.Target && targetMarker != null ? targetMarker : sprite;
                 glowRenderer.enabled = sprite != null;
             }
         }
@@ -254,7 +292,7 @@ namespace PipeMuzzle.View
         {
             return shape switch
             {
-                // SoftBlossom source art uses these base directions:
+                // Theme artwork preserves these existing base directions:
                 // Straight: East + West; Corner: South + West;
                 // ThreeWay: North + East + West.
                 TileShape.Straight => -90f,
@@ -294,6 +332,8 @@ namespace PipeMuzzle.View
 
                 default:
                     color = powered ? poweredGlowColor : Color.clear;
+                    // Connection preview highlights the body softly; the channel stays empty.
+                    color.a *= .18f;
                     break;
             }
 
@@ -463,5 +503,7 @@ namespace PipeMuzzle.View
                 first.a * second.a
             );
         }
+
+        private void OnDisable() => StopVisualCoroutines();
     }
 }

@@ -32,6 +32,7 @@ namespace PipeMuzzle.UI
         [SerializeField] private RectTransform routeLayer;
         [SerializeField] private Image routeSegmentTemplate;
         private WorldDefinition currentWorld;
+        private LevelSelectJourneyView journeyView;
 
         public WorldDefinition CurrentWorld => currentWorld;
 
@@ -199,6 +200,7 @@ namespace PipeMuzzle.UI
 
                 ApplyNodeTheme(button, button.interactable);
             }
+            journeyView?.Refresh(gameController);
         }
 
         private void SelectLevel(int levelIndex)
@@ -266,6 +268,18 @@ namespace PipeMuzzle.UI
             ApplyGameplayTheme(currentWorld.GameplayTheme);
             RefreshButtons();
             ApplyWorldLayout();
+            ConfigureJourneyPresentation(title, background);
+        }
+
+        private void ConfigureJourneyPresentation(TMP_Text title, Image background)
+        {
+            // Keep the serialized buttons and their existing selection listeners intact.
+            if (levelSelectPanel.transform is not RectTransform panel || pathArea == null) return;
+            journeyView ??= levelSelectPanel.GetComponent<LevelSelectJourneyView>();
+            if (journeyView == null) journeyView = levelSelectPanel.AddComponent<LevelSelectJourneyView>();
+            Button back = panel.Find("WorldMapBackButton")?.GetComponent<Button>();
+            journeyView.Configure(currentWorld, levelButtons, pathArea, title, background, back, routeLayer);
+            journeyView.Refresh(gameController);
         }
 
         private void ApplyGameplayTheme(WorldGameplayTheme theme)
