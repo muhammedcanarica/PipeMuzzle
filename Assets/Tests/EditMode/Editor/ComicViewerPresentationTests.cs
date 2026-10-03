@@ -40,13 +40,20 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(backdrop.raycastTarget, Is.False);
             using (VertexHelper helper = new())
             {
-                typeof(ComicBackdropGraphic).GetMethod("OnPopulateMesh", Private).Invoke(backdrop, new object[] { helper });
+                typeof(ComicBackdropGraphic).GetMethod("OnPopulateMesh", Private, null, new[] { typeof(VertexHelper) }, null)
+                    .Invoke(backdrop, new object[] { helper });
                 UIVertex corner = default;
                 UIVertex center = default;
                 helper.PopulateUIVertex(ref corner, 0);
                 helper.PopulateUIVertex(ref center, helper.currentVertCount / 2);
                 Color edgeColor = corner.color;
                 Color centerColor = center.color;
+                // Compare visible tint in gamma space; the backdrop emits linear mesh colors in Linear projects.
+                if (QualitySettings.activeColorSpace == ColorSpace.Linear)
+                {
+                    edgeColor = edgeColor.gamma;
+                    centerColor = centerColor.gamma;
+                }
                 Assert.That(Mathf.Max(edgeColor.r, edgeColor.g, edgeColor.b), Is.GreaterThan(.06f), "The edge tint should remain visible instead of turning near-black.");
                 Assert.That(Mathf.Max(centerColor.r, centerColor.g, centerColor.b), Is.GreaterThan(Mathf.Max(edgeColor.r, edgeColor.g, edgeColor.b)));
             }
