@@ -135,6 +135,8 @@ namespace PipeMuzzle.Tests.EditMode
             foreach (WorldId world in Worlds())
             {
                 Assert.That(progress.IsWorldCompleted(world), Is.False);
+                for (int level = 1; level <= 12; level++)
+                    Assert.That(BestMovesProgress.GetBest(world, level), Is.Null);
                 ProgressService levelProgress = new(world, 12);
                 Assert.That(levelProgress.HighestUnlockedLevelIndex, Is.Zero);
                 Assert.That(levelProgress.IsLevelUnlocked(1), Is.False);
@@ -248,6 +250,8 @@ namespace PipeMuzzle.Tests.EditMode
             yield return "PipeMuzzle.Progress.Migration.LegacyHighestUnlockedLevelToSakura.V1";
             foreach (WorldId world in Worlds())
             {
+                for (int level = 1; level <= 12; level++)
+                    yield return $"PipeMuzzle.BestMoves.World.{world}.Level.{level}";
                 foreach (string suffix in new[] { "Unlocked", "Completed", "HighestUnlockedLevel" })
                     yield return $"PipeMuzzle.Progress.World.{world}.{suffix}";
                 foreach (int checkpoint in new[] { 3, 6, 9, 12 })
@@ -258,7 +262,7 @@ namespace PipeMuzzle.Tests.EditMode
         private static void SeedProgress()
         {
             foreach (string key in Keys())
-                if (key.StartsWith("PipeMuzzle.Progress.World.") || key.StartsWith("PipeMuzzle.Story."))
+                if (key.StartsWith("PipeMuzzle.Progress.World.") || key.StartsWith("PipeMuzzle.Story.") || key.StartsWith("PipeMuzzle.BestMoves."))
                     PlayerPrefs.SetInt(key, key.EndsWith("HighestUnlockedLevel") ? 11 : 1);
             PlayerPrefs.SetInt("PipeMuzzle.HighestUnlockedLevel", 11);
             BasicRotationTutorialProgress.MarkSeen();
@@ -269,6 +273,8 @@ namespace PipeMuzzle.Tests.EditMode
             foreach (WorldId world in Worlds())
             {
                 Assert.That(new WorldProgressService().IsWorldCompleted(world), Is.True);
+                for (int level = 1; level <= 12; level++)
+                    Assert.That(BestMovesProgress.GetBest(world, level), Is.EqualTo(1));
                 Assert.That(new ProgressService(world, 12).HighestUnlockedLevelIndex, Is.EqualTo(11));
                 foreach (int checkpoint in new[] { 3, 6, 9, 12 })
                     Assert.That(new StoryCheckpointProgress().HasViewed(world, checkpoint), Is.True);

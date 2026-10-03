@@ -25,6 +25,18 @@ namespace PipeMuzzle.View
         private WorldGameplayTheme gameplayTheme;
         private int boardWidth;
         private int boardHeight;
+        private PipeHintFeedback hintFeedback;
+
+        public bool IsHintPlaying => hintFeedback != null && hintFeedback.IsPlaying;
+
+        public bool TryShowHint(TileState tile, Color color)
+        {
+            if (tile == null || !tileViews.TryGetValue(new Vector2Int(tile.X, tile.Y), out TileView view)) return false;
+            if (hintFeedback == null) hintFeedback = gameObject.AddComponent<PipeHintFeedback>();
+            return hintFeedback.TryShow(view, cellSize * transform.lossyScale.x, color);
+        }
+
+        public void StopHint() => hintFeedback?.StopAndClear();
 
         public event Action<TileView> TileClicked;
 
@@ -148,6 +160,7 @@ namespace PipeMuzzle.View
 
         public void StopTransientEffects()
         {
+            StopHint();
             if (energyFlowView != null)
             {
                 energyFlowView.StopAndClear();

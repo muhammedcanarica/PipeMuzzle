@@ -21,6 +21,7 @@ namespace PipeMuzzle.Tests.EditMode
         [SetUp]
         public void SetUp()
         {
+            Save("PipeMuzzle.BestMoves.World.SakuraGarden.Level.1");
             foreach (WorldId id in new[] { WorldId.SakuraGarden, WorldId.BambooWorkshop, WorldId.MoonShrine })
             foreach (string suffix in new[] { "Unlocked", "Completed", "HighestUnlockedLevel" })
                 Save($"PipeMuzzle.Progress.World.{id}.{suffix}");
@@ -107,6 +108,27 @@ namespace PipeMuzzle.Tests.EditMode
             }
             Assert.That(fixture.panel.Find("LevelJourneyMarker").GetComponent<Image>().sprite,
                 Is.EqualTo(Resources.Load<Sprite>("WorldMap/Journey/ChibiTraveler")));
+        }
+
+        [Test]
+        public void HoverAndKeyboardSelectionShowOneSharedBestLabel()
+        {
+            var fixture = Build();
+            PlayerPrefs.SetInt("PipeMuzzle.Progress.World.SakuraGarden.HighestUnlockedLevel", 1);
+            BestMovesProgress.TrySetBest(WorldId.SakuraGarden, 1, 18);
+            fixture.ui.ConfigureForWorld(Resources.Load<WorldDefinition>("Worlds/SakuraGarden"));
+            Transform info = fixture.panel.Find("LevelJourneyBest");
+            Assert.That(info, Is.Not.Null, "Journey needs one shared record preview.");
+            TMP_Text label = info.GetComponent<TMP_Text>();
+            fixture.buttons[0].GetComponent<LevelSelectNodeFeedback>().OnPointerEnter(null);
+            Assert.That(label.text, Is.EqualTo("LEVEL 01  ·  BEST 18"));
+            fixture.buttons[0].GetComponent<LevelSelectNodeFeedback>().OnPointerExit(null);
+            Assert.That(info.gameObject.activeSelf, Is.False);
+            fixture.buttons[1].GetComponent<LevelSelectNodeFeedback>().OnSelect(null);
+            Assert.That(label.text, Is.EqualTo("LEVEL 02  ·  BEST --"));
+            fixture.buttons[1].GetComponent<LevelSelectNodeFeedback>().OnDeselect(null);
+            Assert.That(info.gameObject.activeSelf, Is.False);
+            Assert.That(fixture.panel.GetComponentsInChildren<TMP_Text>(true).Count(t => t.name == "LevelJourneyBest"), Is.EqualTo(1));
         }
 
         [TestCase(1920, 1080)]

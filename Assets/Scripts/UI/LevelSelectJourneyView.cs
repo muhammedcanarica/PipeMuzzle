@@ -32,6 +32,8 @@ namespace PipeMuzzle.UI
         private RectTransform trailRoot;
         private TMP_Text title;
         private TMP_Text subtitle;
+        private TMP_Text bestPreview;
+        private int focusedIndex = -1;
         private Button back;
         private Image environment;
         private Image regionalArt;
@@ -82,6 +84,10 @@ namespace PipeMuzzle.UI
                 title.characterSpacing = 2f;
             }
             subtitle.color = Ui(WithAlpha(accent, .72f));
+            bestPreview.color = Ui(WithAlpha(accent, .80f));
+            foreach (Stop stop in stops) stop.Feedback.ClearFocus();
+            focusedIndex = -1;
+            bestPreview.gameObject.SetActive(false);
             if (back != null)
             {
                 Image image = back.GetComponent<Image>();
@@ -132,9 +138,12 @@ namespace PipeMuzzle.UI
                 number.transform.SetAsLastSibling();
                 LevelSelectNodeFeedback feedback = button.GetComponent<LevelSelectNodeFeedback>();
                 if (feedback == null) feedback = button.gameObject.AddComponent<LevelSelectNodeFeedback>();
+                feedback.FocusChanged += HandleNodeFocusChanged;
                 stops.Add(new Stop { Button = button, Ring = ring, Glow = glow, Ornament = ornament, Number = number, Feedback = feedback });
             }
             subtitle = Text("LevelJourneySubtitle", panel, "JOURNEY  ·  12 STOPS");
+            bestPreview = Text("LevelJourneyBest", panel, "");
+            bestPreview.gameObject.SetActive(false);
             marker = Image("LevelJourneyMarker", panel, Resources.Load<Sprite>("WorldMap/Journey/ChibiTraveler"));
             marker.preserveAspect = true;
             if (title != null) title.transform.SetAsLastSibling();
@@ -202,6 +211,9 @@ namespace PipeMuzzle.UI
             Center(subtitle.rectTransform, new Vector2(0, size.y * .5f - 100f * scale), new Vector2(size.x * .7f, 26f * scale));
             subtitle.fontSize = 13f * scale;
             subtitle.characterSpacing = 3f;
+            Center(bestPreview.rectTransform, new Vector2(0, -size.y * .5f + 40f * scale), new Vector2(size.x * .7f, 28f * scale));
+            bestPreview.fontSize = 17f * scale;
+            bestPreview.characterSpacing = 1f;
             if (back != null)
             {
                 Center((RectTransform)back.transform, new Vector2(-size.x * .5f + 84f * scale, size.y * .5f - 54f * scale), new Vector2(112f, 48f) * scale);
@@ -300,6 +312,23 @@ namespace PipeMuzzle.UI
 
         private static Color WithAlpha(Color color, float alpha) { color.a = alpha; return color; }
         private static Color Ui(Color color) => QualitySettings.activeColorSpace == ColorSpace.Linear ? color.linear : color;
-        private void OnDestroy() => paint?.Release();
+        private void HandleNodeFocusChanged(LevelSelectNodeFeedback feedback)
+        {
+            if (world == null || bestPreview == null) return;
+            if (feedback.IsFocused) focusedIndex = stops.FindIndex(stop => stop.Feedback == feedback);
+            else if (focusedIndex < 0 || !stops[focusedIndex].Feedback.IsFocused)
+                focusedIndex = stops.FindIndex(stop => stop.Feedback.IsFocused);
+            bestPreview.gameObject.SetActive(focusedIndex >= 0);
+            if (focusedIndex < 0) return;
+            int? best = BestMovesProgress.GetBest(world.WorldId, focusedIndex + 1);
+            bestPreview.text = $"LEVEL {focusedIndex + 1:00}  ·  BEST {(best.HasValue ? best.Value.ToString() : "--")}";
+        }
+
+        private void OnDestroy()
+        {
+            foreach (Stop stop in stops)
+                if (stop.Feedback != null) stop.Feedback.FocusChanged -= HandleNodeFocusChanged;
+            paint?.Release();
+        }
     }
 }

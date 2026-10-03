@@ -14,6 +14,14 @@ namespace PipeMuzzle.UI
         private bool selected;
         private bool pressed;
         private float baseAlpha;
+        public bool IsFocused => button != null && button.IsInteractable() && (hovered || selected);
+        public event System.Action<LevelSelectNodeFeedback> FocusChanged;
+
+        public void ClearFocus()
+        {
+            hovered = selected = pressed = false;
+            FocusChanged?.Invoke(this);
+        }
 
         public void Configure(Button source, Image highlight, float alpha)
         {
@@ -39,15 +47,15 @@ namespace PipeMuzzle.UI
             glow.color = color;
         }
 
-        public void OnPointerEnter(PointerEventData eventData) { if (button != null && button.IsInteractable()) hovered = true; }
-        public void OnPointerExit(PointerEventData eventData) { hovered = pressed = false; }
+        public void OnPointerEnter(PointerEventData eventData) { if (button != null && button.IsInteractable()) hovered = true; FocusChanged?.Invoke(this); }
+        public void OnPointerExit(PointerEventData eventData) { hovered = pressed = false; FocusChanged?.Invoke(this); }
         public void OnPointerDown(PointerEventData eventData) { if (eventData.button == PointerEventData.InputButton.Left && button != null && button.IsInteractable()) pressed = true; }
         public void OnPointerUp(PointerEventData eventData) { pressed = false; }
-        public void OnSelect(BaseEventData eventData) { if (button != null && button.IsInteractable()) selected = true; }
-        public void OnDeselect(BaseEventData eventData) { selected = pressed = false; }
+        public void OnSelect(BaseEventData eventData) { if (button != null && button.IsInteractable()) selected = true; FocusChanged?.Invoke(this); }
+        public void OnDeselect(BaseEventData eventData) { selected = pressed = false; FocusChanged?.Invoke(this); }
         private void OnDisable()
         {
-            hovered = selected = pressed = false;
+            ClearFocus();
             transform.localScale = Vector3.one;
             if (glow != null) { Color color = glow.color; color.a = baseAlpha; glow.color = color; }
         }

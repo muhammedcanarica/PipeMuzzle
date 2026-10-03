@@ -36,6 +36,13 @@ namespace PipeMuzzle.Tests.EditMode
         [SetUp]
         public void SetUp()
         {
+            foreach (WorldId world in Enum.GetValues(typeof(WorldId)))
+            for (int level = 1; level <= 12; level++)
+            {
+                string key = $"PipeMuzzle.BestMoves.World.{world}.Level.{level}";
+                original[key] = (PlayerPrefs.HasKey(key), PlayerPrefs.GetInt(key));
+                PlayerPrefs.DeleteKey(key);
+            }
             foreach (string key in Keys)
             {
                 original[key] = (PlayerPrefs.HasKey(key), PlayerPrefs.GetInt(key));
@@ -51,7 +58,7 @@ namespace PipeMuzzle.Tests.EditMode
                 if (created[i] != null) UnityEngine.Object.DestroyImmediate(created[i]);
             created.Clear();
 
-            foreach (string key in Keys)
+            foreach (string key in original.Keys)
             {
                 if (original[key].exists) PlayerPrefs.SetInt(key, original[key].value);
                 else PlayerPrefs.DeleteKey(key);
@@ -178,6 +185,75 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(controller.CurrentLevelDefinition, Is.SameAs(moon.Levels[11]));
             Assert.Throws<ArgumentOutOfRangeException>(() =>
                 worlds.IsWorldUnlocked((WorldId)3));
+        }
+
+        [Test]
+        public void BestIsSavedAfterFlowAndRestartPreservesRecord()
+        {
+            GameController controller = CreateController();
+            controller.ConfigureWorld(Sakura());
+            controller.LoadLevelByIndex(0);
+            BoardView view = GetField<BoardView>(controller, "boardView");
+            PrepareSolvedBoard(controller, view);
+            BoardState board = GetField<BoardState>(controller, "board");
+            for (int i = 0; i < 22; i++) board.IncrementMoveCount();
+            Invoke(controller, "BeginCompletion");
+            Assert.That(BestMovesProgress.GetBest(WorldId.SakuraGarden, 1), Is.Null);
+            EnergyFlowView flow = view.GetComponent<EnergyFlowView>();
+            Advance(flow, 2f);
+            Assert.That(BestMovesProgress.GetBest(WorldId.SakuraGarden, 1), Is.Null);
+            Advance(flow, .13f);
+            Assert.That(BestMovesProgress.GetBest(WorldId.SakuraGarden, 1), Is.EqualTo(22));
+            controller.RestartLevel();
+            Assert.That(controller.CurrentMoveCount, Is.Zero);
+            Assert.That(BestMovesProgress.GetBest(WorldId.SakuraGarden, 1), Is.EqualTo(22));
+        }
+
+        [Test]
+        public void ReplayedCompletionOnlyMarksNewBestForAnImprovement()
+        {
+            GameController controller = CreateController();
+            controller.ConfigureWorld(Sakura());
+            foreach (int moves in new[] { 20, 15, 24 })
+            {
+                controller.LoadLevelByIndex(0);
+                BoardView view = GetField<BoardView>(controller, "boardView");
+                PrepareSolvedBoard(controller, view);
+                BoardState board = GetField<BoardState>(controller, "board");
+                for (int i = 0; i < moves; i++) board.IncrementMoveCount();
+                Invoke(controller, "BeginCompletion");
+                Advance(view.GetComponent<EnergyFlowView>(), 2f);
+                Advance(view.GetComponent<EnergyFlowView>(), .13f);
+                Assert.That(BestMovesProgress.GetBest(WorldId.SakuraGarden, 1), Is.EqualTo(moves == 20 ? 20 : 15));
+                Assert.That(controller.WasNewBest, Is.EqualTo(moves != 24));
+            }
+            controller.LoadNextLevel();
+            Assert.That(BestMovesProgress.GetBest(WorldId.SakuraGarden, 1), Is.EqualTo(15));
+            Assert.That(controller.WasNewBest, Is.False);
+            Assert.That(BestMovesProgress.GetBest(WorldId.SakuraGarden, 2), Is.Null);
+        }
+
+        [Test]
+        public void ControllerHintDoesNotCountMovesAndRejectsCompletedPendingAndEmptyContext()
+        {
+            GameController controller = CreateController();
+            MethodInfo show = typeof(GameController).GetMethod("TryShowHint");
+            Assert.That(show, Is.Not.Null, "Gameplay hint action is missing.");
+            Assert.That(show.Invoke(controller, null), Is.EqualTo(false));
+            controller.ConfigureWorld(Sakura());
+            controller.LoadLevelByIndex(0);
+            Assert.That(show.Invoke(controller, null), Is.EqualTo(true));
+            Assert.That(show.Invoke(controller, null), Is.EqualTo(false));
+            Assert.That(controller.CurrentMoveCount, Is.Zero);
+            controller.RestartLevel();
+            Assert.That(show.Invoke(controller, null), Is.EqualTo(true));
+            BoardView view = GetField<BoardView>(controller, "boardView");
+            PrepareSolvedBoard(controller, view);
+            Invoke(controller, "BeginCompletion");
+            Assert.That(show.Invoke(controller, null), Is.EqualTo(false));
+            Advance(view.GetComponent<EnergyFlowView>(), 2f);
+            Advance(view.GetComponent<EnergyFlowView>(), .13f);
+            Assert.That(show.Invoke(controller, null), Is.EqualTo(false));
         }
 
         private static WorldDefinition Sakura() =>

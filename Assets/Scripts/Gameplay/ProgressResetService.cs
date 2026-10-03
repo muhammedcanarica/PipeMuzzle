@@ -14,6 +14,7 @@ namespace PipeMuzzle.Gameplay
                 StoryCheckpointProgress.ResetViewedCheckpointsForWorld(world);
             }
             BasicRotationTutorialProgress.Reset();
+            BestMovesProgress.ResetAll();
         }
     }
 }

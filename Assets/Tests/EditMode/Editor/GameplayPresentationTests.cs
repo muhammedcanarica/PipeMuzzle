@@ -17,6 +17,7 @@ namespace PipeMuzzle.Tests.EditMode
     {
         private static readonly string[] ProgressKeys =
         {
+            "PipeMuzzle.BestMoves.World.SakuraGarden.Level.1",
             "PipeMuzzle.HighestUnlockedLevel",
             "PipeMuzzle.Progress.Migration.LegacyHighestUnlockedLevelToSakura.V1",
             "PipeMuzzle.Progress.World.SakuraGarden.HighestUnlockedLevel",
@@ -237,6 +238,10 @@ namespace PipeMuzzle.Tests.EditMode
 
             gameUi.ApplyTheme(moon);
             Color moonSecondary = restart.GetComponent<Image>().color;
+            Transform hint = root.transform.Find("HintButton");
+            Assert.That(hint, Is.Not.Null, "Gameplay needs the secondary hint action.");
+            Assert.That(hint.GetComponentInChildren<TMP_Text>(true).text, Is.EqualTo("HINT"));
+            Assert.That(hint.GetComponent<Image>().color, Is.EqualTo(moonSecondary));
 
             Assert.That(level.color,
                 Is.EqualTo((Color)new Color32(54, 50, 61, 255)));
@@ -262,6 +267,7 @@ namespace PipeMuzzle.Tests.EditMode
                 root.transform.Find("MovesSurface").GetSiblingIndex() + 1,
                 Is.EqualTo(moves.transform.GetSiblingIndex())
             );
+            Assert.That(root.GetComponentsInChildren<Button>(true).Count(b => b.name == "HintButton"), Is.EqualTo(1));
         }
 
         [Test]
@@ -300,7 +306,13 @@ namespace PipeMuzzle.Tests.EditMode
             restart.onClick.Invoke();
             Assert.That(loaded, Is.EqualTo(1));
 
+            var board = (PipeMuzzle.Board.BoardState)typeof(GameController)
+                .GetField("board", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(controller);
+            for (int i = 0; i < 17; i++) board.IncrementMoveCount();
             CompleteLoadedLevel(controller);
+            string completionScore = completion.transform.Find("CompletionMoveCountText").GetComponent<TMP_Text>().text;
+            Assert.That(completionScore, Does.Contain("BEST  17"));
+            Assert.That(completionScore, Does.Contain("NEW BEST"));
             next.onClick.Invoke();
             Assert.That(loaded, Is.EqualTo(2));
             Assert.That(level.text, Does.Contain("02"));
@@ -450,6 +462,7 @@ namespace PipeMuzzle.Tests.EditMode
             );
             gameObject.transform.SetParent(parent, false);
             created.Add(gameObject);
+            CreateText("Label", gameObject.transform);
             return gameObject.GetComponent<Button>();
         }
 

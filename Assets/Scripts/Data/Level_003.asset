@@ -87,3 +87,18 @@ MonoBehaviour:
     role: 1
     startRotation: 3
     isLocked: 1
+  solutionPath:
+  - position: {x: 3, y: 0}
+    rotation: 3
+  - position: {x: 3, y: 1}
+    rotation: 2
+  - position: {x: 2, y: 1}
+    rotation: 1
+  - position: {x: 2, y: 0}
+    rotation: 3
+  - position: {x: 1, y: 0}
+    rotation: 0
+  - position: {x: 1, y: 1}
+    rotation: 2
+  - position: {x: 0, y: 1}
+    rotation: 1

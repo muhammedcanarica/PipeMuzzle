@@ -24,6 +24,7 @@ namespace PipeMuzzle.UI
         private Button completionRestartButton;
         private Button completionMapButton;
         private Button levelsButton;
+        private Button hintButton;
         private Image levelSurface;
         private Image movesSurface;
         private Image completionCard;
@@ -81,6 +82,7 @@ namespace PipeMuzzle.UI
 
             ApplyButtonStyle(levelsButton, false, theme);
             ApplyButtonStyle(restartButton, false, theme);
+            ApplyButtonStyle(hintButton, false, theme);
             ApplyButtonStyle(completionRestartButton, false, theme);
             ApplyButtonStyle(completionMapButton, false, theme);
             ApplyButtonStyle(nextButton, true, theme);
@@ -157,6 +159,23 @@ namespace PipeMuzzle.UI
             levelSurface = EnsureBacking(levelText, "LevelSurface");
             movesSurface = EnsureBacking(moveCountText, "MovesSurface");
 
+            if (hintButton == null && restartButton != null)
+            {
+                Transform parent = restartButton.transform.parent;
+                Transform hint = parent.Find("HintButton");
+                hintButton = hint != null ? hint.GetComponent<Button>() : Instantiate(restartButton, parent);
+                hintButton.name = "HintButton";
+                // Cloning a serialized button must not copy its gameplay action.
+                hintButton.onClick = new Button.ButtonClickedEvent();
+                SetButtonLabel(hintButton, "HINT");
+            }
+            if (hintButton != null)
+            {
+                GameplayHintUI action = hintButton.GetComponent<GameplayHintUI>();
+                if (action == null) action = hintButton.gameObject.AddComponent<GameplayHintUI>();
+                action.Configure(gameController);
+            }
+
             if (completionPanel == null || completionCard != null) return;
             Transform existing = completionPanel.transform.Find("CompletionCard");
             if (existing == null)
@@ -177,6 +196,8 @@ namespace PipeMuzzle.UI
 
         private void ApplyLayout()
         {
+            ConfigureRect(Rect(hintButton), new Vector2(0f, 1f), new Vector2(0f, 1f),
+                new Vector2(32f, -92f), new Vector2(156f, 48f));
             ConfigureRect(
                 Rect(levelsButton),
                 new Vector2(0f, 1f),
@@ -227,8 +248,8 @@ namespace PipeMuzzle.UI
                     : null,
                 new Vector2(0.5f, 0.5f),
                 new Vector2(0.5f, 0.5f),
-                new Vector2(0f, 20f),
-                new Vector2(420f, 48f)
+                new Vector2(0f, 15f),
+                new Vector2(420f, 84f)
             );
             ConfigureRect(
                 Rect(completionRestartButton),
@@ -482,6 +503,12 @@ namespace PipeMuzzle.UI
 
         private void ShowCompletion(bool hasNextLevel)
         {
+            int? best = gameController.CurrentWorld != null
+                ? BestMovesProgress.GetBest(gameController.CurrentWorld.WorldId, gameController.CurrentLevelNumber) : null;
+            string record = best.HasValue ? best.Value.ToString() : "--";
+            string accent = activeTheme != null ? ColorUtility.ToHtmlStringRGB(activeTheme.PrimaryButtonColor) : "996677";
+            completionMoveCountText.text = $"MOVES  {gameController.CurrentMoveCount}\n<size=21>BEST  {record}</size>" +
+                (gameController.WasNewBest ? $"\n<size=15><color=#{accent}>NEW BEST</color></size>" : "");
             completionPanel.SetActive(true);
             bool worldComplete = !hasNextLevel && gameController.CurrentWorld != null;
             WorldDefinition nextWorld = worldComplete ? FindNextWorld() : null;

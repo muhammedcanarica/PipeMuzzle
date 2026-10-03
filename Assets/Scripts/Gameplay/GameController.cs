@@ -42,6 +42,20 @@ namespace PipeMuzzle.Gameplay
         public int CurrentMoveCount => board?.MoveCount ?? 0;
         public bool IsCompleted => isCompleted;
         public bool IsCompletionPending => isCompleting;
+        public bool WasNewBest { get; private set; }
+        public bool CanHint => isActiveAndEnabled && boardView != null && board != null &&
+            !isCompleted && !isCompleting && !boardView.IsHintPlaying &&
+            HintSelector.Select(board, currentLevelDefinition) != null;
+
+        public bool TryShowHint()
+        {
+            if (!CanHint) return false;
+            Color color = currentWorld?.GameplayTheme != null
+                ? currentWorld.GameplayTheme.PrimaryButtonColor : new Color(.7f, .4f, .5f);
+            return boardView.TryShowHint(HintSelector.Select(board, currentLevelDefinition), color);
+        }
+
+        public void CancelHint() => boardView?.StopHint();
         public bool HasNextLevel =>
             board != null && currentLevelIndex < LevelCount - 1;
 
@@ -71,6 +85,7 @@ namespace PipeMuzzle.Gameplay
             currentLevelIndex = 0;
             isCompleted = false;
             solvedPath.Clear();
+            WasNewBest = false;
 
             worldProgressService ??= new WorldProgressService();
             if (worldProgressService.GetAccessState(world) != WorldAccessState.Playable)
@@ -173,6 +188,8 @@ namespace PipeMuzzle.Gameplay
             isCompleting = false;
 
             bool hasNextLevel = HasNextLevel;
+            WasNewBest = currentWorld != null && BestMovesProgress.TrySetBest(
+                currentWorld.WorldId, CurrentLevelNumber, board.MoveCount);
 
             if (hasNextLevel)
             {
@@ -276,6 +293,7 @@ namespace PipeMuzzle.Gameplay
             CancelTransientVisuals();
             currentLevelIndex = levelIndex;
             isCompleted = false;
+            WasNewBest = false;
 
             board =
                 BoardBuilder.Build(level);
@@ -315,6 +333,7 @@ namespace PipeMuzzle.Gameplay
         {
             if (board == null || isCompleted || isCompleting) return;
             isCompleting = true;
+            CancelHint();
             if (Application.isPlaying && boardView.HasPendingRotations)
                 completionCoroutine = StartCoroutine(WaitForRotationAndStartFlow());
             else StartCompletionFlow();
