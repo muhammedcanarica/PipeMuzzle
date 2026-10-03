@@ -69,6 +69,15 @@ namespace PipeMuzzle.Gameplay
             return $"PipeMuzzle.Progress.World.{WorldIdPersistence.Segment(worldId)}.{suffix}";
         }
 
+        public static void ResetForWorld(WorldId worldId)
+        {
+            PlayerPrefs.DeleteKey(Key(worldId, "Unlocked"));
+            PlayerPrefs.DeleteKey(Key(worldId, "Completed"));
+            if (worldId == WorldId.SakuraGarden)
+                PlayerPrefs.SetInt(Key(worldId, "Unlocked"), 1);
+            PlayerPrefs.Save();
+        }
+
         private static bool SetOne(string key)
         {
             if (PlayerPrefs.GetInt(key, 0) == 1)

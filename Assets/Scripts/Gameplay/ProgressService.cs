@@ -58,6 +58,18 @@ namespace PipeMuzzle.Gameplay
             PlayerPrefs.Save();
         }
 
+        public static void ResetForWorld(WorldId worldId)
+        {
+            PlayerPrefs.DeleteKey($"PipeMuzzle.Progress.World.{WorldIdPersistence.Segment(worldId)}.HighestUnlockedLevel");
+            if (worldId == WorldId.SakuraGarden)
+            {
+                // Prevent an old save from restoring progress on the next service creation.
+                PlayerPrefs.DeleteKey(LegacyHighestUnlockedLevelKey);
+                PlayerPrefs.SetInt(MigrationMarkerKey, 1);
+            }
+            PlayerPrefs.Save();
+        }
+
         private void MigrateLegacySakuraProgress()
         {
             if (PlayerPrefs.GetInt(MigrationMarkerKey, 0) == 1)

@@ -72,6 +72,15 @@ namespace PipeMuzzle.UI
             screenManager.ConfigureWorldMap(worldMap);
             storyNavigation.BindWorldMap(worldMapUi);
             worldMapUi.Initialize();
+            GameObject settingsPanel = CreateFullScreenPanel("SettingsPanel");
+            settingsPanel.SetActive(false);
+            SettingsUI settingsUi = settingsPanel.AddComponent<SettingsUI>();
+            settingsUi.Initialize(screenManager, () => ConfigureForWorld(Resources.Load<WorldDefinition>("Worlds/SakuraGarden")));
+            // Borrow the map's paper artwork; WorldMapUI retains ownership of the sprite.
+            settingsPanel.GetComponent<Image>().sprite = worldMap.transform.Find("Background").GetComponent<Image>().sprite;
+            settingsPanel.GetComponent<Image>().color = Color.white;
+            screenManager.ConfigureSettings(settingsPanel);
+            worldMapUi.ConfigureSettings(screenManager);
             CreateWorldMapBackButton();
             screenManager.ShowWorldMap();
         }

@@ -13,6 +13,50 @@ namespace PipeMuzzle.UI
     public sealed class WorldMapUI : MonoBehaviour
     {
         public event Action<WorldDefinition> WorldSelected;
+        private Button settingsButton;
+        private RectTransform settingsEntryArea;
+        private Vector2 settingsEntrySize;
+
+        public void ConfigureSettings(ScreenManager screens)
+        {
+            if (settingsButton != null) return;
+            GameObject area = new("SettingsEntry", typeof(RectTransform));
+            area.transform.SetParent(transform, false);
+            settingsEntryArea = (RectTransform)area.transform;
+            settingsEntryArea.anchorMin = Vector2.zero;
+            settingsEntryArea.anchorMax = Vector2.one;
+            settingsEntryArea.offsetMin = settingsEntryArea.offsetMax = Vector2.zero;
+            area.AddComponent<SafeAreaPanel>();
+            TMP_Text label = CreateText("SettingsButton", "SETTINGS", settingsEntryArea, 18f, new Color32(148, 118, 116, 255));
+            label.characterSpacing = 1.4f;
+            label.raycastTarget = true;
+            RectTransform rect = label.rectTransform;
+            rect.anchorMin = rect.anchorMax = new Vector2(1f, 1f);
+            rect.pivot = new Vector2(1f, 1f);
+            rect.anchoredPosition = new Vector2(-20f, -12f);
+            rect.sizeDelta = new Vector2(116f, 76f);
+            settingsButton = label.gameObject.AddComponent<Button>();
+            settingsButton.targetGraphic = label;
+            settingsButton.onClick.AddListener(screens.ShowSettings);
+            LayoutSettingsEntry();
+        }
+
+        private void LateUpdate()
+        {
+            if (settingsEntryArea != null && settingsEntrySize != settingsEntryArea.rect.size)
+                LayoutSettingsEntry();
+        }
+
+        private void LayoutSettingsEntry()
+        {
+            if (settingsButton == null) return;
+            settingsEntrySize = settingsEntryArea.rect.size;
+            float preferred = Mathf.Lerp(1f, 2.4f, Mathf.InverseLerp(1f, 1.65f, settingsEntrySize.y / Mathf.Max(1f, settingsEntrySize.x)));
+            float scale = Mathf.Max(.1f, Mathf.Min(preferred, settingsEntrySize.x / 524f, settingsEntrySize.y / 474f));
+            RectTransform rect = (RectTransform)settingsButton.transform;
+            rect.localScale = Vector3.one * scale;
+            rect.anchoredPosition = new Vector2(-20f, -8f) * scale;
+        }
 
         [SerializeField] private Sprite characterMarkerSprite;
         private const float TravelDuration = .45f;
@@ -316,6 +360,7 @@ namespace PipeMuzzle.UI
 
         private void LayoutDestinations()
         {
+            LayoutSettingsEntry();
             RectTransform root = (RectTransform)transform;
             Vector2 size = root.rect.size;
             if (size.x <= 0f || size.y <= 0f) return;

@@ -39,15 +39,13 @@ namespace PipeMuzzle.Gameplay
         [System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
         internal static void Log(string message) => Debug.Log(message);
 
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
-        // Re-arm story checkpoints for testing without changing world or level progress.
+        // Used by Settings in player builds and by the existing debug menu.
         public static void ResetViewedCheckpointsForWorld(WorldId world)
         {
             foreach (int completedLevelNumber in new[] { 3, 6, 9, 12 })
                 PlayerPrefs.DeleteKey(Key(world, completedLevelNumber));
             PlayerPrefs.Save();
         }
-#endif
 
         private static string Key(WorldId world, int completedLevelNumber) =>
             $"PipeMuzzle.Story.World.{WorldIdPersistence.Segment(world)}.Checkpoint.{completedLevelNumber}.Viewed";

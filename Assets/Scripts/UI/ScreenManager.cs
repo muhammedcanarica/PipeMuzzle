@@ -9,6 +9,7 @@ namespace PipeMuzzle.UI
         [SerializeField] private GameObject comicViewerPanel;
         [SerializeField] private GameObject levelSelectPanel;
         [SerializeField] private GameObject gameplayHud;
+        [SerializeField] private GameObject settingsPanel;
 
         public void Configure(GameObject worldMap, GameObject comicViewer, GameObject levelSelect, GameObject gameplay)
         {
@@ -23,6 +24,15 @@ namespace PipeMuzzle.UI
             worldMapPanel = worldMap;
         }
 
+        public void ConfigureSettings(GameObject settings) => settingsPanel = settings;
+
+        public void ShowSettings()
+        {
+            if (settingsPanel == null) return;
+            settingsPanel.GetComponent<SettingsUI>()?.Refresh();
+            SetScreen(false, false, false, false, true);
+        }
+
         public void ShowWorldMap()
         {
             SetScreen(true, false, false, false);
@@ -33,12 +43,13 @@ namespace PipeMuzzle.UI
         public void ShowLevelSelect() => SetScreen(false, false, true, false);
         public void ShowGameplay() => SetScreen(false, false, false, true);
 
-        private void SetScreen(bool worldMap, bool comicViewer, bool levelSelect, bool gameplay)
+        private void SetScreen(bool worldMap, bool comicViewer, bool levelSelect, bool gameplay, bool settings = false)
         {
             if (worldMapPanel != null) worldMapPanel.SetActive(worldMap);
             if (comicViewerPanel != null) comicViewerPanel.SetActive(comicViewer);
             if (levelSelectPanel != null) levelSelectPanel.SetActive(levelSelect);
             if (gameplayHud != null) gameplayHud.SetActive(gameplay);
+            if (settingsPanel != null) settingsPanel.SetActive(settings);
         }
     }
 }
