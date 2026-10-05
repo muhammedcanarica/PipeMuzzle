@@ -75,6 +75,10 @@ namespace PipeMuzzle.View
         private Sprite sourceMarker;
         private Sprite targetMarker;
         private SpriteRenderer roleRenderer;
+        private Sprite targetWater;
+        private SpriteRenderer endpointWaterRenderer;
+        private EndpointConnectorView endpointConnector;
+        private bool targetReached;
 
         public TileState State => tileState;
         public bool HasPendingRotation => rotationCoroutine != null || queuedQuarterTurns > 0;
@@ -91,6 +95,7 @@ namespace PipeMuzzle.View
             crossSprite = theme.CrossSprite;
             sourceMarker = theme.SourceMarker;
             targetMarker = theme.TargetMarker;
+            targetWater = theme.TargetWater;
             normalColor = theme.NormalTint;
             lockedTint = theme.LockedTint;
             sourceGlowColor = theme.SourceGlowColor;
@@ -119,6 +124,7 @@ namespace PipeMuzzle.View
             }
 
             StopVisualCoroutines();
+            targetReached = false;
             RefreshSprite();
 
             visualRotationDegrees =
@@ -133,6 +139,7 @@ namespace PipeMuzzle.View
 
             RefreshBaseColor();
             RefreshRoleMarker();
+            RefreshEndpointPresentation();
             SetPowered(tileState.IsPowered, false);
         }
 
@@ -206,7 +213,9 @@ namespace PipeMuzzle.View
                 return;
             }
 
-            StartGlowPulse(pulseScale, pulseDuration, 0.52f);
+            targetReached = true;
+            if (endpointWaterRenderer != null) endpointWaterRenderer.enabled = endpointWaterRenderer.sprite != null;
+            StartGlowPulse(pulseScale, pulseDuration, 0.18f);
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -259,10 +268,43 @@ namespace PipeMuzzle.View
                     ? roleRenderer.transform.localRotation : Quaternion.identity;
         }
 
+        private void RefreshEndpointPresentation()
+        {
+            bool endpoint = tileState.Role != TileRole.Normal && roleRenderer != null && roleRenderer.enabled;
+            if (endpoint && endpointConnector == null)
+            {
+                GameObject ports = new("EndpointConnector");
+                ports.transform.SetParent(transform, false);
+                endpointConnector = ports.AddComponent<EndpointConnectorView>();
+            }
+            endpointConnector?.Configure(spriteRenderer, endpoint);
+            if (endpoint) spriteRenderer.enabled = false;
+            if (roleRenderer != null)
+                roleRenderer.sortingOrder = spriteRenderer.sortingOrder - 1;
+
+            if (tileState.Role == TileRole.Target && targetWater != null && endpointWaterRenderer == null)
+            {
+                GameObject water = new("EndpointWater");
+                water.transform.SetParent(transform, false);
+                endpointWaterRenderer = water.AddComponent<SpriteRenderer>();
+                endpointWaterRenderer.sharedMaterial = spriteRenderer.sharedMaterial;
+                endpointWaterRenderer.sortingLayerID = spriteRenderer.sortingLayerID;
+                endpointWaterRenderer.sortingOrder = spriteRenderer.sortingOrder + 3;
+            }
+            if (endpointWaterRenderer != null)
+            {
+                endpointWaterRenderer.sprite = tileState.Role == TileRole.Target ? targetWater : null;
+                endpointWaterRenderer.enabled = targetReached && endpointWaterRenderer.sprite != null;
+                endpointWaterRenderer.transform.localRotation = Quaternion.Inverse(transform.localRotation);
+            }
+        }
+
         private void LateUpdate()
         {
             if (roleRenderer != null && roleRenderer.enabled)
                 roleRenderer.transform.localRotation = Quaternion.Inverse(transform.localRotation);
+            if (endpointWaterRenderer != null)
+                endpointWaterRenderer.transform.localRotation = Quaternion.Inverse(transform.localRotation);
         }
 
         private void RefreshSprite()
@@ -322,12 +364,12 @@ namespace PipeMuzzle.View
             {
                 case TileRole.Source:
                     color = sourceGlowColor;
-                    color.a *= powered ? 1f : 0.72f;
+                    color.a *= .12f;
                     break;
 
                 case TileRole.Target:
                     color = targetGlowColor;
-                    color.a *= powered ? 1f : 0.68f;
+                    color.a *= targetReached ? .18f : 0f;
                     break;
 
                 default:

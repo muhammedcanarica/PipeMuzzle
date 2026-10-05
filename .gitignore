@@ -14,8 +14,11 @@
 /v2/
 /v[0-9]*/
 /v[0-9]*.zip
+# Generated Unity iOS player export
+/ios/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
+tools/__pycache__/
 *.log
 
 # MemoryCaptures can get excessive in size.

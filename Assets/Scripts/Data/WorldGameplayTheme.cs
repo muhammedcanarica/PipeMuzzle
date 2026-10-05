@@ -23,6 +23,8 @@ namespace PipeMuzzle.Data
         [SerializeField] private Sprite crossSprite;
         [SerializeField] private Sprite sourceMarker;
         [SerializeField] private Sprite targetMarker;
+        [Tooltip("Water inside the target basin, shown only when flow arrives.")]
+        [SerializeField] private Sprite targetWater;
         [SerializeField] private Color flowColor = new(.2f, .85f, .95f, 1f);
         [SerializeField] private Color normalTint = Color.white;
         [SerializeField] private Color lockedTint = Color.gray;
@@ -43,6 +45,7 @@ namespace PipeMuzzle.Data
         public Sprite CrossSprite => crossSprite;
         public Sprite SourceMarker => sourceMarker;
         public Sprite TargetMarker => targetMarker;
+        public Sprite TargetWater => targetWater;
         public Color FlowColor => flowColor;
         public Color NormalTint => normalTint;
         public Color LockedTint => lockedTint;

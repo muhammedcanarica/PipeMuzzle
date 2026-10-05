@@ -25,6 +25,7 @@ MonoBehaviour:
   crossSprite: {fileID: 21300000, guid: 5ac60abbf67452c1b1aa63c8607c1a1e, type: 3}
   sourceMarker: {fileID: 21300000, guid: 58a73f8772225e11a9439ba88d906f9f, type: 3}
   targetMarker: {fileID: 21300000, guid: 24a0742e65805452a1a165023e038d4a, type: 3}
+  targetWater: {fileID: 21300000, guid: 8f4248a9350751329cc85af0e084af8f, type: 3}
   flowColor: {r: 0.28235295, g: 0.7137255, b: 0.6666667, a: 1}
   normalTint: {r: 1, g: 1, b: 1, a: 1}
   lockedTint: {r: 0.83, g: 0.83, b: 0.88, a: 1}
