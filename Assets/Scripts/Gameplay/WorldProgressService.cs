@@ -22,6 +22,9 @@ namespace PipeMuzzle.Gameplay
             }
         }
 
+        public bool IsJourneyCompleted => IsWorldCompleted(WorldId.SakuraGarden) &&
+            IsWorldCompleted(WorldId.BambooWorkshop) && IsWorldCompleted(WorldId.MoonShrine);
+
         public bool IsWorldUnlocked(WorldId worldId)
         {
             return PlayerPrefs.GetInt(Key(worldId, "Unlocked"), 0) == 1;

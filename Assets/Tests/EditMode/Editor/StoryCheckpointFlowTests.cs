@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
+using PipeMuzzle.Board;
 using NUnit.Framework;
 using PipeMuzzle.Data;
 using PipeMuzzle.Gameplay;
@@ -46,10 +48,14 @@ namespace PipeMuzzle.Tests.EditMode
         [SetUp]
         public void SetUp()
         {
+            SaveAndClear("PipeMuzzle.Feedback.SoundEnabled");
+            SaveAndClear(BasicRotationTutorialProgress.SeenKey);
             SaveAndClear("PipeMuzzle.HighestUnlockedLevel");
             SaveAndClear("PipeMuzzle.Progress.Migration.LegacyHighestUnlockedLevelToSakura.V1");
             foreach (string world in Worlds)
             {
+                for (int level = 1; level <= 12; level++)
+                    SaveAndClear($"PipeMuzzle.BestMoves.World.{world}.Level.{level}");
                 foreach (string suffix in new[] { "HighestUnlockedLevel", "Unlocked", "Completed" })
                     SaveAndClear(ProgressKey(world, suffix));
                 foreach (int checkpoint in new[] { 0, 3, 6, 9, 12 })
@@ -104,6 +110,7 @@ namespace PipeMuzzle.Tests.EditMode
                 Assert.That(levelSelect.CurrentWorld, Is.SameAs(world));
                 Assert.That(controller.IsLevelUnlocked(checkpoint), Is.True);
             }
+            else if (worldName == "MoonShrine") AssertJourney();
             else
             {
                 Assert.That(gameplay.activeSelf, Is.True);
@@ -140,6 +147,7 @@ namespace PipeMuzzle.Tests.EditMode
                 Assert.That(levelSelect.CurrentWorld, Is.SameAs(world));
                 Assert.That(controller.IsLevelUnlocked(checkpoint), Is.True);
             }
+            else if (worldName == "MoonShrine") AssertJourney();
             else
             {
                 Assert.That(select.activeSelf, Is.False);
@@ -226,8 +234,12 @@ namespace PipeMuzzle.Tests.EditMode
             Invoke(controller, "CompleteLevel");
 
             Assert.That(comic.activeSelf, Is.False);
-            Assert.That(gameplay.activeSelf, Is.True);
-            Assert.That(completion.activeSelf, Is.True);
+            if (worldName == "MoonShrine" && checkpoint == 12) AssertJourney();
+            else
+            {
+                Assert.That(gameplay.activeSelf, Is.True);
+                Assert.That(completion.activeSelf, Is.True);
+            }
         }
 
         [TestCaseSource(nameof(ProgressCases))]
@@ -249,6 +261,7 @@ namespace PipeMuzzle.Tests.EditMode
                 Assert.That(select.activeSelf, Is.True);
                 Assert.That(levelSelect.CurrentWorld, Is.SameAs(world));
             }
+            else if (worldName == "MoonShrine") AssertJourney();
             else
             {
                 Assert.That(completion.activeSelf, Is.True);
@@ -329,9 +342,149 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(select.activeSelf, Is.True);
         }
 
+        [Test]
+        public void MoonFinalUsesJourneyContextAndCreditsReturnWithoutLosingProgress()
+        {
+            PrepareLevel("MoonShrine", 12, false);
+            Invoke(controller, "CompleteLevel");
+            Assert.That(comic.activeSelf, Is.True);
+            viewer.Skip();
+            Transform journey = gameplay.transform.parent.Find("JourneyComplete");
+            Assert.That(journey, Is.Not.Null, "Moon finale needs its own navigation context.");
+            Assert.That(journey.gameObject.activeSelf, Is.True);
+            Assert.That(gameplay.activeSelf, Is.False);
+            Assert.That(completion.activeSelf, Is.False);
+            journey.Find("SafeArea/Surface/Journey/CreditsButton").GetComponent<Button>().onClick.Invoke();
+            Assert.That(journey.Find("SafeArea/Surface/Credits").gameObject.activeSelf, Is.True);
+            journey.Find("SafeArea/Surface/Credits/BackButton").GetComponent<Button>().onClick.Invoke();
+            Assert.That(journey.Find("SafeArea/Surface/Journey").gameObject.activeSelf, Is.True);
+            journey.Find("SafeArea/Surface/Journey/WorldMapButton").GetComponent<Button>().onClick.Invoke();
+            Assert.That(journey.gameObject.activeSelf, Is.False);
+            Assert.That(new WorldProgressService().IsWorldCompleted(WorldId.MoonShrine), Is.True);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void MoonFinalWaitsForFlowAndComicAndRespectsAssistedBest(bool assisted)
+        {
+            PrepareLevel("MoonShrine", 12, false);
+            BoardState board = GetField<BoardState>(controller, "board");
+            TileState selected = HintSelector.Select(board, controller.CurrentLevelDefinition);
+            foreach (LevelSolutionStep step in controller.CurrentLevelDefinition.SolutionPath)
+            {
+                TileState tile = board.GetTile(step.Position.x, step.Position.y);
+                if (tile.IsLocked || assisted && tile == selected) continue;
+                var solved = new TileState(tile.X, tile.Y, tile.Shape, tile.Role, step.Rotation, false);
+                while (tile.Connections != solved.Connections) tile.RotateClockwise();
+            }
+            BoardView view = GetField<BoardView>(controller, "boardView");
+            view.StopTransientEffects();
+            for (int i = 0; i < 7; i++) board.IncrementMoveCount();
+            BestMovesProgress.TrySetBest(WorldId.MoonShrine, 12, 18);
+            if (assisted) Assert.That(controller.TryShowHint(), Is.True);
+            else
+            {
+                Assert.That(ConnectionChecker.Evaluate(board), Is.True);
+                Invoke(controller, "BeginCompletion");
+            }
+            Assert.That(controller.IsCompletionPending, Is.True);
+            Assert.That(comic.activeSelf, Is.False);
+            Assert.That(screens.IsJourneyCompleteOpen, Is.False);
+            EnergyFlowView flow = view.GetComponent<EnergyFlowView>();
+            flow.Advance(2f);
+            Assert.That(comic.activeSelf, Is.False, "Arrival hold must finish before the comic.");
+            flow.Advance(.13f);
+            Assert.That(comic.activeSelf, Is.True);
+            Assert.That(screens.IsJourneyCompleteOpen, Is.False);
+            viewer.Skip();
+            AssertJourney();
+            Assert.That(BestMovesProgress.GetBest(WorldId.MoonShrine, 12), Is.EqualTo(assisted ? 18 : 7));
+            Assert.That(controller.WasNewBest, Is.EqualTo(!assisted));
+            Assert.That(controller.TryPause(), Is.False);
+        }
+
+        [Test]
+        public void ResetClearsDerivedJourneyCompletionAndPreservesSound()
+        {
+            PrepareLevel("MoonShrine", 12, false);
+            Invoke(controller, "CompleteLevel");
+            viewer.Skip();
+            AssertJourney();
+            PlayerPrefs.SetInt("PipeMuzzle.Feedback.SoundEnabled", 0);
+            ProgressResetService.ResetAllProgress();
+            var progress = new WorldProgressService();
+            Assert.That(progress.IsJourneyCompleted, Is.False);
+            Assert.That(progress.IsWorldUnlocked(WorldId.SakuraGarden), Is.True);
+            Assert.That(progress.IsWorldUnlocked(WorldId.BambooWorkshop), Is.False);
+            Assert.That(progress.IsWorldUnlocked(WorldId.MoonShrine), Is.False);
+            Assert.That(PlayerPrefs.GetInt("PipeMuzzle.Feedback.SoundEnabled", 1), Is.Zero);
+            Assert.That(new StoryCheckpointProgress().HasViewed(WorldId.MoonShrine, 12), Is.False);
+            screens.ShowWorldMap();
+            Assert.That(screens.IsJourneyCompleteOpen, Is.False);
+        }
+
+        [TestCase("SakuraGarden", 12)]
+        [TestCase("BambooWorkshop", 12)]
+        [TestCase("MoonShrine", 9)]
+        public void OtherCompletionsCannotOpenJourney(string world, int level)
+        {
+            PrepareLevel(world, level, false);
+            Assert.That(screens.TryShowJourneyComplete(controller), Is.False);
+            Invoke(controller, "CompleteLevel");
+            viewer.Skip();
+            Assert.That(screens.TryShowJourneyComplete(controller), Is.False);
+            Assert.That(screens.IsJourneyCompleteOpen, Is.False);
+        }
+
+        [TestCase(1920, 1080)]
+        [TestCase(1024, 768)]
+        [TestCase(640, 360)]
+        [TestCase(720, 1280)]
+        public void JourneyAndCreditsFitAvailableArea(int width, int height)
+        {
+            PrepareLevel("MoonShrine", 12, false);
+            Assert.That(screens.TryShowJourneyComplete(controller), Is.False, "Unsolved Moon 12 cannot open the finale.");
+            Invoke(controller, "CompleteLevel");
+            viewer.Skip();
+            JourneyCompleteUI ui = gameplay.transform.parent.GetComponentInChildren<JourneyCompleteUI>(true);
+            RectTransform area = (RectTransform)ui.transform.Find("SafeArea");
+            area.anchorMin = area.anchorMax = Vector2.zero;
+            area.sizeDelta = new Vector2(width, height);
+            Invoke(ui, "FitSurface");
+            RectTransform surface = (RectTransform)area.Find("Surface");
+            Assert.That(surface.rect.width * surface.localScale.x, Is.LessThanOrEqualTo(width - 48));
+            Assert.That(surface.rect.height * surface.localScale.y, Is.LessThanOrEqualTo(height - 48));
+            foreach (TMP_Text text in surface.GetComponentsInChildren<TMP_Text>(true))
+            {
+                text.ForceMeshUpdate(true);
+                Assert.That(text.isTextOverflowing, Is.False, text.text);
+            }
+            foreach (Image artwork in surface.Find("Journey").GetComponentsInChildren<Image>(true)
+                .Where(image => image.name.StartsWith("World") && !image.name.Contains("Button")))
+                Assert.That(artwork.sprite, Is.Not.Null);
+        }
+
+        private void AssertJourney()
+        {
+            Assert.That(screens.IsJourneyCompleteOpen, Is.True);
+            Assert.That(gameplay.activeSelf, Is.False);
+            Assert.That(completion.activeSelf, Is.False);
+            Assert.That(select.activeSelf, Is.False);
+            Assert.That(new WorldProgressService().IsJourneyCompleted, Is.True);
+            TMP_Text count = gameplay.transform.parent.Find("JourneyComplete/SafeArea/Surface/Journey/LevelCount").GetComponent<TMP_Text>();
+            Assert.That(count.text, Is.EqualTo("36 / 36 LEVELS"));
+        }
+
         private WorldDefinition PrepareLevel(string worldName, int checkpoint, bool completedBefore)
         {
             WorldDefinition world = LoadWorld(worldName);
+            // Legitimate Moon access follows completion of both previous worlds.
+            if (worldName == "MoonShrine")
+                foreach (string previous in new[] { "SakuraGarden", "BambooWorkshop" })
+                {
+                    PlayerPrefs.SetInt(ProgressKey(previous, "Unlocked"), 1);
+                    PlayerPrefs.SetInt(ProgressKey(previous, "Completed"), 1);
+                }
             PlayerPrefs.SetInt(ProgressKey(worldName, "Unlocked"), 1);
             PlayerPrefs.SetInt(ProgressKey(worldName, "HighestUnlockedLevel"),
                 completedBefore && checkpoint < world.LevelCount ? checkpoint : checkpoint - 1);

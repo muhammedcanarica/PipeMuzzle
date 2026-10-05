@@ -142,13 +142,15 @@ namespace PipeMuzzle.UI
                 return;
             }
             Action completion = finalCompletion;
+            bool moonFinal = activeCheckpointWorld != null &&
+                activeCheckpointWorld.WorldId == WorldId.MoonShrine && activeCheckpointLevel == 12;
             if (playingLevelCheckpoint && activeCheckpointWorld != null)
                 checkpointProgress.MarkViewed(activeCheckpointWorld.WorldId, activeCheckpointLevel);
             // Persist and clear before ShowGameplay re-enables GameUI and reads completion state.
             ClearActiveCheckpoint();
             if (completion != null)
             {
-                screenManager.ShowGameplay();
+                if (!moonFinal) screenManager.ShowGameplay();
                 completion();
             }
             else ShowLevelSelect();

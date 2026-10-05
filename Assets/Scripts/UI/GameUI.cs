@@ -517,6 +517,12 @@ namespace PipeMuzzle.UI
 
         private void ShowCompletion(bool hasNextLevel)
         {
+            ScreenManager screens = GetComponent<ScreenManager>() ?? GetComponentInParent<ScreenManager>(true);
+            if (screens != null && screens.TryShowJourneyComplete(gameController))
+            {
+                completionPanel.SetActive(false);
+                return;
+            }
             int? best = gameController.CurrentWorld != null
                 ? BestMovesProgress.GetBest(gameController.CurrentWorld.WorldId, gameController.CurrentLevelNumber) : null;
             string record = best.HasValue ? best.Value.ToString() : "--";
