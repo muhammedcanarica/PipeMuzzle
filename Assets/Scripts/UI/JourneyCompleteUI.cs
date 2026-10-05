@@ -21,6 +21,13 @@ namespace PipeMuzzle.UI
         private Texture2D washTexture;
         private Sprite washSprite;
         private Material artworkMaterial;
+        private Texture2D paperTexture;
+        private Sprite paperSprite;
+        private Texture2D buttonTexture;
+        private Sprite buttonSprite;
+        private CanvasGroup entranceFade, contentFade;
+        private float entranceElapsed, contentElapsed;
+        private const float FadeDuration = .25f;
 
         public void Configure(ScreenManager manager)
         {
@@ -29,36 +36,53 @@ namespace PipeMuzzle.UI
             Stretch(root);
             var paper = gameObject.AddComponent<Image>();
             paper.color = ColorForUi(new Color32(255, 247, 236, 255));
+            paperTexture = new Texture2D(128, 128, TextureFormat.RGBA32, false);
+            var grain = new Color[128 * 128];
+            for (int y = 0; y < 128; y++)
+            for (int x = 0; x < 128; x++)
+            {
+                float tint = .985f + Mathf.PerlinNoise(x * .61f, y * .61f) * .015f;
+                grain[y * 128 + x] = new Color(tint, tint, tint, 1);
+            }
+            paperTexture.SetPixels(grain);
+            paperTexture.Apply();
+            paperSprite = Sprite.Create(paperTexture, new Rect(0, 0, 128, 128), Vector2.one * .5f);
+            paper.sprite = paperSprite;
+            entranceFade = gameObject.AddComponent<CanvasGroup>();
             CreateWashes();
+            CreateButtonPaper();
             safeArea = Rect("SafeArea", transform);
             Stretch(safeArea);
             safeArea.gameObject.AddComponent<SafeAreaPanel>();
             surface = Rect("Surface", safeArea);
             surface.sizeDelta = new Vector2(1080, 680);
+            contentFade = surface.gameObject.AddComponent<CanvasGroup>();
             journey = Rect("Journey", surface).gameObject;
             Stretch((RectTransform)journey.transform);
             credits = Rect("Credits", surface).gameObject;
             Stretch((RectTransform)credits.transform);
 
-            Text("Title", journey.transform, "JOURNEY COMPLETE", 46, 240, 1000, 70);
+            Text("Title", journey.transform, "JOURNEY COMPLETE", 46, 247, 1000, 70).characterSpacing = 3f;
             levelCount = Text("LevelCount", journey.transform, "", 19, 177, 600, 36);
             Shader shader = Resources.Load<Shader>("WorldMap/WorldMapArtwork");
             if (shader != null) artworkMaterial = new Material(shader);
             for (int i = 0; i < Worlds.Length; i++)
             {
-                float x = (i - 1) * 340;
+                float x = (i - 1) * 345;
+                float rise = i == 1 ? 27 : i == 0 ? -1 : -8;
                 RectTransform art = Rect($"World{i + 1}", journey.transform);
-                art.anchoredPosition = new Vector2(x, 25);
-                art.sizeDelta = new Vector2(290, 230);
+                art.anchoredPosition = new Vector2(x, 25 + rise);
+                art.sizeDelta = new Vector2(310, 245);
+                art.localRotation = Quaternion.Euler(0, 0, i == 0 ? -2 : i == 2 ? 2 : 0);
                 Image image = art.gameObject.AddComponent<Image>();
                 image.sprite = Resources.Load<Sprite>($"WorldMap/Journey/{Worlds[i]}");
                 image.preserveAspect = true;
                 image.raycastTarget = false;
                 if (artworkMaterial != null) image.material = artworkMaterial;
-                TMP_Text name = Text($"WorldName{i + 1}", journey.transform, Names[i], 20, -106, 330, 36);
-                name.rectTransform.anchoredPosition = new Vector2(x, -106);
+                TMP_Text name = Text($"WorldName{i + 1}", journey.transform, Names[i], 19, -116, 330, 36);
+                name.rectTransform.anchoredPosition = new Vector2(x, -116 + rise);
                 worldStatus[i] = Text($"WorldStatus{i + 1}", journey.transform, "", 15, -141, 330, 30);
-                worldStatus[i].rectTransform.anchoredPosition = new Vector2(x, -141);
+                worldStatus[i].rectTransform.anchoredPosition = new Vector2(x, -148 + rise);
             }
             Text("Thanks", journey.transform, "THANK YOU FOR PLAYING", 19, -202, 900, 40);
             Button("WorldMapButton", journey.transform, "WORLD MAP", -145, -273,
@@ -88,15 +112,44 @@ namespace PipeMuzzle.UI
             credits.SetActive(false);
             journey.SetActive(true);
             FitSurface();
+            BeginContentFade();
         }
 
         private void ShowCredits()
         {
             journey.SetActive(false);
             credits.SetActive(true);
+            BeginContentFade();
         }
 
-        private void LateUpdate() => FitSurface();
+        private void OnEnable()
+        {
+            entranceElapsed = 0;
+            if (entranceFade != null) entranceFade.alpha = Application.isPlaying ? 0 : 1;
+        }
+
+        private void BeginContentFade()
+        {
+            contentElapsed = 0;
+            contentFade.alpha = Application.isPlaying && isActiveAndEnabled ? 0 : 1;
+            contentFade.interactable = contentFade.alpha == 1;
+        }
+
+        private void LateUpdate()
+        {
+            FitSurface();
+            if (entranceFade != null && entranceFade.alpha < 1)
+            {
+                entranceElapsed += Time.unscaledDeltaTime;
+                entranceFade.alpha = Mathf.SmoothStep(0, 1, entranceElapsed / FadeDuration);
+            }
+            if (contentFade != null && contentFade.alpha < 1)
+            {
+                contentElapsed += Time.unscaledDeltaTime;
+                contentFade.alpha = Mathf.SmoothStep(0, 1, contentElapsed / FadeDuration);
+                contentFade.interactable = contentFade.alpha >= 1;
+            }
+        }
 
         private void FitSurface()
         {
@@ -123,18 +176,37 @@ namespace PipeMuzzle.UI
             washTexture.SetPixels(pixels);
             washTexture.Apply();
             washSprite = Sprite.Create(washTexture, new Rect(0, 0, size, size), new Vector2(.5f, .5f));
-            Color[] colors = { new Color(0.91f, .59f, .66f, .18f),
-                new Color(.49f, .68f, .49f, .18f), new Color(.60f, .54f, .78f, .18f) };
+            Color[] colors = { new Color(0.91f, .59f, .66f, .31f),
+                new Color(.49f, .68f, .49f, .24f), new Color(.60f, .54f, .78f, .29f) };
             for (int i = 0; i < colors.Length; i++)
             {
                 RectTransform wash = Rect($"Wash{i + 1}", transform);
-                wash.anchorMin = wash.anchorMax = new Vector2(.15f + i * .35f, i == 1 ? .30f : .65f);
-                wash.sizeDelta = new Vector2(950, 800);
+                wash.anchorMin = wash.anchorMax = new Vector2(.23f + i * .27f, i == 1 ? .38f : .57f);
+                wash.sizeDelta = new Vector2(1250, 970);
                 Image image = wash.gameObject.AddComponent<Image>();
                 image.sprite = washSprite;
                 image.color = ColorForUi(colors[i]);
                 image.raycastTarget = false;
             }
+        }
+
+        private void CreateButtonPaper()
+        {
+            const int width = 160, height = 48;
+            buttonTexture = new Texture2D(width, height, TextureFormat.RGBA32, false);
+            var pixels = new Color[width * height];
+            for (int y = 0; y < height; y++)
+            for (int x = 0; x < width; x++)
+            {
+                float noise = Mathf.PerlinNoise(x * .19f, y * .23f);
+                float edge = Mathf.Min(x, width - 1 - x, y, height - 1 - y);
+                float alpha = Mathf.SmoothStep(0, 1, Mathf.Clamp01((edge - noise * 2) / 5));
+                float grain = .96f + noise * .04f;
+                pixels[y * width + x] = new Color(grain, grain, grain, alpha * .85f);
+            }
+            buttonTexture.SetPixels(pixels);
+            buttonTexture.Apply();
+            buttonSprite = Sprite.Create(buttonTexture, new Rect(0, 0, width, height), Vector2.one * .5f);
         }
 
         private static RectTransform Rect(string name, Transform parent)
@@ -168,16 +240,24 @@ namespace PipeMuzzle.UI
             return text;
         }
 
-        private static void Button(string name, Transform parent, string label, float x, float y,
+        private void Button(string name, Transform parent, string label, float x, float y,
             UnityEngine.Events.UnityAction action)
         {
             RectTransform rect = Rect(name, parent);
             rect.anchoredPosition = new Vector2(x, y);
-            rect.sizeDelta = new Vector2(260, 68);
+            rect.sizeDelta = new Vector2(280, 78);
             Image image = rect.gameObject.AddComponent<Image>();
-            image.color = ColorForUi(new Color32(239, 225, 228, 255));
+            image.sprite = buttonSprite;
+            image.color = ColorForUi(name == "WorldMapButton"
+                ? new Color32(239, 217, 219, 255) : new Color32(229, 222, 239, 255));
             var button = rect.gameObject.AddComponent<Button>();
             button.targetGraphic = image;
+            ColorBlock colors = button.colors;
+            colors.highlightedColor = new Color(.96f, .93f, .94f, 1);
+            colors.selectedColor = colors.highlightedColor;
+            colors.pressedColor = new Color(.87f, .83f, .87f, 1);
+            colors.fadeDuration = .15f;
+            button.colors = colors;
             button.onClick.AddListener(action);
             TMP_Text text = Text("Label", rect, label, 22, 0, 250, 60);
             text.characterSpacing = 1.4f;
@@ -185,6 +265,10 @@ namespace PipeMuzzle.UI
 
         private void OnDestroy()
         {
+            Release(buttonSprite);
+            Release(buttonTexture);
+            Release(paperSprite);
+            Release(paperTexture);
             Release(artworkMaterial);
             Release(washSprite);
             Release(washTexture);
