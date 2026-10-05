@@ -27,6 +27,7 @@ namespace PipeMuzzle.Board
         }
 
         public bool IsLocked { get; }
+        public bool IsHintLocked { get; private set; }
         public bool IsPowered { get; private set; }
 
         // alttaki constructor oluyor.
@@ -43,11 +44,26 @@ namespace PipeMuzzle.Board
 
         public bool RotateClockwise()
         {
-            if (IsLocked || Shape == TileShape.Empty)
+            if (IsLocked || IsHintLocked || Shape == TileShape.Empty)
             {
                 return false;
             }
             Rotation = (Rotation + 1) % 4;
+            return true;
+        }
+
+        public bool TryApplyHint(int solutionRotation)
+        {
+            if (IsLocked || IsHintLocked || Role != TileRole.Normal ||
+                Shape == TileShape.Empty || solutionRotation < 0 || solutionRotation > 3)
+                return false;
+
+            ConnectionMask solved = Shape.GetBaseConnections();
+            for (int i = 0; i < solutionRotation; i++) solved = solved.RotateClockwise();
+            // Compare ports, so equivalent straight rotations and symmetric crosses are skipped.
+            if (Connections == solved) return false;
+            Rotation = solutionRotation;
+            IsHintLocked = true;
             return true;
         }
         public void SetPowered(bool powered)

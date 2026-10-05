@@ -181,7 +181,7 @@ namespace PipeMuzzle.UI
                 hintButton.name = "HintButton";
                 // Cloning a serialized button must not copy its gameplay action.
                 hintButton.onClick = new Button.ButtonClickedEvent();
-                SetButtonLabel(hintButton, "HINT");
+                SetButtonLabel(hintButton, "HINT 3/3");
             }
             if (hintButton != null)
             {

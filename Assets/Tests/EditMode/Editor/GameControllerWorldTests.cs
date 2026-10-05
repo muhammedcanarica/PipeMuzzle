@@ -265,6 +265,113 @@ namespace PipeMuzzle.Tests.EditMode
         [TestCase(6)]
         [TestCase(9)]
         [TestCase(12)]
+        public void HintSolvesAndLocksWithoutMovesThenRunsNormalCompletionWithoutBest(int levelNumber)
+        {
+            GameController controller = CreateController();
+            new ProgressService(WorldId.SakuraGarden, 12).UnlockLevel(levelNumber - 1);
+            controller.ConfigureWorld(Sakura());
+            controller.LoadLevelByIndex(levelNumber - 1);
+            BoardState board = GetField<BoardState>(controller, "board");
+            TileState selected = HintSelector.Select(board, controller.CurrentLevelDefinition);
+            var step = controller.CurrentLevelDefinition.SolutionPath.First(s => s.Position == new Vector2Int(selected.X, selected.Y));
+            // Leave exactly one wrong solution pipe for the hint to finish.
+            foreach (LevelSolutionStep other in controller.CurrentLevelDefinition.SolutionPath)
+            {
+                TileState tile = board.GetTile(other.Position.x, other.Position.y);
+                if (tile == selected || tile.IsLocked) continue;
+                var solved = new TileState(tile.X, tile.Y, tile.Shape, tile.Role, other.Rotation, false);
+                while (tile.Connections != solved.Connections) tile.RotateClockwise();
+            }
+            GetField<BoardView>(controller, "boardView").StopTransientEffects();
+            for (int i = 0; i < 7; i++) board.IncrementMoveCount();
+            BestMovesProgress.TrySetBest(WorldId.SakuraGarden, levelNumber, 18);
+            int moveEvents = 0;
+            controller.MoveCountChanged += _ => moveEvents++;
+            Assert.That(controller.TryShowHint(), Is.True);
+            Assert.That(selected.Rotation, Is.EqualTo(step.Rotation));
+            Assert.That(selected.IsHintLocked, Is.True);
+            Assert.That(board.TryRotateTile(selected.X, selected.Y), Is.False);
+            TileView tileView = GetField<BoardView>(controller, "boardView").GetComponentsInChildren<TileView>().First(t => t.State == selected);
+            typeof(GameController).GetMethod("HandleTileClicked", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(controller, new object[] { tileView });
+            Assert.That(controller.CurrentMoveCount, Is.EqualTo(7));
+            Assert.That(moveEvents, Is.Zero);
+            Assert.That(controller.IsCompletionPending, Is.True);
+            Assert.That(GetField<BoardView>(controller, "boardView").IsHintPlaying, Is.True);
+            Assert.That(controller.TryShowHint(), Is.False);
+            EnergyFlowView flow = GetField<BoardView>(controller, "boardView").GetComponent<EnergyFlowView>();
+            flow.Advance(2f);
+            flow.Advance(.13f);
+            Assert.That(controller.IsCompleted, Is.True);
+            if (levelNumber < 12) Assert.That(controller.IsLevelUnlocked(levelNumber), Is.True);
+            else Assert.That(new WorldProgressService().IsWorldCompleted(WorldId.SakuraGarden), Is.True);
+            Assert.That(BestMovesProgress.GetBest(WorldId.SakuraGarden, levelNumber), Is.EqualTo(18));
+            Assert.That(controller.WasNewBest, Is.False);
+            if (levelNumber < 12) controller.LoadNextLevel();
+            else controller.RestartLevel();
+            Assert.That(controller.RemainingHints, Is.EqualTo(3));
+            Assert.That(controller.UsedHintThisAttempt, Is.False);
+            Assert.That(GetField<BoardState>(controller, "board").GetTile(selected.X, selected.Y), Is.Not.SameAs(selected));
+            controller.LoadLevelByIndex(levelNumber - 1);
+            Assert.That(GetField<BoardState>(controller, "board").GetTile(selected.X, selected.Y).IsHintLocked, Is.False);
+            Assert.That(controller.RemainingHints, Is.EqualTo(3));
+            Assert.That(controller.UsedHintThisAttempt, Is.False);
+        }
+
+        [Test]
+        public void ThreeHintsSelectDifferentPipesEnforceCooldownAndRestartResetsAttempt()
+        {
+            GameController controller = CreateController();
+            new ProgressService(WorldId.SakuraGarden, 12).UnlockLevel(11);
+            controller.ConfigureWorld(Sakura());
+            controller.LoadLevelByIndex(11);
+            BoardState board = GetField<BoardState>(controller, "board");
+            var selected = new HashSet<TileState>();
+            var buttonObject = new GameObject("HintButton", typeof(RectTransform), typeof(UnityEngine.UI.Button));
+            created.Add(buttonObject);
+            var labelObject = new GameObject("Label", typeof(RectTransform), typeof(TMPro.TextMeshProUGUI));
+            labelObject.transform.SetParent(buttonObject.transform, false);
+            TMPro.TMP_Text label = labelObject.GetComponent<TMPro.TMP_Text>();
+            var hintUI = buttonObject.AddComponent<PipeMuzzle.UI.GameplayHintUI>();
+            hintUI.Configure(controller);
+            Assert.That(controller.RemainingHints, Is.EqualTo(3));
+            Assert.That(label.text, Is.EqualTo("HINT 3/3"));
+            for (int i = 0; i < 3; i++)
+            {
+                TileState tile = HintSelector.Select(board, controller.CurrentLevelDefinition);
+                Assert.That(tile, Is.Not.Null);
+                Assert.That(selected.Add(tile), Is.True);
+                Assert.That(controller.TryShowHint(), Is.True);
+                Assert.That(controller.RemainingHints, Is.EqualTo(2 - i));
+                hintUI.Configure(controller);
+                Assert.That(label.text, Is.EqualTo($"HINT {2 - i}/3"));
+                Assert.That(buttonObject.GetComponent<UnityEngine.UI.Button>().interactable, Is.False);
+                Assert.That(controller.TryShowHint(), Is.False);
+                controller.CancelHint();
+                Assert.That(controller.CanHint, Is.False, "Cancelling feedback must not bypass cooldown.");
+                typeof(GameController).GetField("hintAvailableAt", BindingFlags.Instance | BindingFlags.NonPublic)?.SetValue(controller, Time.unscaledTime - .1f);
+            }
+            Assert.That(controller.TryShowHint(), Is.False);
+            controller.RestartLevel();
+            Assert.That(controller.RemainingHints, Is.EqualTo(3));
+            Assert.That(controller.UsedHintThisAttempt, Is.False);
+            board = GetField<BoardState>(controller, "board");
+            foreach (TileDefinition definition in controller.CurrentLevelDefinition.Tiles)
+            {
+                TileState tile = board.GetTile(definition.X, definition.Y);
+                Assert.That(tile.Rotation, Is.EqualTo(definition.StartRotation));
+                Assert.That(tile.IsHintLocked, Is.False);
+            }
+            hintUI.Configure(controller);
+            Assert.That(label.text, Is.EqualTo("HINT 3/3"));
+            Assert.That(buttonObject.GetComponent<UnityEngine.UI.Button>().interactable, Is.True);
+            Assert.That(controller.TryShowHint(), Is.True);
+        }
+
+        [TestCase(1)]
+        [TestCase(3)]
+        [TestCase(6)]
+        [TestCase(9)]
+        [TestCase(12)]
         public void SolvedBoardWaitsForFlowBeforeCompletionAndProgress(int levelNumber)
         {
             GameController controller = CreateController();

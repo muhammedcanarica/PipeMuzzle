@@ -5,7 +5,7 @@ namespace PipeMuzzle.View
     [DisallowMultipleComponent]
     public sealed class PipeHintFeedback : MonoBehaviour
     {
-        private const float Duration = 1.2f;
+        private const float Duration = .9f;
         private LineRenderer ring;
         private Material material;
         private TileView tile;

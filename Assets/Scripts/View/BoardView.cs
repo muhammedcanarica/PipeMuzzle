@@ -38,6 +38,13 @@ namespace PipeMuzzle.View
 
         public void StopHint() => hintFeedback?.StopAndClear();
 
+        public void PlayHintRotation(TileState tile, int quarterTurns)
+        {
+            if (tile == null || !tileViews.TryGetValue(new Vector2Int(tile.X, tile.Y), out TileView view)) return;
+            if (!Application.isPlaying) { view.Refresh(); return; }
+            for (int i = 0; i < quarterTurns; i++) view.PlayRotationFeedback();
+        }
+
         public event Action<TileView> TileClicked;
 
         public bool HasPendingRotations

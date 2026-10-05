@@ -85,7 +85,7 @@ namespace PipeMuzzle.Tests.EditMode
         [TestCase("SakuraGarden")]
         [TestCase("BambooWorkshop")]
         [TestCase("MoonShrine")]
-        public void HintUsesFirstWrongSolutionTileWithoutRotatingOrCountingMoves(string worldName)
+        public void HintSelectsAndLocksFirstWrongSolutionTileAcrossAllLevelsWithoutCountingMoves(string worldName)
         {
             Type selector = typeof(GameController).Assembly.GetType("PipeMuzzle.Gameplay.HintSelector");
             Assert.That(selector, Is.Not.Null, "Solution hint selection is missing.");
@@ -106,7 +106,11 @@ namespace PipeMuzzle.Tests.EditMode
                     Assert.That(select.Invoke(null, new object[] { board, level }), Is.SameAs(tile), level.name);
                     Assert.That(tile.Rotation, Is.EqualTo(rotation));
                     Assert.That(board.MoveCount, Is.Zero);
-                    while (tile.Connections != solved.Connections) tile.RotateClockwise();
+                    Assert.That(tile.TryApplyHint(solution.SolutionRotations[pos]), Is.True);
+                    Assert.That(tile.Connections, Is.EqualTo(solved.Connections));
+                    Assert.That(tile.IsHintLocked, Is.True);
+                    Assert.That(board.TryRotateTile(tile.X, tile.Y), Is.False);
+                    Assert.That(board.MoveCount, Is.Zero);
                     hints++;
                 }
                 Assert.That(hints, Is.GreaterThan(0), level.name);
@@ -119,6 +123,7 @@ namespace PipeMuzzle.Tests.EditMode
         [TestCase(TileRole.Target, TileShape.Straight, false)]
         [TestCase(TileRole.Normal, TileShape.Straight, true)]
         [TestCase(TileRole.Normal, TileShape.Empty, false)]
+        [TestCase(TileRole.Normal, TileShape.Cross, false)]
         public void HintNeverSelectsRolesLockedOrEmptyTiles(TileRole role, TileShape shape, bool locked)
         {
             LevelDefinition level = Resources.Load<WorldDefinition>("Worlds/SakuraGarden").Levels[0];
@@ -134,6 +139,60 @@ namespace PipeMuzzle.Tests.EditMode
             BoardState board = BoardBuilder.Build(level);
             board.SetTile(new TileState(1, 1, TileShape.Straight, TileRole.Normal, 2, false));
             Assert.That(HintSelector.Select(board, level), Is.Null);
+        }
+
+        [TestCase(-1)]
+        [TestCase(4)]
+        public void InvalidHintRotationDoesNotChangeOrLockTile(int rotation)
+        {
+            var tile = new TileState(0, 0, TileShape.Corner, TileRole.Normal, 0, false);
+            Assert.That(tile.TryApplyHint(rotation), Is.False);
+            Assert.That(tile.Rotation, Is.Zero);
+            Assert.That(tile.IsHintLocked, Is.False);
+        }
+
+        [Test]
+        public void EquivalentOrientationDoesNotConsumeHintOrLockTile()
+        {
+            var tile = new TileState(0, 0, TileShape.Straight, TileRole.Normal, 0, false);
+            Assert.That(tile.TryApplyHint(2), Is.False);
+            Assert.That(tile.Rotation, Is.Zero);
+            Assert.That(tile.IsHintLocked, Is.False);
+        }
+
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        public void HintAppliesExactSolutionRotationAndRejectsFurtherRotations(int rotation)
+        {
+            var board = new BoardState(1, 1);
+            var tile = new TileState(0, 0, TileShape.Corner, TileRole.Normal, (rotation + 2) % 4, false);
+            board.SetTile(tile);
+            board.IncrementMoveCount();
+            MethodInfo apply = typeof(TileState).GetMethod("TryApplyHint");
+            Assert.That(apply, Is.Not.Null);
+            Assert.That(apply.Invoke(tile, new object[] { rotation }), Is.EqualTo(true));
+            Assert.That(tile.Rotation, Is.EqualTo(rotation));
+            Assert.That(tile.IsLocked, Is.False, "Authored lock must remain separate.");
+            Assert.That(tile.RotateClockwise(), Is.False);
+            Assert.That(board.TryRotateTile(0, 0), Is.False);
+            Assert.That(board.MoveCount, Is.EqualTo(1));
+            Assert.That(apply.Invoke(tile, new object[] { rotation }), Is.EqualTo(false));
+        }
+
+        [TestCase(TileRole.Source, TileShape.Corner, false)]
+        [TestCase(TileRole.Target, TileShape.Corner, false)]
+        [TestCase(TileRole.Normal, TileShape.Corner, true)]
+        [TestCase(TileRole.Normal, TileShape.Empty, false)]
+        [TestCase(TileRole.Normal, TileShape.Cross, false)]
+        public void HintCannotApplyToIneligibleTiles(TileRole role, TileShape shape, bool locked)
+        {
+            MethodInfo apply = typeof(TileState).GetMethod("TryApplyHint");
+            Assert.That(apply, Is.Not.Null);
+            var tile = new TileState(0, 0, shape, role, 0, locked);
+            Assert.That(apply.Invoke(tile, new object[] { 1 }), Is.EqualTo(false));
+            Assert.That(tile.Rotation, Is.Zero);
         }
 
         [TestCase(0)]
@@ -175,7 +234,7 @@ namespace PipeMuzzle.Tests.EditMode
                 Assert.That(state.Rotation, Is.Zero);
                 Assert.That(tile.transform.localScale, Is.EqualTo(Vector3.one));
                 type.GetMethod("Advance").Invoke(feedback, new object[] { .7f });
-                Assert.That(type.GetProperty("IsPlaying").GetValue(feedback), Is.EqualTo(false), "Animation must end at 1.2 seconds.");
+                Assert.That(type.GetProperty("IsPlaying").GetValue(feedback), Is.EqualTo(false), "Animation must end at 0.9 seconds.");
                 Assert.That(root.GetComponentInChildren<LineRenderer>().enabled, Is.False, "Completed overlay must be hidden.");
                 Assert.That(show.Invoke(feedback, new object[] { tile, 1f, Color.magenta }), Is.EqualTo(true));
                 root.SetActive(false);

@@ -68,11 +68,14 @@ namespace PipeMuzzle.Tests.EditMode
         [Test]
         public void PauseRejectsRotationAndHintAndResumePreservesBoard()
         {
+            new ProgressService(WorldId.SakuraGarden, 12).UnlockLevel(11);
+            controller.ConfigureWorld(Resources.Load<WorldDefinition>("Worlds/SakuraGarden"));
+            controller.LoadLevelByIndex(11);
             BoardState board = Get<BoardState>(controller, "board");
-            TileView tile = boardView.GetComponentsInChildren<TileView>()
-                .First(t => t.State.Role == TileRole.Normal && !t.State.IsLocked && t.State.Shape != TileShape.Empty);
-            int rotation = tile.State.Rotation;
             Assert.That(controller.TryShowHint(), Is.True);
+            TileView tile = boardView.GetComponentsInChildren<TileView>()
+                .First(t => t.State.Role == TileRole.Normal && !t.State.IsLocked && !t.State.IsHintLocked && t.State.Shape != TileShape.Empty);
+            int rotation = tile.State.Rotation;
             Assert.That(Pause(), Is.True);
             Assert.That(Time.timeScale, Is.Zero);
             Assert.That(boardView.IsHintPlaying, Is.False);
@@ -84,6 +87,8 @@ namespace PipeMuzzle.Tests.EditMode
             Call(controller, "Resume");
             Assert.That(Time.timeScale, Is.EqualTo(1f));
             Assert.That(Get<BoardState>(controller, "board"), Is.SameAs(board));
+            Assert.That(controller.CanHint, Is.False, "Pause must not bypass hint cooldown.");
+            Set(controller, "hintAvailableAt", Time.unscaledTime - .1f);
             Assert.That(controller.CanHint, Is.True);
             CallPrivate(controller, "HandleTileClicked", tile);
             Assert.That(controller.CurrentMoveCount, Is.EqualTo(1));
@@ -111,6 +116,9 @@ namespace PipeMuzzle.Tests.EditMode
         public void RestartClearsPauseMovesAndHintButKeepsBest()
         {
             BestMovesProgress.TrySetBest(WorldId.SakuraGarden, 1, 7);
+            new ProgressService(WorldId.SakuraGarden, 12).UnlockLevel(11);
+            controller.ConfigureWorld(Resources.Load<WorldDefinition>("Worlds/SakuraGarden"));
+            controller.LoadLevelByIndex(11);
             Get<BoardState>(controller, "board").IncrementMoveCount();
             controller.TryShowHint();
             Assert.That(Pause(), Is.True);

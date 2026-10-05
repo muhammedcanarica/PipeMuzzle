@@ -30,6 +30,11 @@ namespace PipeMuzzle.Gameplay
         private bool isCompleted;
         private bool isCompleting;
         private Coroutine completionCoroutine;
+        public const int HintsPerAttempt = 3;
+        private const float HintCooldown = 2f;
+        private float hintAvailableAt;
+        public int RemainingHints { get; private set; } = HintsPerAttempt;
+        public bool UsedHintThisAttempt { get; private set; }
 
         public event Action<int, int> LevelLoaded;
         public event Action<bool> LevelCompleted;
@@ -48,15 +53,37 @@ namespace PipeMuzzle.Gameplay
         public bool IsCompletionPending => isCompleting;
         public bool WasNewBest { get; private set; }
         public bool CanHint => isActiveAndEnabled && boardView != null && board != null &&
-            !IsPaused && !isCompleted && !isCompleting && !boardView.IsHintPlaying &&
+            !IsPaused && !isCompleted && !isCompleting && RemainingHints > 0 &&
+            Time.unscaledTime >= hintAvailableAt && !boardView.IsHintPlaying && !boardView.HasPendingRotations &&
             HintSelector.Select(board, currentLevelDefinition) != null;
 
         public bool TryShowHint()
         {
             if (!CanHint) return false;
+            LevelSolutionStep step = HintSelector.SelectStep(board, currentLevelDefinition);
+            if (step == null) return false;
+            TileState tile = board.GetTile(step.Position.x, step.Position.y);
             Color color = currentWorld?.GameplayTheme != null
                 ? currentWorld.GameplayTheme.PrimaryButtonColor : new Color(.7f, .4f, .5f);
-            return boardView.TryShowHint(HintSelector.Select(board, currentLevelDefinition), color);
+            if (!boardView.TryShowHint(tile, color)) return false;
+            int turns = (step.Rotation - tile.Rotation + 4) % 4;
+            if (!tile.TryApplyHint(step.Rotation)) { CancelHint(); return false; }
+            RemainingHints--;
+            UsedHintThisAttempt = true;
+            hintAvailableAt = Time.unscaledTime + HintCooldown;
+            boardView.PlayHintRotation(tile, turns);
+            GameFeedback.PlayPipeRotate();
+            bool solved = ConnectionChecker.Evaluate(board);
+            boardView.RefreshPoweredTiles(Application.isPlaying);
+            if (solved) BeginCompletion();
+            return true;
+        }
+
+        private void ResetHintAttempt()
+        {
+            RemainingHints = HintsPerAttempt;
+            UsedHintThisAttempt = false;
+            hintAvailableAt = 0f;
         }
 
         public void CancelHint() => boardView?.StopHint();
@@ -109,6 +136,7 @@ namespace PipeMuzzle.Gameplay
             isCompleted = false;
             solvedPath.Clear();
             WasNewBest = false;
+            ResetHintAttempt();
 
             worldProgressService ??= new WorldProgressService();
             if (worldProgressService.GetAccessState(world) != WorldAccessState.Playable)
@@ -211,7 +239,7 @@ namespace PipeMuzzle.Gameplay
             isCompleting = false;
 
             bool hasNextLevel = HasNextLevel;
-            WasNewBest = currentWorld != null && BestMovesProgress.TrySetBest(
+            WasNewBest = !UsedHintThisAttempt && currentWorld != null && BestMovesProgress.TrySetBest(
                 currentWorld.WorldId, CurrentLevelNumber, board.MoveCount);
 
             if (hasNextLevel)
@@ -318,6 +346,7 @@ namespace PipeMuzzle.Gameplay
             currentLevelIndex = levelIndex;
             isCompleted = false;
             WasNewBest = false;
+            ResetHintAttempt();
 
             board =
                 BoardBuilder.Build(level);
@@ -357,7 +386,7 @@ namespace PipeMuzzle.Gameplay
         {
             if (IsPaused || board == null || isCompleted || isCompleting) return;
             isCompleting = true;
-            CancelHint();
+            // Let the just-solved hint's brief ring finish while normal completion begins.
             if (Application.isPlaying && boardView.HasPendingRotations)
                 completionCoroutine = StartCoroutine(WaitForRotationAndStartFlow());
             else StartCompletionFlow();

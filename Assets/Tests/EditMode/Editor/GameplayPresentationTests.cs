@@ -240,7 +240,7 @@ namespace PipeMuzzle.Tests.EditMode
             Color moonSecondary = restart.GetComponent<Image>().color;
             Transform hint = root.transform.Find("HintButton");
             Assert.That(hint, Is.Not.Null, "Gameplay needs the secondary hint action.");
-            Assert.That(hint.GetComponentInChildren<TMP_Text>(true).text, Is.EqualTo("HINT"));
+            Assert.That(hint.GetComponentInChildren<TMP_Text>(true).text, Is.EqualTo("HINT 3/3"));
             Assert.That(hint.GetComponent<Image>().color, Is.EqualTo(moonSecondary));
 
             Assert.That(level.color,
