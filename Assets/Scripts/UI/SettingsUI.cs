@@ -3,6 +3,7 @@ using PipeMuzzle.Feedback;
 using PipeMuzzle.Gameplay;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace PipeMuzzle.UI
@@ -46,7 +47,7 @@ namespace PipeMuzzle.UI
             Button sound = TextButton("SoundButton", "ON", surface, new Vector2(125f, 35f), new Vector2(80f, 76f), ToggleSound);
             soundText = sound.GetComponent<TMP_Text>();
             TextButton("ResetProgressButton", "RESET PROGRESS", surface, new Vector2(0f, -62f), new Vector2(280f, 76f), ShowResetConfirmation);
-            TextButton("BackButton", "BACK", surface, new Vector2(0f, -150f), new Vector2(140f, 76f), () => screens.ShowWorldMap());
+            TextButton("BackButton", "BACK", surface, new Vector2(0f, -150f), new Vector2(140f, 76f), () => screens.ReturnFromSettings());
 
             confirmation = Rect("Confirmation", content, Vector2.zero, new Vector2(460f, 350f));
             Text("Title", "RESET ALL PROGRESS?", confirmation, new Vector2(0f, 112f), new Vector2(440f, 54f), 24f, Ink);
@@ -79,6 +80,7 @@ namespace PipeMuzzle.UI
             surface.gameObject.SetActive(false);
             surfaceInput.interactable = false;
             confirmation.gameObject.SetActive(true);
+            EventSystem.current?.SetSelectedGameObject(confirmation.Find("CancelButton").gameObject);
         }
 
         private void CancelReset()
@@ -86,6 +88,8 @@ namespace PipeMuzzle.UI
             confirmation.gameObject.SetActive(false);
             surface.gameObject.SetActive(true);
             surfaceInput.interactable = true;
+            if (gameObject.activeInHierarchy && soundText != null)
+                EventSystem.current?.SetSelectedGameObject(soundText.gameObject);
         }
 
         public void ConfirmReset()

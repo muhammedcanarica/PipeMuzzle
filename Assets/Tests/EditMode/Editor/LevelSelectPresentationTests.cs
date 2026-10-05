@@ -22,6 +22,7 @@ namespace PipeMuzzle.Tests.EditMode
         public void SetUp()
         {
             Save("PipeMuzzle.BestMoves.World.SakuraGarden.Level.1");
+            Save("PipeMuzzle.BestMoves.World.SakuraGarden.Level.2");
             foreach (WorldId id in new[] { WorldId.SakuraGarden, WorldId.BambooWorkshop, WorldId.MoonShrine })
             foreach (string suffix in new[] { "Unlocked", "Completed", "HighestUnlockedLevel" })
                 Save($"PipeMuzzle.Progress.World.{id}.{suffix}");

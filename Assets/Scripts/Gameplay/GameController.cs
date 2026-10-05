@@ -34,17 +34,21 @@ namespace PipeMuzzle.Gameplay
         public event Action<int, int> LevelLoaded;
         public event Action<bool> LevelCompleted;
         public event Action<int> MoveCountChanged;
+        public event Action<bool> PauseChanged;
         public WorldDefinition CurrentWorld => currentWorld;
         public LevelDefinition CurrentLevelDefinition => currentLevelDefinition;
         public int LevelCount => currentWorld?.LevelCount ?? 0;
         public int CurrentLevelNumber =>
             board == null ? 0 : currentLevelIndex + 1;
         public int CurrentMoveCount => board?.MoveCount ?? 0;
+        public bool IsPaused { get; private set; }
+        public bool CanPause => isActiveAndEnabled && board != null && !IsPaused &&
+            !isCompleted && !isCompleting;
         public bool IsCompleted => isCompleted;
         public bool IsCompletionPending => isCompleting;
         public bool WasNewBest { get; private set; }
         public bool CanHint => isActiveAndEnabled && boardView != null && board != null &&
-            !isCompleted && !isCompleting && !boardView.IsHintPlaying &&
+            !IsPaused && !isCompleted && !isCompleting && !boardView.IsHintPlaying &&
             HintSelector.Select(board, currentLevelDefinition) != null;
 
         public bool TryShowHint()
@@ -56,6 +60,24 @@ namespace PipeMuzzle.Gameplay
         }
 
         public void CancelHint() => boardView?.StopHint();
+
+        public bool TryPause()
+        {
+            if (!CanPause) return false;
+            IsPaused = true;
+            CancelHint();
+            Time.timeScale = 0f;
+            PauseChanged?.Invoke(true);
+            return true;
+        }
+
+        public void Resume()
+        {
+            if (!IsPaused) return;
+            IsPaused = false;
+            Time.timeScale = 1f;
+            PauseChanged?.Invoke(false);
+        }
         public bool HasNextLevel =>
             board != null && currentLevelIndex < LevelCount - 1;
 
@@ -74,6 +96,7 @@ namespace PipeMuzzle.Gameplay
 
         public bool ConfigureWorld(WorldDefinition world)
         {
+            Resume();
             CancelTransientVisuals();
             if (boardView != null)
                 boardView.Clear();
@@ -132,7 +155,7 @@ namespace PipeMuzzle.Gameplay
 
         private void HandleTileClicked(TileView tileView)
         {
-            if (isCompleted || isCompleting ||
+            if (!isActiveAndEnabled || IsPaused || isCompleted || isCompleting ||
                 board == null ||
                 tileView == null ||
                 tileView.State == null)
@@ -290,6 +313,7 @@ namespace PipeMuzzle.Gameplay
                 return;
             }
 
+            Resume();
             CancelTransientVisuals();
             currentLevelIndex = levelIndex;
             isCompleted = false;
@@ -331,7 +355,7 @@ namespace PipeMuzzle.Gameplay
 
         private void BeginCompletion()
         {
-            if (board == null || isCompleted || isCompleting) return;
+            if (IsPaused || board == null || isCompleted || isCompleting) return;
             isCompleting = true;
             CancelHint();
             if (Application.isPlaying && boardView.HasPendingRotations)
@@ -362,10 +386,15 @@ namespace PipeMuzzle.Gameplay
             if (isCompleting) CompleteLevel();
         }
 
-        private void OnDisable() => CancelTransientVisuals();
+        private void OnDisable()
+        {
+            Resume();
+            CancelTransientVisuals();
+        }
 
         private void OnDestroy()
         {
+            Resume();
             CancelTransientVisuals();
             if (boardView != null)
             {

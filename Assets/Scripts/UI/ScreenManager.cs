@@ -10,6 +10,8 @@ namespace PipeMuzzle.UI
         [SerializeField] private GameObject levelSelectPanel;
         [SerializeField] private GameObject gameplayHud;
         [SerializeField] private GameObject settingsPanel;
+        private bool settingsReturnToGameplay;
+        public bool IsSettingsOpen => settingsPanel != null && settingsPanel.activeInHierarchy;
 
         public void Configure(GameObject worldMap, GameObject comicViewer, GameObject levelSelect, GameObject gameplay)
         {
@@ -29,8 +31,26 @@ namespace PipeMuzzle.UI
         public void ShowSettings()
         {
             if (settingsPanel == null) return;
+            settingsReturnToGameplay = false;
             settingsPanel.GetComponent<SettingsUI>()?.Refresh();
             SetScreen(false, false, false, false, true);
+        }
+
+        public void ShowGameplaySettings()
+        {
+            if (settingsPanel == null || gameplayHud == null || !gameplayHud.activeInHierarchy) return;
+            settingsReturnToGameplay = true;
+            settingsPanel.GetComponent<SettingsUI>()?.Refresh();
+            // Keep gameplay suspended behind the full-screen settings paper.
+            // Deactivating the HUD would release its pause and resume scaled effects.
+            settingsPanel.transform.SetAsLastSibling();
+            SetScreen(false, false, false, true, true);
+        }
+
+        public void ReturnFromSettings()
+        {
+            if (settingsReturnToGameplay) ShowGameplay();
+            else ShowWorldMap();
         }
 
         public void ShowWorldMap()
@@ -45,11 +65,13 @@ namespace PipeMuzzle.UI
 
         private void SetScreen(bool worldMap, bool comicViewer, bool levelSelect, bool gameplay, bool settings = false)
         {
+            if (!settings) settingsReturnToGameplay = false;
             if (worldMapPanel != null) worldMapPanel.SetActive(worldMap);
             if (comicViewerPanel != null) comicViewerPanel.SetActive(comicViewer);
             if (levelSelectPanel != null) levelSelectPanel.SetActive(levelSelect);
             if (gameplayHud != null) gameplayHud.SetActive(gameplay);
             if (settingsPanel != null) settingsPanel.SetActive(settings);
+            if (gameplayHud != null) gameplayHud.GetComponent<GameplayPauseUI>()?.RefreshSettingsInput();
         }
     }
 }

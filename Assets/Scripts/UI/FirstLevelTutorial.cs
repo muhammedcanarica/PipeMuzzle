@@ -47,7 +47,11 @@ namespace PipeMuzzle.UI
 
         private void OnEnable() { Bind(); BeginIfNeeded(); }
         private void OnDisable() { Unbind(); Clear(); }
-        private void Update() => Advance(Time.unscaledDeltaTime);
+        private void Update()
+        {
+            if (gameController != null && gameController.IsPaused) return;
+            Advance(Time.unscaledDeltaTime);
+        }
         private void LateUpdate() { if (IsShowing) PositionVisuals(); }
 
         private void Bind()

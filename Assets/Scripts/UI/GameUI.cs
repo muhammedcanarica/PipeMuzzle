@@ -25,6 +25,7 @@ namespace PipeMuzzle.UI
         private Button completionMapButton;
         private Button levelsButton;
         private Button hintButton;
+        private GameplayPauseUI pauseUi;
         private Image levelSurface;
         private Image movesSurface;
         private Image completionCard;
@@ -46,6 +47,7 @@ namespace PipeMuzzle.UI
             activeTheme = theme;
             EnsureCompletionControls();
             EnsurePresentationObjects();
+            if (HasRequiredReferences()) EnsurePauseControls();
             BuildThemeSprites(theme);
             ApplyLayout();
 
@@ -86,6 +88,7 @@ namespace PipeMuzzle.UI
             ApplyButtonStyle(completionRestartButton, false, theme);
             ApplyButtonStyle(completionMapButton, false, theme);
             ApplyButtonStyle(nextButton, true, theme);
+            pauseUi?.ApplyTheme(theme, completionCardSprite, secondaryButtonSprite);
         }
 
         private void OnEnable()
@@ -100,10 +103,21 @@ namespace PipeMuzzle.UI
                 return;
             }
 
+            EnsurePauseControls();
             Bind();
             ApplyLayout();
             RefreshFromCurrentState();
             if (activeTheme != null) ApplyTheme(activeTheme);
+        }
+
+        private void EnsurePauseControls()
+        {
+            // GameUI lives on Canvas; pause must follow the HUD's screen lifecycle.
+            GameObject hud = restartButton.transform.parent.gameObject;
+            if (pauseUi == null) pauseUi = hud.GetComponent<GameplayPauseUI>();
+            if (pauseUi == null) pauseUi = hud.AddComponent<GameplayPauseUI>();
+            ScreenManager screens = GetComponent<ScreenManager>() ?? GetComponentInParent<ScreenManager>(true);
+            pauseUi.Initialize(gameController, restartButton, levelsButton, screens);
         }
 
         private void EnsureCompletionControls()
