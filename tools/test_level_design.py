@@ -5,6 +5,11 @@ from level_design import ROOT, Tile, analyze, validate_designs
 
 
 class SolverTests(unittest.TestCase):
+    def test_current_manifest_keeps_unique_routes_and_small_declared_cosmetic_groups(self):
+        designs = json.loads((ROOT / 'tools/level_design_manifest.json').read_text(encoding='utf-8'))
+        validate_designs(designs)
+        self.assertEqual(sum(len(d.get('cosmetic_fillers', [])) for d in designs), 10)
+
     def test_clockwise_cost_respects_straight_symmetry(self):
         tiles = {(1, 1): Tile(2, 1, 0, True),
                  (2, 1): Tile(1, 0, 0, False),

@@ -354,7 +354,10 @@ def validate_designs(designs):
         if result['minimum_moves'] == 0:
             raise ValueError('Level starts solved.')
         route = [tuple(p) for p in d['route']]
-        if not unique(w,h,tiles,route,True) or result['minimum_moves'] != d['metrics']['minimum_moves']:
+        cosmetics = {tuple(p) for p in d.get('cosmetic_fillers', [])}
+        if len(cosmetics) > 4 or any(p not in tiles or tiles[p].role != 0 or p in route for p in cosmetics):
+            raise ValueError('Cosmetic fillers must be a small group outside the solution route.')
+        if not unique(w,h,tiles,route) or set(tiles) - result['reachable'] - cosmetics or result['minimum_moves'] != d['metrics']['minimum_moves']:
             raise ValueError('Incomplete/ambiguous solution or changed click budget.')
 
 
@@ -363,6 +366,8 @@ def write_manifest(designs, path):
     blocks = []
     for d in designs:
         fields = [f'    "{key}": {json.dumps(d[key])}' for key in ('world','level','width','height','route','metrics','candidate')]
+        if d.get('cosmetic_fillers'):
+            fields.append(f'    "cosmetic_fillers": {json.dumps(d["cosmetic_fillers"])}')
         fields.append('    "tiles": [\n' + ',\n'.join('      '+json.dumps(t) for t in d['tiles']) + '\n    ]')
         blocks.append('  {\n' + ',\n'.join(fields) + '\n  }')
     path.write_text('[\n'+',\n'.join(blocks)+'\n]\n', encoding='utf-8')

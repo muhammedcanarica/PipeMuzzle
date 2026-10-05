@@ -352,7 +352,7 @@ namespace PipeMuzzle.Gameplay
                 BoardBuilder.Build(level);
             currentLevelDefinition = level;
 
-            boardView.Build(board);
+            boardView.Build(board, level.SolutionPath);
 
             boardCameraFitter.Fit();
 

@@ -81,7 +81,7 @@ namespace PipeMuzzle.View
             }
         }
 
-        public void Build(BoardState board)
+        public void Build(BoardState board, IReadOnlyList<LevelSolutionStep> solutionPath = null)
         {
             if (board == null)
             {
@@ -114,10 +114,22 @@ namespace PipeMuzzle.View
                     CreateTile(
                         tileState,
                         centerX,
-                        centerY
+                        centerY,
+                        EndpointDirection(tileState, solutionPath)
                     );
                 }
             }
+        }
+
+        private static Vector2 EndpointDirection(TileState tile, IReadOnlyList<LevelSolutionStep> path)
+        {
+            if (tile.Role == TileRole.Normal || path == null || path.Count < 2) return Vector2.zero;
+            int end = tile.Role == TileRole.Source ? 0 : path.Count - 1;
+            int neighbor = tile.Role == TileRole.Source ? 1 : path.Count - 2;
+            if (path[end] == null || path[neighbor] == null ||
+                path[end].Position != new Vector2Int(tile.X, tile.Y)) return Vector2.zero;
+            Vector2Int delta = path[neighbor].Position - path[end].Position;
+            return Mathf.Abs(delta.x) + Mathf.Abs(delta.y) == 1 ? (Vector2)delta : Vector2.zero;
         }
 
         public void Clear()
@@ -225,7 +237,8 @@ namespace PipeMuzzle.View
         private void CreateTile(
             TileState tileState,
             float centerX,
-            float centerY)
+            float centerY,
+            Vector2 endpointDirection)
         {
             TileView tileView = Instantiate(
                 tilePrefab,
@@ -240,7 +253,7 @@ namespace PipeMuzzle.View
             );
             tileView.ApplyTheme(gameplayTheme);
 
-            tileView.Initialize(tileState);
+            tileView.Initialize(tileState, endpointDirection);
 
             tileView.Clicked += HandleTileClicked;
 

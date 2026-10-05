@@ -111,7 +111,7 @@ namespace PipeMuzzle.Tests.EditMode
 
         [TestCase(1, 0)]
         [TestCase(1, 2)]
-        [TestCase(0, 1)]
+        [TestCase(0, 0)]
         public void LockedAndEmptyClicksDoNotCompleteTheTutorial(int x, int y)
         {
             Click(x, y);

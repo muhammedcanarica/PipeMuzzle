@@ -47,7 +47,7 @@ namespace PipeMuzzle.Gameplay
 
             boardView.TileClicked += HandleTileClicked;
 
-            boardView.Build(board);
+            boardView.Build(board, level.SolutionPath);
 
             if (boardCameraFitter == null)
             {

@@ -13,14 +13,15 @@ namespace PipeMuzzle.View
         private Sprite sprite;
         private MeshRenderer connector;
         private MaterialPropertyBlock properties;
+        private Vector2 portDirection;
 
-        public void Configure(SpriteRenderer source, bool visible)
+        public void Configure(SpriteRenderer source, bool visible, Vector2 direction = default)
         {
             if (connector == null) connector = GetComponent<MeshRenderer>();
             connector.enabled = visible && source != null && source.sprite != null;
             if (!connector.enabled) return;
             properties ??= new MaterialPropertyBlock();
-            if (sprite != source.sprite) BuildMesh(source.sprite);
+            if (sprite != source.sprite || portDirection != direction) BuildMesh(source.sprite, direction);
             connector.sharedMaterial = source.sharedMaterial;
             connector.sortingLayerID = source.sortingLayerID;
             connector.sortingOrder = source.sortingOrder;
@@ -31,19 +32,32 @@ namespace PipeMuzzle.View
             connector.SetPropertyBlock(properties);
         }
 
-        private void BuildMesh(Sprite artwork)
+        private void BuildMesh(Sprite artwork, Vector2 direction)
         {
             DisposeMesh();
             sprite = artwork;
+            portDirection = direction;
             var vertices = new List<Vector3>();
             var uv = new List<Vector2>();
             var triangles = new List<int>();
             Bounds bounds = sprite.bounds;
             Rect texture = sprite.textureRect;
-            Quad(bounds.min.x, bounds.min.y, bounds.max.x, -Aperture);
-            Quad(bounds.min.x, Aperture, bounds.max.x, bounds.max.y);
-            Quad(bounds.min.x, -Aperture, -Aperture, Aperture);
-            Quad(Aperture, -Aperture, bounds.max.x, Aperture);
+            // Authored levels show only the arm facing the real path neighbor.
+            // A board without solution data keeps the original preview behavior.
+            if (direction == Vector2.zero)
+            {
+                Quad(bounds.min.x, bounds.min.y, bounds.max.x, -Aperture);
+                Quad(bounds.min.x, Aperture, bounds.max.x, bounds.max.y);
+                Quad(bounds.min.x, -Aperture, -Aperture, Aperture);
+                Quad(Aperture, -Aperture, bounds.max.x, Aperture);
+            }
+            else if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+            {
+                if (direction.x > 0f) Quad(Aperture, bounds.min.y, bounds.max.x, bounds.max.y);
+                else Quad(bounds.min.x, bounds.min.y, -Aperture, bounds.max.y);
+            }
+            else if (direction.y > 0f) Quad(bounds.min.x, Aperture, bounds.max.x, bounds.max.y);
+            else Quad(bounds.min.x, bounds.min.y, bounds.max.x, -Aperture);
             mesh = new Mesh { name = "Endpoint Original Pipe Ports", hideFlags = HideFlags.HideAndDontSave };
             mesh.SetVertices(vertices);
             mesh.SetUVs(0, uv);

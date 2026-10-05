@@ -134,6 +134,45 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(count, Is.EqualTo(36));
         }
 
+        [TestCase("SakuraGarden")]
+        [TestCase("BambooWorkshop")]
+        [TestCase("MoonShrine")]
+        public void EveryAuthoredEndpointShowsOnlyThePortTowardItsSolutionNeighbor(string worldName)
+        {
+            var root = new GameObject("EndpointSinglePortBoard");
+            try
+            {
+                BoardView view = root.AddComponent<BoardView>();
+                typeof(BoardView).GetField("tilePrefab", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .SetValue(view, AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/TilePrefab.prefab").GetComponent<TileView>());
+                WorldDefinition world = Resources.Load<WorldDefinition>("Worlds/" + worldName);
+                view.SetGameplayTheme(world.GameplayTheme);
+                MethodInfo build = typeof(BoardView).GetMethod("Build", new[] { typeof(BoardState), typeof(IReadOnlyList<LevelSolutionStep>) });
+                Assert.That(build, Is.Not.Null, "Board presentation must use the authored endpoint neighbor.");
+                foreach (LevelDefinition level in world.Levels)
+                {
+                    BoardState board = BoardBuilder.Build(level);
+                    build.Invoke(view, new object[] { board, level.SolutionPath });
+                    foreach (TileView tile in root.GetComponentsInChildren<TileView>().Where(t => t.State.Role != TileRole.Normal))
+                    {
+                        int last = level.SolutionPath.Count - 1;
+                        Vector2Int neighbor = tile.State.Role == TileRole.Source ? level.SolutionPath[1].Position : level.SolutionPath[last - 1].Position;
+                        Vector3 port = new Vector3(neighbor.x - tile.State.X, neighbor.y - tile.State.Y, 0);
+                        Transform connector = tile.transform.Find("EndpointConnector");
+                        Mesh mesh = connector.GetComponent<MeshFilter>().sharedMesh;
+                        Assert.That(mesh.vertexCount, Is.EqualTo(4), "Only one cropped pipe arm should be visible.");
+                        foreach (Vector3 vertex in mesh.vertices)
+                            Assert.That(Vector3.Dot(connector.TransformDirection(vertex), port), Is.GreaterThan(.21f), level.name);
+                        Assert.That(tile.State.Shape, Is.EqualTo(TileShape.Corner));
+                        Assert.That(tile.State.Rotation, Is.EqualTo(level.Tiles.Single(t => t.Role == tile.State.Role).StartRotation));
+                    }
+                    Assert.That(board.MoveCount, Is.Zero);
+                    Assert.That(ConnectionChecker.Evaluate(board), Is.False);
+                }
+            }
+            finally { Object.DestroyImmediate(root); }
+        }
+
         private static GameObject Tile() => Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/TilePrefab.prefab"));
         private static WorldGameplayTheme Theme(string world) => Resources.Load<WorldDefinition>("Worlds/" + world).GameplayTheme;
     }

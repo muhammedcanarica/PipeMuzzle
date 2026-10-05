@@ -79,6 +79,7 @@ namespace PipeMuzzle.View
         private SpriteRenderer endpointWaterRenderer;
         private EndpointConnectorView endpointConnector;
         private bool targetReached;
+        private Vector2 endpointDirection;
 
         public TileState State => tileState;
         public bool HasPendingRotation => rotationCoroutine != null || queuedQuarterTurns > 0;
@@ -103,7 +104,7 @@ namespace PipeMuzzle.View
             poweredGlowColor = theme.PoweredGlowColor;
         }
 
-        public void Initialize(TileState state)
+        public void Initialize(TileState state, Vector2 portDirection = default)
         {
             if (state == null)
             {
@@ -111,6 +112,7 @@ namespace PipeMuzzle.View
             }
 
             tileState = state;
+            endpointDirection = portDirection;
             EnsureGlowRenderer();
             EnsureRoleRenderer();
             Refresh();
@@ -277,7 +279,8 @@ namespace PipeMuzzle.View
                 ports.transform.SetParent(transform, false);
                 endpointConnector = ports.AddComponent<EndpointConnectorView>();
             }
-            endpointConnector?.Configure(spriteRenderer, endpoint);
+            Vector2 localPort = Quaternion.Inverse(transform.localRotation) * endpointDirection;
+            endpointConnector?.Configure(spriteRenderer, endpoint, localPort);
             if (endpoint) spriteRenderer.enabled = false;
             if (roleRenderer != null)
                 roleRenderer.sortingOrder = spriteRenderer.sortingOrder - 1;

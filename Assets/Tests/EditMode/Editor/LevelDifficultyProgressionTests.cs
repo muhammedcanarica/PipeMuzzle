@@ -12,8 +12,8 @@ namespace PipeMuzzle.Tests.EditMode
 {
     public sealed class LevelDifficultyProgressionTests
     {
-        [TestCase(1, 5, 2)]
-        [TestCase(2, 8, 3)]
+        [TestCase(1, 7, 4)]
+        [TestCase(2, 10, 5)]
         public void SakuraOpeningTeachesRotationWithoutCrowding(int number, int pipes, int decoys)
         {
             LevelDefinition level = AssetDatabase.LoadAssetAtPath<LevelDefinition>(
@@ -48,12 +48,12 @@ namespace PipeMuzzle.Tests.EditMode
                     "Assets/Prefabs/TilePrefab.prefab").GetComponent<TileView>();
                 settings.ApplyModifiedPropertiesWithoutUndo();
                 view.SetGameplayTheme(world.GameplayTheme);
-                view.Build(board);
+                view.Build(board, level.SolutionPath);
                 EnergyFlowView flow = root.GetComponent<EnergyFlowView>();
                 Assert.That(flow.IsPlaying, Is.False, "Unsolved boards have empty channels.");
                 LevelDefinitionContentTests.ApplySolution(board, result);
                 Assert.That(ConnectionChecker.Evaluate(board), Is.True);
-                view.Build(board);
+                view.Build(board, level.SolutionPath);
                 List<TileState> path = new();
                 Assert.That(ConnectionChecker.TryGetSolvedPath(board, path), Is.True);
                 int completions = 0;
