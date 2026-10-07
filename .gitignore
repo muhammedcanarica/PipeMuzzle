@@ -18,8 +18,26 @@
 /ios/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
-tools/__pycache__/
 *.log
+
+# Python generated files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# OS generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -38,6 +56,10 @@ tools/__pycache__/
 .vs/
 .worktrees/
 
+# IDE / editor local files
+.idea/
+.vscode/
+
 # Gradle cache directory
 .gradle/
 
@@ -47,6 +69,7 @@ ExportedObj/
 *.csproj
 *.unityproj
 *.sln
+*.slnx
 *.suo
 *.tmp
 *.user
