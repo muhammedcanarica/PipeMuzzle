@@ -5,6 +5,10 @@
 <h1 align="center">Ruilay</h1>
 
 <p align="center">
+  <a href="https://legoshisan.itch.io/ruilay"><strong>itch.io’da oyna / Play on itch.io ↗</strong></a>
+</p>
+
+<p align="center">
   Boruları döndür, suya yol aç, üç dünyanın hikâyesini keşfet.<br>
   <em>Rotate the pipes, restore the flow, discover the story of three worlds.</em>
 </p>
@@ -210,93 +214,3 @@ The project is currently in **pre-alpha / playable core prototype** development.
 | `View` | Tile creation, visual feedback, solved-route energy flow, and camera fitting | `BoardView`, `TileView`, `EnergyFlowView`, `BoardCameraFitter`, `TilePrefab` |
 | `Gameplay` | Managing level loading, restart, moves, and progression | `GameController`, `ProgressService`, `BoardLogicTester` |
 | `UI` | Presenting level, move, and completion states | `GameUI`, TextMesh Pro, Unity UI |
-
-### Built with
-
-- Unity `6000.3.9f1`
-- C#
-- Universal Render Pipeline with the 2D Renderer
-- Unity Input System `1.18.0`
-- Unity Test Framework `1.6.0` with EditMode content, progression, flow, UI and audio tests
-
-### Getting started
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/muhammedcanarica/PipeMuzzle.git
-   ```
-
-2. Add the project folder through Unity Hub.
-3. Open it with Unity `6000.3.9f1` or a compatible Unity 6 release.
-4. Open `Assets/Scenes/Gameplay.unity` as the development scene.
-5. Enter Play Mode and click the rotatable pipe tiles.
-6. Check the `RESTART`, `LEVEL`, and `HAMLE` values in the top bar, then use `NEXT LEVEL` after solving a level.
-
-> **Note:** Pointer interaction uses `IPointerClickHandler`, a `BoxCollider2D` on `TilePrefab`, a `Physics2DRaycaster` on the camera, and the scene `EventSystem`.
-
-### Development status
-
-- [x] Core data models and connection masks
-- [x] Tile rotation, lock handling, and move counting
-- [x] BFS-based source-to-target connectivity check
-- [x] `LevelDefinition` and `TileDefinition` data structures
-- [x] Runtime `BoardState` creation from level data
-- [x] Basic `BoardView` and `TileView` components
-- [x] Shape-specific pipe sprites configured on `TilePrefab`
-- [x] 36 playable levels across three worlds, with content and scene wiring
-- [x] Level selection screen wired to the Gameplay scene
-- [x] Level-unlock progress saved with `PlayerPrefs`
-- [x] Unlocking the next level after completing the current one
-- [x] Build configuration for an initial Android APK attempt
-- [x] Click-to-rotate interaction and repeated solution checks
-- [x] Geometric board centering for odd and even dimensions
-- [x] Renderer-bounds and aspect-ratio-aware automatic camera fitting
-- [x] Completion detection and post-solve input lock
-- [x] Restart, level-completion, and next-level UI flow
-- [x] Move counter UI that updates after valid rotations and resets when a level loads
-- [x] Animated tile rotation with safe rapid-click queuing and subtle scale feedback
-- [x] Source / Target / locked visual distinction and Source-reachable powered feedback
-- [x] Short completion pulse across the powered route
-- [x] Source-to-Target energy projectile / flow animation
-- [x] Procedural audio and Android haptic feedback implementation
-- [x] EditMode level, progression, flow, UI and audio tests
-- [ ] Automated Play Mode tests and physical-device validation
-- [ ] Mobile device validation and Android build preparation
-
-### Quick verification
-
-`Level_001` uses a horizontal Source → Normal → Target route. The Source and Target tiles are locked. The middle Normal tile starts vertically and rotates 90° clockwise on the first click to complete the route.
-
-The board is centered automatically, and the camera fits the visible tile bounds with configurable padding. Manual `Orthographic Size` changes are not required for different level sizes or aspect ratios.
-
-Expected UI flow:
-
-```text
-RESTART        LEVEL 1 / 12       HAMLE: 0
-Successful tile rotation          HAMLE: 1
-RESTART                             HAMLE: 0
-Level solved                    LEVEL COMPLETE!
-NEXT LEVEL loads a new level       HAMLE: 0
-Final level solved          ALL LEVELS COMPLETE!
-```
-
-### Roadmap
-
-#### V1 — Playable prototype
-
-Completed: core puzzle flow, 36 levels across three worlds, world/level selection, and persistent unlock progression.
-
-#### V2 — Content and progression
-
-Completed: difficulty progression across 36 levels, world progression and story checkpoints. Star ratings and best-move records are not implemented.
-
-#### V3 — Presentation and mobile release
-
-In progress: energy flow, delayed completion, world-specific pipe/UI polish and audio/haptics code are ready; physical-device, Android and WebGL release validation remains pending.
-
-## Repository
-
-Development uses only `main`. Use changes → tests → commit → `git push origin main`; create another branch only if explicitly requested. See [AGENTS.md](AGENTS.md) and the [consolidation audit](docs/single-main-consolidation.md). Existing backups remain outside the repository.
-
-[Ruilay repository](https://github.com/muhammedcanarica/PipeMuzzle)
