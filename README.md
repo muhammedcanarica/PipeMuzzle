@@ -1,12 +1,45 @@
-# Ruilay
+<p align="center">
+  <img src="Assets/Art/Branding/Ruilay_Logo.png" alt="Ruilay — koi balıkları ve su akışıyla çevrili oyun logosu" width="560">
+</p>
 
-![Ruilay logo](Assets/Art/Branding/Ruilay_Logo.png)
+<h1 align="center">Ruilay</h1>
 
-> Sakura Garden, Bamboo Workshop ve Moon Shrine boyunca suyun akışını geri getirdiğin, Unity ile geliştirilen sakin ve hikâye odaklı bir boru bulmaca oyunu.
+<p align="center">
+  Boruları döndür, suya yol aç, üç dünyanın hikâyesini keşfet.<br>
+  <em>Rotate the pipes, restore the flow, discover the story of three worlds.</em>
+</p>
 
-[![Unity](https://img.shields.io/badge/Unity-6000.3.9f1-black?logo=unity)](https://unity.com/)
-[![C%23](https://img.shields.io/badge/C%23-Game%20Logic-512BD4?logo=csharp)](https://learn.microsoft.com/dotnet/csharp/)
-[![Status](https://img.shields.io/badge/status-pre--alpha-orange)](https://github.com/muhammedcanarica/PipeMuzzle)
+<p align="center">
+  <a href="https://unity.com/"><img src="https://img.shields.io/badge/Unity-6000.3.9f1-222222?logo=unity" alt="Unity 6000.3.9f1"></a>
+  <a href="https://learn.microsoft.com/dotnet/csharp/"><img src="https://img.shields.io/badge/C%23-Game%20Logic-512BD4" alt="C#"></a>
+  <img src="https://img.shields.io/badge/Levels-36-d58a9a" alt="36 levels">
+  <img src="https://img.shields.io/badge/Worlds-3-7b9c83" alt="3 worlds">
+  <a href="https://github.com/muhammedcanarica/PipeMuzzle"><img src="https://img.shields.io/badge/Status-Pre--alpha-c49a59" alt="Pre-alpha"></a>
+</p>
+
+<p align="center">
+  <a href="#türkçe">Türkçe</a> · <a href="#english">English</a> · <a href="#ekran-görüntüleri--screenshots">Ekran görüntüleri / Screenshots</a> · <a href="#projeyi-çalıştırma">Kurulum</a> · <a href="#architecture">Architecture</a>
+</p>
+
+---
+
+## Ekran görüntüleri / Screenshots
+
+Sakura çiçeklerinden bambu atölyelerine ve ay ışığındaki tapınaklara uzanan bir su yolculuğu. Aşağıdaki görüntüler oyunun mevcut dünya haritasını, bulmacalarını ve su akışını gösterir.
+
+*A water-flow journey through cherry blossoms, bamboo workshops, and moonlit shrines. These captures show the current world map, puzzles, and flowing water.*
+
+![Dünya haritası: Sakura Garden, Bamboo Workshop ve Moon Shrine](docs/images/world-map.png)
+
+<p align="center"><strong>Üç dünya, 36 bölüm · Three worlds, 36 levels</strong></p>
+
+| Sakura Garden · Bulmaca / Puzzle | Sakura Garden · Su akışı / Water flow |
+| :---: | :---: |
+| ![Sakura Garden bölüm 10, başlangıçtaki boru düzeni](docs/images/sakura-puzzle.png) | ![Sakura Garden bölüm 10, bağlanan rotadaki su akışı](docs/images/sakura-flow.png) |
+| **Moon Shrine · Ay ışığında / Moonlit puzzle** | **Bamboo Workshop · Su akışı / Water flow** |
+| ![Moon Shrine bölüm 1, gece temalı bulmaca](docs/images/moon-shrine.png) | ![Bamboo Workshop bölüm 1, bambu borulardaki su akışı](docs/images/bamboo-flow.png) |
+
+---
 
 ## Türkçe
 
@@ -100,7 +133,7 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 - [x] Powered hat üzerinde kısa bölüm tamamlama pulse'ı
 - [x] Source → Target çözüm rotasını takip eden enerji projectile / flow animasyonu
 - [x] Procedural ses ve Android titreşim geri bildirimi implementasyonu
-- [x] EditMode level, progression, flow, UI ve audio testleri (bilinen üç Comic Viewer test hatası raporda)
+- [x] EditMode level, progression, flow, UI ve audio testleri
 - [ ] Play Mode otomatik testleri ve fiziksel cihaz doğrulaması
 - [ ] Mobil cihaz doğrulaması ve Android build hazırlığı
 
@@ -227,7 +260,7 @@ The project is currently in **pre-alpha / playable core prototype** development.
 - [x] Short completion pulse across the powered route
 - [x] Source-to-Target energy projectile / flow animation
 - [x] Procedural audio and Android haptic feedback implementation
-- [x] EditMode level, progression, flow, UI and audio tests (three known Comic Viewer test failures are documented)
+- [x] EditMode level, progression, flow, UI and audio tests
 - [ ] Automated Play Mode tests and physical-device validation
 - [ ] Mobile device validation and Android build preparation
 
