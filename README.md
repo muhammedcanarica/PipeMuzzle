@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="Assets/Art/Branding/Ruilay_Logo.png" alt="Ruilay — koi balıkları ve su akışıyla çevrili oyun logosu" width="560">
+  <img src="docs/images/ruilay-logo.png" alt="Ruilay — sakura, bambu ve ay ışığında su bulmacası" width="460">
 </p>
 
 <h1 align="center">Ruilay</h1>
@@ -30,7 +30,9 @@ Sakura çiçeklerinden bambu atölyelerine ve ay ışığındaki tapınaklara uz
 
 *A water-flow journey through cherry blossoms, bamboo workshops, and moonlit shrines. These captures show the current world map, puzzles, and flowing water.*
 
-![Dünya haritası: Sakura Garden, Bamboo Workshop ve Moon Shrine](docs/images/world-map.png)
+<p align="center">
+  <img src="docs/images/world-map.png" alt="Dünya haritası: Sakura Garden, Bamboo Workshop ve Moon Shrine" width="640">
+</p>
 
 <p align="center"><strong>Üç dünya, 36 bölüm · Three worlds, 36 levels</strong></p>
 
