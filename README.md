@@ -8,10 +8,7 @@
   <a href="https://legoshisan.itch.io/ruilay"><strong>itch.io’da oyna / Play on itch.io ↗</strong></a>
 </p>
 
-<p align="center">
-  Boruları döndür, suya yol aç, üç dünyanın hikâyesini keşfet.<br>
-  <em>Rotate the pipes, restore the flow, discover the story of three worlds.</em>
-</p>
+
 
 <p align="center">
   <a href="https://unity.com/"><img src="https://img.shields.io/badge/Unity-6000.3.9f1-222222?logo=unity" alt="Unity 6000.3.9f1"></a>
@@ -96,83 +93,6 @@ Bu ayrım sayesinde bölüm verisi, oyun mantığı ve Unity görselleştirmesi 
 - Unity Input System `1.18.0`
 - Unity Test Framework `1.6.0`; EditMode içerik, progression, flow, UI ve audio testleri
 
-### Projeyi çalıştırma
-
-1. Depoyu klonlayın:
-
-   ```bash
-   git clone https://github.com/muhammedcanarica/PipeMuzzle.git
-   ```
-
-2. Unity Hub üzerinden proje klasörünü ekleyin.
-3. Projeyi Unity `6000.3.9f1` veya uyumlu bir Unity 6 sürümüyle açın.
-4. Geliştirme sahnesi olarak `Assets/Scenes/Gameplay.unity` dosyasını açın.
-5. Play Mode'u başlatın ve döndürülebilir boru karolarına tıklayın.
-6. Üst çubuktaki `RESTART`, `LEVEL` ve `HAMLE` bilgilerini; bölüm çözülünce açılan `NEXT LEVEL` akışını kontrol edin.
-
-> **Not:** `IPointerClickHandler` etkileşimi için `TilePrefab` üzerinde `BoxCollider2D`, kamerada `Physics2DRaycaster` ve sahnede `EventSystem` bulunur.
-
-### Güncel durum
-
-- [x] Temel veri modelleri ve bağlantı maskeleri
-- [x] Karo dönüşü, kilit kontrolü ve hamle sayacı
-- [x] BFS tabanlı kaynak-hedef bağlantı kontrolü
-- [x] `LevelDefinition` ve `TileDefinition` veri yapıları
-- [x] Bölüm verisinden `BoardState` oluşturma
-- [x] Temel `BoardView` ve `TileView` bileşenleri
-- [x] Karo şekline göre değişen pipe sprite'larıyla `TilePrefab`
-- [x] Üç dünyada toplam 36 oynanabilir bölümün içerik ve sahne bağlantıları
-- [x] Gameplay sahnesine bağlı bölüm seçim ekranı
-- [x] `PlayerPrefs` ile kaydedilen level açılma ilerlemesi
-- [x] Bölüm tamamlanınca sonraki level'ın açılması
-- [x] İlk Android APK denemesi için build yapılandırması
-- [x] Tıklama ile karo döndürme ve yeniden çözüm kontrolü
-- [x] Tek ve çift boyutlu board'ların geometrik merkezlenmesi
-- [x] Renderer bounds ve aspect ratio tabanlı otomatik kamera fit sistemi
-- [x] Bölüm tamamlama algılama ve çözüm sonrası input kilidi
-- [x] Yeniden başlatma, bölüm tamamlama ve sonraki bölüme geçiş UI akışı
-- [x] Başarılı dönüşleri gösteren ve bölüm yüklenince sıfırlanan hamle sayacı UI'ı
-- [x] Kuyruklanan hızlı tıklamaları güvenli işleyen animasyonlu karo dönüşü ve hafif scale feedback'i
-- [x] Source / Target / locked görsel ayrımı ve Source'tan ulaşılabilir karolarda powered feedback
-- [x] Powered hat üzerinde kısa bölüm tamamlama pulse'ı
-- [x] Source → Target çözüm rotasını takip eden enerji projectile / flow animasyonu
-- [x] Procedural ses ve Android titreşim geri bildirimi implementasyonu
-- [x] EditMode level, progression, flow, UI ve audio testleri
-- [ ] Play Mode otomatik testleri ve fiziksel cihaz doğrulaması
-- [ ] Mobil cihaz doğrulaması ve Android build hazırlığı
-
-### Hızlı doğrulama
-
-`Level_001`, yatay bir Source → Normal → Target hattı kullanır. Source ve Target kilitlidir. Ortadaki Normal karo başlangıçta dikeydir; ilk tıklamada saat yönünde 90° dönerek hattı tamamlar.
-
-Board dünya merkezine otomatik yerleşir ve kamera görünür tile sınırlarını padding bırakarak ekrana sığdırır. Farklı level boyutları ve ekran oranları için `Orthographic Size` değerini elle değiştirmek gerekmez.
-
-Beklenen UI akışı:
-
-```text
-RESTART        LEVEL 1 / 12       HAMLE: 0
-Başarılı karo dönüşü              HAMLE: 1
-RESTART                             HAMLE: 0
-Bölüm çözülünce                  LEVEL COMPLETE!
-NEXT LEVEL ile yeni bölüm          HAMLE: 0
-Son bölüm çözülünce            ALL LEVELS COMPLETE!
-```
-
-### Yol haritası
-
-#### V1 — Oynanabilir prototip
-
-Tamamlandı: temel puzzle akışı, üç dünyada 36 bölüm, dünya/bölüm seçimi ve kalıcı açılma ilerlemesi.
-
-#### V2 — İçerik ve ilerleme
-
-Tamamlandı: 36 bölümlük zorluk geçişi, world progression ve hikâye checkpoint'leri. Yıldızlar ve en iyi hamle kayıtları henüz yok.
-
-#### V3 — Sunum ve mobil yayın
-
-Devam ediyor: enerji akışı, gecikmeli completion, dünya bazlı pipe/UI polish ve ses/titreşim kodu hazır; fiziksel cihaz, Android ve WebGL yayın doğrulaması bekler.
-
----
 
 ## English
 
