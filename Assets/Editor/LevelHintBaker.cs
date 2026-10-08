@@ -8,7 +8,7 @@ namespace PipeMuzzle.Editor
 {
     internal static class LevelHintBaker
     {
-        [MenuItem("PipeMuzzle/Bake Hint Solutions")]
+        [MenuItem("Ruilay/Bake Hint Solutions")]
         internal static void BakeAll()
         {
             // Validate everything before touching any asset. Tile layouts are never edited.

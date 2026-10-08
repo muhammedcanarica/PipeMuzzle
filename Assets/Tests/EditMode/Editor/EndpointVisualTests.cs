@@ -68,6 +68,43 @@ namespace PipeMuzzle.Tests.EditMode
             finally { Object.DestroyImmediate(root); }
         }
 
+        [TestCase("SakuraGarden")]
+        [TestCase("BambooWorkshop")]
+        [TestCase("MoonShrine")]
+        public void AuthoredEndpointsHaveExactlyOneLogicalPortTowardTheBakedPath(string worldName)
+        {
+            foreach (LevelDefinition level in Resources.Load<WorldDefinition>("Worlds/" + worldName).Levels)
+            {
+                BoardState board = BoardBuilder.Build(level);
+                foreach (TileRole role in new[] { TileRole.Source, TileRole.Target })
+                {
+                    TileState tile = board.FindTileByRole(role);
+                    int endpoint = role == TileRole.Source ? 0 : level.SolutionPath.Count - 1;
+                    int next = role == TileRole.Source ? 1 : endpoint - 1;
+                    Vector2Int delta = level.SolutionPath[next].Position - level.SolutionPath[endpoint].Position;
+                    ConnectionMask expected = delta.x > 0 ? ConnectionMask.East : delta.x < 0 ? ConnectionMask.West
+                        : delta.y > 0 ? ConnectionMask.North : ConnectionMask.South;
+                    Assert.That(tile.Connections, Is.EqualTo(expected), level.name + " " + role);
+                    Assert.That(tile.RotateClockwise(), Is.False);
+                }
+                foreach (LevelSolutionStep step in level.SolutionPath)
+                {
+                    TileState tile = board.GetTile(step.Position.x, step.Position.y);
+                    tile.TryApplyHint(step.Rotation);
+                }
+                Assert.That(ConnectionChecker.Evaluate(board), Is.True, level.name);
+            }
+        }
+
+        [TestCase(TileRole.Source)]
+        [TestCase(TileRole.Target)]
+        public void EndpointsRejectRotationEvenWhenAnAuthorOmitsTheLockFlag(TileRole role)
+        {
+            var tile = new TileState(0, 0, TileShape.Straight, role, 1, false);
+            Assert.That(tile.RotateClockwise(), Is.False);
+            Assert.That(tile.Rotation, Is.EqualTo(1));
+        }
+
         private static IEnumerable<TestCaseData> Endpoints()
         {
             foreach (string world in Worlds)

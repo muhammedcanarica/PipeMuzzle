@@ -22,10 +22,20 @@ namespace PipeMuzzle.Tests.EditMode
         private ScreenManager screens;
         private SettingsUI settings;
         private GameController controller;
+        private bool volumeExisted;
+        private float savedVolume;
+        private bool musicExisted;
+        private float savedMusic;
 
         [SetUp]
         public void SetUp()
         {
+            musicExisted = PlayerPrefs.HasKey("PipeMuzzle.Feedback.MusicVolume");
+            savedMusic = PlayerPrefs.GetFloat("PipeMuzzle.Feedback.MusicVolume");
+            PlayerPrefs.DeleteKey("PipeMuzzle.Feedback.MusicVolume");
+            volumeExisted = PlayerPrefs.HasKey("PipeMuzzle.Feedback.SfxVolume");
+            savedVolume = PlayerPrefs.GetFloat("PipeMuzzle.Feedback.SfxVolume");
+            PlayerPrefs.DeleteKey("PipeMuzzle.Feedback.SfxVolume");
             foreach (string key in Keys())
             {
                 saved[key] = (PlayerPrefs.HasKey(key), PlayerPrefs.GetInt(key));
@@ -37,6 +47,10 @@ namespace PipeMuzzle.Tests.EditMode
         [TearDown]
         public void TearDown()
         {
+            if (musicExisted) PlayerPrefs.SetFloat("PipeMuzzle.Feedback.MusicVolume", savedMusic);
+            else PlayerPrefs.DeleteKey("PipeMuzzle.Feedback.MusicVolume");
+            if (volumeExisted) PlayerPrefs.SetFloat("PipeMuzzle.Feedback.SfxVolume", savedVolume);
+            else PlayerPrefs.DeleteKey("PipeMuzzle.Feedback.SfxVolume");
             if (root != null) UnityEngine.Object.DestroyImmediate(root);
             foreach (var item in saved)
             {
@@ -46,6 +60,41 @@ namespace PipeMuzzle.Tests.EditMode
             PlayerPrefs.Save();
             saved.Clear();
             ResetFeedbackCache();
+        }
+
+        [Test]
+        public void MusicSliderPersistsWithoutChangingSfxOrSoundToggle()
+        {
+            BuildScreens(); OpenSettings();
+            Slider music = settingsPanel.transform.Find("Content/Surface/MusicVolumeSlider").GetComponent<Slider>();
+            Slider sfx = settingsPanel.transform.Find("Content/Surface/SfxVolumeSlider").GetComponent<Slider>();
+            Assert.That(music.value, Is.EqualTo(.4f));
+            music.value = .19f;
+            Assert.That(new FeedbackSettings().MusicVolume, Is.EqualTo(.19f));
+            Assert.That(sfx.value, Is.EqualTo(.75f));
+            sfx.value = .31f;
+            Assert.That(GameFeedback.MusicVolume, Is.EqualTo(.19f));
+            Button("SoundButton").onClick.Invoke();
+            Assert.That(GameFeedback.MusicVolume, Is.EqualTo(.19f));
+            screens.ReturnFromSettings(); ResetFeedbackCache(); OpenSettings();
+            Assert.That(music.value, Is.EqualTo(.19f));
+            Assert.That(music.GetComponent<UiSfxFeedback>(), Is.Null);
+        }
+
+        [Test]
+        public void SfxSliderAppliesPersistsAndRefreshesWithoutResettingVolume()
+        {
+            BuildScreens(); OpenSettings();
+            Slider slider = settingsPanel.transform.Find("Content/Surface/SfxVolumeSlider").GetComponent<Slider>();
+            Assert.That(slider.value, Is.EqualTo(.75f));
+            slider.value = .23f;
+            Assert.That(new FeedbackSettings().SfxVolume, Is.EqualTo(.23f));
+            screens.ReturnFromSettings(); ResetFeedbackCache(); OpenSettings();
+            Assert.That(slider.value, Is.EqualTo(.23f));
+            slider.value = 0f;
+            Assert.That(GameFeedback.SfxVolume, Is.Zero);
+            Assert.That(settingsPanel.transform.Find("Content/Surface/VolumeValue").GetComponent<TMP_Text>().text, Is.EqualTo("0%"));
+            Assert.That(slider.GetComponent<UiSfxFeedback>(), Is.Null, "Dragging volume must not create button clicks.");
         }
 
         [Test]

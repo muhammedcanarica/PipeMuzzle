@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79334b19e030d0242a475fcc4e04d30b, type: 3}
+  m_Name: MusicTracks
+  m_EditorClassIdentifier: 
+  main: {fileID: 8300000, guid: bf4e834d06df61a4d9ab348afd944c66, type: 3}
+  sakuraGarden: {fileID: 8300000, guid: 1013487196a86dc40b7369bf334b0444, type: 3}
+  bambooWorkshop: {fileID: 8300000, guid: 8486b7091b906344d8dc9272946e3659, type: 3}
+  moonShrine: {fileID: 8300000, guid: cebbb53a6726e6548b61bdfab0583a06, type: 3}

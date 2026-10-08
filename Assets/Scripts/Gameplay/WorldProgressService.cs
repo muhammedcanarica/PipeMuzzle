@@ -45,10 +45,11 @@ namespace PipeMuzzle.Gameplay
                 : WorldAccessState.ComingSoon;
         }
 
-        public void MarkWorldCompleted(WorldId worldId)
+        /// <returns>True only when this completion newly unlocks the following world.</returns>
+        public bool MarkWorldCompleted(WorldId worldId)
         {
             if (!IsWorldUnlocked(worldId))
-                return;
+                return false;
 
             bool changed = SetOne(Key(worldId, "Completed"));
 
@@ -60,11 +61,12 @@ namespace PipeMuzzle.Gameplay
                 _ => null
             };
 
-            if (nextWorld.HasValue)
-                changed |= SetOne(Key(nextWorld.Value, "Unlocked"));
+            bool newlyUnlocked = nextWorld.HasValue && SetOne(Key(nextWorld.Value, "Unlocked"));
+            changed |= newlyUnlocked;
 
             if (changed)
                 PlayerPrefs.Save();
+            return newlyUnlocked;
         }
 
         private static string Key(WorldId worldId, string suffix)

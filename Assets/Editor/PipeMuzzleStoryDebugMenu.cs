@@ -7,7 +7,7 @@ namespace PipeMuzzle.Editor
 {
     public static class PipeMuzzleStoryDebugMenu
     {
-        private const string Menu = "PipeMuzzle/Debug/Reset Story Checkpoints/";
+        private const string Menu = "Ruilay/Debug/Reset Story Checkpoints/";
 
         [MenuItem(Menu + "Reset Sakura Story Checkpoints")]
         public static void ResetSakura() => StoryCheckpointProgress.ResetViewedCheckpointsForWorld(WorldId.SakuraGarden);

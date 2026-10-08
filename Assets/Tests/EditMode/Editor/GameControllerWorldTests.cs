@@ -202,7 +202,7 @@ namespace PipeMuzzle.Tests.EditMode
             EnergyFlowView flow = view.GetComponent<EnergyFlowView>();
             Advance(flow, 2f);
             Assert.That(BestMovesProgress.GetBest(WorldId.SakuraGarden, 1), Is.Null);
-            Advance(flow, .13f);
+            Advance(flow, .6f);
             Assert.That(BestMovesProgress.GetBest(WorldId.SakuraGarden, 1), Is.EqualTo(22));
             controller.RestartLevel();
             Assert.That(controller.CurrentMoveCount, Is.Zero);
@@ -223,7 +223,7 @@ namespace PipeMuzzle.Tests.EditMode
                 for (int i = 0; i < moves; i++) board.IncrementMoveCount();
                 Invoke(controller, "BeginCompletion");
                 Advance(view.GetComponent<EnergyFlowView>(), 2f);
-                Advance(view.GetComponent<EnergyFlowView>(), .13f);
+                Advance(view.GetComponent<EnergyFlowView>(), .6f);
                 Assert.That(BestMovesProgress.GetBest(WorldId.SakuraGarden, 1), Is.EqualTo(moves == 20 ? 20 : 15));
                 Assert.That(controller.WasNewBest, Is.EqualTo(moves != 24));
             }
@@ -252,7 +252,7 @@ namespace PipeMuzzle.Tests.EditMode
             Invoke(controller, "BeginCompletion");
             Assert.That(show.Invoke(controller, null), Is.EqualTo(false));
             Advance(view.GetComponent<EnergyFlowView>(), 2f);
-            Advance(view.GetComponent<EnergyFlowView>(), .13f);
+            Advance(view.GetComponent<EnergyFlowView>(), .6f);
             Assert.That(show.Invoke(controller, null), Is.EqualTo(false));
         }
 
@@ -300,7 +300,7 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(controller.TryShowHint(), Is.False);
             EnergyFlowView flow = GetField<BoardView>(controller, "boardView").GetComponent<EnergyFlowView>();
             flow.Advance(2f);
-            flow.Advance(.13f);
+            flow.Advance(.6f);
             Assert.That(controller.IsCompleted, Is.True);
             if (levelNumber < 12) Assert.That(controller.IsLevelUnlocked(levelNumber), Is.True);
             else Assert.That(new WorldProgressService().IsWorldCompleted(WorldId.SakuraGarden), Is.True);
@@ -395,7 +395,7 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(completed, Is.Zero);
             Advance(flow, 2f);
             Assert.That(completed, Is.Zero, "Even a long frame must leave target arrival visible.");
-            Advance(flow, .13f);
+            Advance(flow, .6f);
             Assert.That(completed, Is.EqualTo(1));
             Assert.That(controller.IsCompleted, Is.True);
             if (levelNumber < 12) Assert.That(controller.IsLevelUnlocked(levelNumber), Is.True);
@@ -433,6 +433,97 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(controller.IsCompleted, Is.False);
             Assert.That(controller.CurrentMoveCount, Is.Zero);
             Assert.That(controller.IsLevelUnlocked(1), Is.False);
+        }
+
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(4)]
+        public void ConfiguredHintBudgetResetsOnRestartAndZeroDisablesHint(int budget)
+        {
+            GameController controller = CreateController();
+            var config = new SerializedObject(controller);
+            var limit = config.FindProperty("maxHintsPerLevel");
+            Assert.That(limit, Is.Not.Null, "Hint budget needs an Inspector setting.");
+            limit.intValue = budget;
+            config.ApplyModifiedPropertiesWithoutUndo();
+            controller.ConfigureWorld(Sakura());
+            controller.LoadLevelByIndex(0);
+            Assert.That(controller.RemainingHints, Is.EqualTo(budget));
+            if (budget == 0) Assert.That(controller.TryShowHint(), Is.False);
+            else
+            {
+                Assert.That(controller.TryShowHint(), Is.True);
+                Assert.That(controller.RemainingHints, Is.EqualTo(budget - 1));
+            }
+            controller.RestartLevel();
+            Assert.That(controller.RemainingHints, Is.EqualTo(budget));
+        }
+
+        [Test]
+        public void TargetArrivalRemainsVisibleForAtLeastFourTenthsBeforeCompletion()
+        {
+            GameController controller = CreateController();
+            controller.ConfigureWorld(Sakura());
+            controller.LoadLevelByIndex(0);
+            BoardView view = GetField<BoardView>(controller, "boardView");
+            PrepareSolvedBoard(controller, view);
+            int completed = 0;
+            controller.LevelCompleted += _ => completed++;
+            Invoke(controller, "BeginCompletion");
+            EnergyFlowView flow = view.GetComponent<EnergyFlowView>();
+            flow.Advance(2f);
+            flow.Advance(.39f);
+            Assert.That(completed, Is.Zero, "Arrival feedback must have time to read.");
+            Assert.That(controller.IsCompletionPending, Is.True);
+            flow.Advance(.21f);
+            Assert.That(completed, Is.EqualTo(1));
+            flow.Advance(2f);
+            Assert.That(completed, Is.EqualTo(1));
+        }
+
+        [TestCase(0)]
+        [TestCase(2)]
+        public void WorldHintOverrideWinsAndUiShowsTheConfiguredBudget(int budget)
+        {
+            GameController controller = CreateController();
+            WorldDefinition world = UnityEngine.Object.Instantiate(Sakura());
+            WorldGameplayTheme theme = UnityEngine.Object.Instantiate(world.GameplayTheme);
+            created.Add(world); created.Add(theme);
+            var settings = new SerializedObject(theme);
+            settings.FindProperty("maxHintsPerLevel").intValue = budget;
+            settings.ApplyModifiedPropertiesWithoutUndo();
+            world.SetGameplayTheme(theme);
+            controller.ConfigureWorld(world);
+            controller.LoadLevelByIndex(0);
+            Assert.That(controller.RemainingHints, Is.EqualTo(budget));
+            var buttonObject = new GameObject("ConfiguredHint", typeof(RectTransform), typeof(UnityEngine.UI.Button));
+            created.Add(buttonObject);
+            var labelObject = new GameObject("Label", typeof(RectTransform), typeof(TMPro.TextMeshProUGUI));
+            labelObject.transform.SetParent(buttonObject.transform, false);
+            var ui = buttonObject.AddComponent<PipeMuzzle.UI.GameplayHintUI>();
+            ui.Configure(controller);
+            Assert.That(labelObject.GetComponent<TMPro.TMP_Text>().text, Is.EqualTo($"HINT {budget}/{budget}"));
+            if (budget == 0) Assert.That(buttonObject.GetComponent<UnityEngine.UI.Button>().interactable, Is.False);
+        }
+
+        [Test]
+        public void SpamOnRotatingPipeCannotAdvanceTheLogicalOrientationOrMoveCount()
+        {
+            GameController controller = CreateController();
+            controller.ConfigureWorld(Sakura());
+            controller.LoadLevelByIndex(0);
+            BoardView view = GetField<BoardView>(controller, "boardView");
+            TileView tile = view.GetComponentsInChildren<TileView>().First(t => t.State.Role == TileRole.Normal && t.State.Shape != TileShape.Empty);
+            int rotation = tile.State.Rotation;
+            FieldInfo queue = typeof(TileView).GetField("queuedQuarterTurns", BindingFlags.Instance | BindingFlags.NonPublic);
+            queue.SetValue(tile, 1);
+            MethodInfo click = typeof(GameController).GetMethod("HandleTileClicked", BindingFlags.Instance | BindingFlags.NonPublic);
+            click.Invoke(controller, new object[] { tile });
+            click.Invoke(controller, new object[] { tile });
+            Assert.That(tile.State.Rotation, Is.EqualTo(rotation));
+            Assert.That(controller.CurrentMoveCount, Is.Zero);
+            queue.SetValue(tile, 0);
         }
 
         private static void PrepareSolvedBoard(GameController controller, BoardView view)

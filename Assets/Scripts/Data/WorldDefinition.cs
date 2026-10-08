@@ -11,7 +11,7 @@ namespace PipeMuzzle.Data
         MoonShrine
     }
 
-    [CreateAssetMenu(fileName = "World_", menuName = "PipeMuzzle/World Definition")]
+    [CreateAssetMenu(fileName = "World_", menuName = "Ruilay/World Definition")]
     public class WorldDefinition : ScriptableObject
     {
         public const int ExpectedLevelCount = 12;

@@ -72,7 +72,7 @@ namespace PipeMuzzle.Tests.EditMode
                         Assert.That(fill.GetPosition(vertex), Is.Not.EqualTo(tile.transform.position),
                             "Final success flow must not fill distractor pipes.");
                 }
-                flow.Advance(.13f);
+                flow.Advance(.6f);
                 Assert.That(completions, Is.EqualTo(1));
                 flow.Advance(2);
                 Assert.That(completions, Is.EqualTo(1));

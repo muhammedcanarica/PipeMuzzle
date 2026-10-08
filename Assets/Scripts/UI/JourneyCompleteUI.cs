@@ -89,7 +89,7 @@ namespace PipeMuzzle.UI
                 () => screens.ShowWorldMap());
             Button("CreditsButton", journey.transform, "CREDITS", 145, -273, ShowCredits);
 
-            Text("Title", credits.transform, "PIPE MUZZLE", 46, 220, 1000, 70);
+            Text("Title", credits.transform, "Ruilay", 46, 220, 1000, 70);
             Text("Role", credits.transform, "Game Design & Development", 23, 85, 1000, 50);
             Text("Name", credits.transform, "Muhammed Can Arıca", 32, 25, 1000, 60);
             Text("Engine", credits.transform, "Created with Unity", 22, -74, 1000, 50);
@@ -234,6 +234,9 @@ namespace PipeMuzzle.UI
             TMP_Text text = rect.gameObject.AddComponent<TextMeshProUGUI>();
             text.text = value;
             text.fontSize = size;
+            UiTypography.Apply(text, name == "Title" ? UiFontRole.Title :
+                name.StartsWith("WorldName") || name == "Label" || name == "Name" ? UiFontRole.Emphasis :
+                name.StartsWith("WorldStatus") || name == "LevelCount" || name == "Thanks" ? UiFontRole.Label : UiFontRole.Body);
             text.alignment = TextAlignmentOptions.Center;
             text.color = ColorForUi(new Color32(94, 80, 101, 255));
             text.raycastTarget = false;

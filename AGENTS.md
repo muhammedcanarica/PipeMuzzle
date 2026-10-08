@@ -1,4 +1,4 @@
-# PipeMuzzle repository instructions
+# Ruilay repository instructions
 
 - Work only on `main` unless the user explicitly requests another branch. Do not create feature, Codex or worktree branches.
 - Keep the recovered gameplay, world/UI presentation, 36-level difficulty pass, pipe artwork, flow animation, delayed completion, audio/haptics and story checkpoints at 3/6/9/12 as the current source of truth. Inspect the architecture before editing; preserve unrelated changes and avoid broad refactors.

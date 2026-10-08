@@ -22,6 +22,7 @@ namespace PipeMuzzle.View
 
         private readonly Dictionary<Vector2Int, TileView> tileViews = new();
         private readonly List<Vector3> flowPathPositions = new();
+        private readonly List<TileView> flowPathTiles = new();
         private WorldGameplayTheme gameplayTheme;
         private int boardWidth;
         private int boardHeight;
@@ -186,6 +187,7 @@ namespace PipeMuzzle.View
             }
 
             flowPathPositions.Clear();
+            flowPathTiles.Clear();
             foreach (TileView tile in tileViews.Values) tile.Refresh();
         }
 
@@ -284,6 +286,7 @@ namespace PipeMuzzle.View
             }
 
             flowPathPositions.Clear();
+            flowPathTiles.Clear();
 
             for (int i = 0; i < solvedPath.Count; i++)
             {
@@ -295,10 +298,12 @@ namespace PipeMuzzle.View
                         out TileView tileView))
                 {
                     flowPathPositions.Clear();
+                    flowPathTiles.Clear();
                     return false;
                 }
 
                 flowPathPositions.Add(tileView.transform.position);
+                flowPathTiles.Add(tileView);
             }
 
             TileState targetState = solvedPath[solvedPath.Count - 1];
@@ -310,9 +315,16 @@ namespace PipeMuzzle.View
                     out TileView targetTile))
             {
                 energyFlowView.Configure(gameplayTheme);
-                return energyFlowView.Play(flowPathPositions, targetTile, onCompleted, worldId);
+                return energyFlowView.Play(flowPathPositions, targetTile, onCompleted, worldId, null, HandleFlowTileReached);
             }
             return false;
+        }
+
+        private void HandleFlowTileReached(int index)
+        {
+            if (!Application.isPlaying || index < 0 || index >= flowPathTiles.Count) return;
+            TileView tile = flowPathTiles[index];
+            if (tile != null && tile.State.Role != TileRole.Target) tile.PlayCompletionPulse();
         }
 
         private void HandleTileClicked(TileView tileView)

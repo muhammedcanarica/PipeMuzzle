@@ -1,6 +1,8 @@
-# PipeMuzzle
+# Ruilay
 
-> Unity ile geliştirilen, veri odaklı bir 2D mobil boru bulmaca oyunu prototipi.
+![Ruilay logo](Assets/Art/Branding/Ruilay_Logo.png)
+
+> Sakura Garden, Bamboo Workshop ve Moon Shrine boyunca suyun akışını geri getirdiğin, Unity ile geliştirilen sakin ve hikâye odaklı bir boru bulmaca oyunu.
 
 [![Unity](https://img.shields.io/badge/Unity-6000.3.9f1-black?logo=unity)](https://unity.com/)
 [![C%23](https://img.shields.io/badge/C%23-Game%20Logic-512BD4?logo=csharp)](https://learn.microsoft.com/dotnet/csharp/)
@@ -10,7 +12,7 @@
 
 ### Oyun fikri
 
-Oyuncu, boru parçalarını 90 derecelik adımlarla döndürerek kaynak ile namlu arasında kesintisiz bir bağlantı kurar. Doğru rota tamamlandığında Source'tan Target'a gerçek çözüm yolunu izleyen kısa bir enerji akışı oynar ve bölüm çözülür.
+Ruilay, Sakura Garden, Bamboo Workshop ve Moon Shrine boyunca geçen sakin ve hikâye odaklı bir su akışı bulmacasıdır. Oyuncu boruları 90 derecelik adımlarla döndürerek kaynaktan hedefe kesintisiz bir rota kurar; tamamlanan rotayı izleyen su akışı bölümü çözer.
 
 Proje şu anda **pre-alpha / oynanabilir temel prototip** aşamasındadır. Sakura Garden, Bamboo Workshop ve Moon Shrine dünyalarında **12'şer bölüm, toplam 36 bölüm** bulunur. Dünya bazlı ilerleme ve 3/6/9/12 story checkpoint'leri korunur. Yeni zorluk eğrisi ve doğrulama ayrıntıları [level design raporundadır](docs/level-design-pass.md).
 
@@ -139,7 +141,7 @@ Devam ediyor: enerji akışı, gecikmeli completion, dünya bazlı pipe/UI polis
 
 ### Game concept
 
-PipeMuzzle is a data-driven 2D mobile puzzle game prototype built with Unity. Players rotate pipe tiles in 90-degree steps to form a continuous connection between a source and a muzzle. Completing the route sends a short energy flow along the real Source-to-Target path and solves the level.
+Ruilay is a cozy, story-driven water-flow puzzle built with Unity. Journey through three handcrafted worlds — Sakura Garden, Bamboo Workshop, and Moon Shrine — rotating pipes in 90-degree steps to restore a continuous route from source to target. Water follows the completed route to solve each level.
 
 The project is currently in **pre-alpha / playable core prototype** development. Sakura Garden, Bamboo Workshop and Moon Shrine contain **12 levels each, 36 in total**, with world progression and story checkpoints at 3/6/9/12. See the [level design report](docs/level-design-pass.md) for difficulty progression and validation.
 
@@ -264,4 +266,4 @@ In progress: energy flow, delayed completion, world-specific pipe/UI polish and 
 
 Development uses only `main`. Use changes → tests → commit → `git push origin main`; create another branch only if explicitly requested. See [AGENTS.md](AGENTS.md) and the [consolidation audit](docs/single-main-consolidation.md). Existing backups remain outside the repository.
 
-[github.com/muhammedcanarica/PipeMuzzle](https://github.com/muhammedcanarica/PipeMuzzle)
+[Ruilay repository](https://github.com/muhammedcanarica/PipeMuzzle)

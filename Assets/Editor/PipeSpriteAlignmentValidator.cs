@@ -17,7 +17,7 @@ namespace PipeMuzzle.Editor
             "Assets/Art/Tiles/SoftBlossom/pipe_cross.png"
         };
 
-        [MenuItem("PipeMuzzle/Validate Pipe Sprite Alignment")]
+        [MenuItem("Ruilay/Validate Pipe Sprite Alignment")]
         public static void Validate()
         {
             List<string> errors = new List<string>();

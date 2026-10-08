@@ -442,7 +442,8 @@ namespace PipeMuzzle.UI
         {
             if (text == null) return;
             text.color = color;
-            text.fontStyle = style;
+            UiTypography.Apply(text, text.name == "CompletionText" ? UiFontRole.Title :
+                text.GetComponentInParent<Button>(true) != null || style == FontStyles.Bold ? UiFontRole.Emphasis : UiFontRole.Label);
             text.alignment = TextAlignmentOptions.Center;
             text.enableAutoSizing = true;
             text.fontSizeMin = 16f;
@@ -533,7 +534,7 @@ namespace PipeMuzzle.UI
             bool worldComplete = !hasNextLevel && gameController.CurrentWorld != null;
             WorldDefinition nextWorld = worldComplete ? FindNextWorld() : null;
             completionText.text = worldComplete
-                ? $"WORLD COMPLETE\n<size=24>{gameController.CurrentWorld.DisplayName} Complete</size>"
+                ? $"WORLD COMPLETE\n<font=\"SourGummy-SemiBold\"><size=24>{gameController.CurrentWorld.DisplayName} Complete</size></font>"
                 : hasNextLevel ? "LEVEL COMPLETE" : "ALL LEVELS COMPLETE";
             nextButton.gameObject.SetActive(hasNextLevel || nextWorld != null);
             completionMapButton.gameObject.SetActive(worldComplete);

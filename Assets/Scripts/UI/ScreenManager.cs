@@ -1,4 +1,5 @@
 using PipeMuzzle.Data;
+using PipeMuzzle.Feedback;
 using PipeMuzzle.Gameplay;
 using UnityEngine;
 
@@ -15,7 +16,24 @@ namespace PipeMuzzle.UI
         private JourneyCompleteUI journeyComplete;
         public bool IsJourneyCompleteOpen => journeyComplete != null && journeyComplete.gameObject.activeSelf;
         private bool settingsReturnToGameplay;
+        private WorldId? musicWorld;
+        public void SetMusicWorld(WorldId world) => musicWorld = world;
+        private void PlayWorldMusic()
+        {
+            if (musicWorld.HasValue) GameFeedback.PlayWorldMusic(musicWorld.Value);
+        }
         public bool IsSettingsOpen => settingsPanel != null && settingsPanel.activeInHierarchy;
+
+        private void Awake() { if (Application.isPlaying) CursorManager.EnsureInstance(); }
+        private System.Collections.IEnumerator Start() { yield return null; BindButtonSounds(); CursorManager.RefreshPointerTarget(); }
+        private void BindButtonSounds() => UiSfxFeedback.BindHierarchy(transform.root);
+        private System.Collections.IEnumerator BindCreatedButtons()
+        {
+            // Panels may create their buttons during Refresh/Show, after SetScreen returns.
+            yield return null;
+            BindButtonSounds();
+            CursorManager.RefreshPointerTarget();
+        }
 
         public void Configure(GameObject worldMap, GameObject comicViewer, GameObject levelSelect, GameObject gameplay)
         {
@@ -78,16 +96,18 @@ namespace PipeMuzzle.UI
 
         public void ShowWorldMap()
         {
+            GameFeedback.PlayMainMusic();
             SetScreen(true, false, false, false);
             if (worldMapPanel != null)
                 worldMapPanel.GetComponent<WorldMapUI>()?.Refresh();
         }
         public void ShowComic() => SetScreen(false, true, false, false);
-        public void ShowLevelSelect() => SetScreen(false, false, true, false);
-        public void ShowGameplay() => SetScreen(false, false, false, true);
+        public void ShowLevelSelect() { PlayWorldMusic(); SetScreen(false, false, true, false); }
+        public void ShowGameplay() { PlayWorldMusic(); SetScreen(false, false, false, true); }
 
         private void SetScreen(bool worldMap, bool comicViewer, bool levelSelect, bool gameplay, bool settings = false, bool journey = false)
         {
+            CursorManager.ResetState();
             if (!settings) settingsReturnToGameplay = false;
             if (journeyComplete != null) journeyComplete.gameObject.SetActive(journey);
             if (worldMapPanel != null) worldMapPanel.SetActive(worldMap);
@@ -96,6 +116,11 @@ namespace PipeMuzzle.UI
             if (gameplayHud != null) gameplayHud.SetActive(gameplay);
             if (settingsPanel != null) settingsPanel.SetActive(settings);
             if (gameplayHud != null) gameplayHud.GetComponent<GameplayPauseUI>()?.RefreshSettingsInput();
+            if (Application.isPlaying)
+            {
+                BindButtonSounds();
+                StartCoroutine(BindCreatedButtons());
+            }
         }
     }
 }

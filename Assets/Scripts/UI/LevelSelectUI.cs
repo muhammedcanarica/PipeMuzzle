@@ -184,7 +184,7 @@ namespace PipeMuzzle.UI
             TextMeshProUGUI label = labelObject.GetComponent<TextMeshProUGUI>();
             label.text = "MAP";
             label.alignment = TextAlignmentOptions.Center;
-            label.fontStyle = FontStyles.Bold;
+            UiTypography.Apply(label, UiFontRole.Emphasis);
             label.fontSize = 24f;
             label.color = Color.white;
         }
@@ -260,11 +260,13 @@ namespace PipeMuzzle.UI
             }
 
             currentWorld = world;
+            screenManager?.SetMusicWorld(world.WorldId);
 
             TMP_Text title = worldTitleText != null ? worldTitleText : FindWorldTitle();
             if (title != null)
             {
                 title.text = currentWorld.DisplayName;
+                UiTypography.Apply(title, UiFontRole.Emphasis);
                 title.color = theme.TitleColor;
             }
 

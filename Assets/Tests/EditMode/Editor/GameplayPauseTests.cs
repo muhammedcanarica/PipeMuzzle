@@ -106,7 +106,7 @@ namespace PipeMuzzle.Tests.EditMode
             boardView.Build(solved);
             CallPrivate(controller, "BeginCompletion");
             EnergyFlowView flow = boardView.GetComponent<EnergyFlowView>();
-            if (finish) { flow.Advance(2f); flow.Advance(.13f); }
+            if (finish) { flow.Advance(2f); flow.Advance(.6f); }
             Assert.That(Pause(), Is.False);
             Assert.That(Time.timeScale, Is.EqualTo(1f));
             Assert.That(controller.IsCompletionPending || controller.IsCompleted, Is.True);

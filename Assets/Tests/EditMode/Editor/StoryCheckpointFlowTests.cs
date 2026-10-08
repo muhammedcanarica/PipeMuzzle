@@ -393,7 +393,7 @@ namespace PipeMuzzle.Tests.EditMode
             EnergyFlowView flow = view.GetComponent<EnergyFlowView>();
             flow.Advance(2f);
             Assert.That(comic.activeSelf, Is.False, "Arrival hold must finish before the comic.");
-            flow.Advance(.13f);
+            flow.Advance(.6f);
             Assert.That(comic.activeSelf, Is.True);
             Assert.That(screens.IsJourneyCompleteOpen, Is.False);
             viewer.Skip();

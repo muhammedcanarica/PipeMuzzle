@@ -78,7 +78,15 @@ namespace PipeMuzzle.Tests.EditMode
             Assert.That(result.ShortestPathLength, Is.EqualTo(budget.path));
             Assert.That(result.ActiveTiles - result.ShortestPathLength, Is.EqualTo(budget.decoys));
             int cosmeticAllowance = WorldName == "SakuraGarden" && new[] { 1, 2, 3, 5, 10 }.Contains(number) ? 2 : 0;
-            Assert.That(result.ReachableTiles, Is.InRange(result.ActiveTiles - cosmeticAllowance, result.ActiveTiles),
+            // The original level-design budget measures authored pipe topology. Runtime endpoints
+            // now expose one port, so closing their spare arms can isolate additional decoys.
+            // Keep checking the exact original authored budget without changing any level data.
+            BoardState authoredTopology = new(level.Width, level.Height);
+            foreach (TileDefinition tile in level.Tiles)
+                authoredTopology.SetTile(new TileState(tile.X, tile.Y, tile.Shape, tile.Role, tile.StartRotation, tile.IsLocked));
+            LevelValidationResult topology = LevelValidationUtility.Analyze(authoredTopology);
+            Assert.That(result.ReachableTiles, Is.LessThanOrEqualTo(topology.ReachableTiles));
+            Assert.That(topology.ReachableTiles, Is.InRange(result.ActiveTiles - cosmeticAllowance, result.ActiveTiles),
                 "Only the small authored cosmetic clusters may be isolated from the source.");
             Assert.That(level.Tiles.Count(t => t.Shape == TileShape.ThreeWay), Is.EqualTo(budget.tees));
             Assert.That(level.Tiles.Count(t => t.Shape == TileShape.Cross), Is.EqualTo(budget.crosses));

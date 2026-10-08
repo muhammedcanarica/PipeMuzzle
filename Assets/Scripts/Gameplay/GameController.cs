@@ -31,6 +31,10 @@ namespace PipeMuzzle.Gameplay
         private bool isCompleting;
         private Coroutine completionCoroutine;
         public const int HintsPerAttempt = 3;
+        [Header("Hint Balance")]
+        [SerializeField, Min(0)] private int maxHintsPerLevel = HintsPerAttempt;
+        public int MaxHintsPerLevel => currentWorld?.GameplayTheme != null && currentWorld.GameplayTheme.HintLimitOverride >= 0
+            ? currentWorld.GameplayTheme.HintLimitOverride : Mathf.Max(0, maxHintsPerLevel);
         private const float HintCooldown = 2f;
         private float hintAvailableAt;
         public int RemainingHints { get; private set; } = HintsPerAttempt;
@@ -72,7 +76,7 @@ namespace PipeMuzzle.Gameplay
             UsedHintThisAttempt = true;
             hintAvailableAt = Time.unscaledTime + HintCooldown;
             boardView.PlayHintRotation(tile, turns);
-            GameFeedback.PlayPipeRotate();
+            GameFeedback.PlayHint();
             bool solved = ConnectionChecker.Evaluate(board);
             boardView.RefreshPoweredTiles(Application.isPlaying);
             if (solved) BeginCompletion();
@@ -81,7 +85,7 @@ namespace PipeMuzzle.Gameplay
 
         private void ResetHintAttempt()
         {
-            RemainingHints = HintsPerAttempt;
+            RemainingHints = MaxHintsPerLevel;
             UsedHintThisAttempt = false;
             hintAvailableAt = 0f;
         }
@@ -146,6 +150,7 @@ namespace PipeMuzzle.Gameplay
             }
 
             currentWorld = world;
+            ResetHintAttempt();
             progressService = new ProgressService(world.WorldId, world.LevelCount);
             return true;
         }
@@ -181,12 +186,23 @@ namespace PipeMuzzle.Gameplay
 
         }
 
+        public bool CanInteractWithTile(TileView tileView)
+        {
+            if (!isActiveAndEnabled || IsPaused || isCompleted || isCompleting || board == null ||
+                tileView == null || !tileView.isActiveAndEnabled || tileView.State == null || tileView.HasPendingRotation)
+                return false;
+            TileState tile = tileView.State;
+            return board.GetTile(tile.X, tile.Y) == tile && tile.Role == TileRole.Normal &&
+                !tile.IsLocked && !tile.IsHintLocked && tile.Shape != TileShape.Empty;
+        }
+
         private void HandleTileClicked(TileView tileView)
         {
             if (!isActiveAndEnabled || IsPaused || isCompleted || isCompleting ||
                 board == null ||
                 tileView == null ||
-                tileView.State == null)
+                tileView.State == null || tileView.HasPendingRotation ||
+                board.GetTile(tileView.State.X, tileView.State.Y) != tileView.State)
             {
                 return;
             }
@@ -250,7 +266,8 @@ namespace PipeMuzzle.Gameplay
             }
             else
             {
-                worldProgressService.MarkWorldCompleted(currentWorld.WorldId);
+                if (worldProgressService.MarkWorldCompleted(currentWorld.WorldId))
+                    GameFeedback.PlayWorldUnlock();
             }
 
             Debug.Log(

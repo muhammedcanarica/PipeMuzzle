@@ -28,7 +28,7 @@ namespace PipeMuzzle.Editor
             { Direction.North, Direction.East, Direction.South, Direction.West };
         private const int MaximumSearchNodes = 200000;
 
-        [MenuItem("PipeMuzzle/Validate All Levels")]
+        [MenuItem("Ruilay/Validate All Levels")]
         private static void ValidateAllLevels()
         {
             foreach (string guid in AssetDatabase.FindAssets("t:LevelDefinition"))

@@ -1,4 +1,4 @@
-# PipeMuzzle World-Aware Progression Design
+# Ruilay World-Aware Progression Design
 
 ## 1. Current-state findings
 

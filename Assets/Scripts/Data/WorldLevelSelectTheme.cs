@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace PipeMuzzle.Data
 {
-    [CreateAssetMenu(fileName = "WorldLevelSelectTheme", menuName = "PipeMuzzle/World Level Select Theme")]
+    [CreateAssetMenu(fileName = "WorldLevelSelectTheme", menuName = "Ruilay/World Level Select Theme")]
     public sealed class WorldLevelSelectTheme : ScriptableObject
     {
         [SerializeField] private Sprite backgroundSprite;

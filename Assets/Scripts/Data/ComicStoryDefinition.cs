@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace PipeMuzzle.Data
 {
-    [CreateAssetMenu(fileName = "ComicStory_", menuName = "PipeMuzzle/Comic Story")]
+    [CreateAssetMenu(fileName = "ComicStory_", menuName = "Ruilay/Comic Story")]
     public class ComicStoryDefinition : ScriptableObject
     {
         [SerializeField] private string storyId;

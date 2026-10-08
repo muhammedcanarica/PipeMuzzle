@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace PipeMuzzle.Data
 {
-    [CreateAssetMenu(fileName = "LevelPathLayout", menuName = "PipeMuzzle/Level Path Layout")]
+    [CreateAssetMenu(fileName = "LevelPathLayout", menuName = "Ruilay/Level Path Layout")]
     public sealed class LevelPathLayoutDefinition : ScriptableObject
     {
         [SerializeField] private Vector2[] nodePositions = new Vector2[12];

@@ -16,6 +16,7 @@ namespace PipeMuzzle.UI
         {
             if (button == null) button = GetComponent<Button>();
             if (label == null) label = GetComponentInChildren<TMP_Text>(true);
+            UiTypography.Apply(label, UiFontRole.Emphasis);
             button.onClick.RemoveListener(ShowHint);
             controller = source;
             if (isActiveAndEnabled) button.onClick.AddListener(ShowHint);
@@ -29,7 +30,7 @@ namespace PipeMuzzle.UI
             if (button != null) button.interactable = controller != null && controller.CanHint;
             if (label != null)
             {
-                string text = $"HINT {controller?.RemainingHints ?? GameController.HintsPerAttempt}/{GameController.HintsPerAttempt}";
+                string text = $"HINT {controller?.RemainingHints ?? GameController.HintsPerAttempt}/{controller?.MaxHintsPerLevel ?? GameController.HintsPerAttempt}";
                 if (label.text != text) label.text = text;
             }
         }

@@ -79,9 +79,9 @@ namespace PipeMuzzle.UI
             {
                 title.text = world.DisplayName.ToUpperInvariant();
                 title.color = Ui(accent);
-                title.fontStyle = FontStyles.Bold;
+                UiTypography.Apply(title, UiFontRole.Emphasis);
                 title.alignment = TextAlignmentOptions.Center;
-                title.characterSpacing = 2f;
+                title.characterSpacing = .4f;
             }
             subtitle.color = Ui(WithAlpha(accent, .72f));
             bestPreview.color = Ui(WithAlpha(accent, .80f));
@@ -99,7 +99,7 @@ namespace PipeMuzzle.UI
                 colors.highlightedColor = Color.white;
                 back.colors = colors;
                 TMP_Text label = back.GetComponentInChildren<TMP_Text>(true);
-                if (label != null) { label.text = "‹  MAP"; label.color = Ui(accent); label.fontStyle = FontStyles.Normal; }
+                if (label != null) { label.text = "‹  MAP"; label.color = Ui(accent); UiTypography.Apply(label, UiFontRole.Emphasis); }
             }
             lastSize = Vector2.zero;
             Layout();
@@ -170,7 +170,7 @@ namespace PipeMuzzle.UI
                 stop.Button.GetComponent<Image>().color = Ui(unlocked ? Color.Lerp(Color.white, accent, done ? .16f : .08f) : new Color(.87f, .85f, .82f, .74f));
                 stop.Number.text = (i + 1).ToString();
                 stop.Number.color = Ui(unlocked ? accent : new Color(.48f, .46f, .45f));
-                stop.Number.fontStyle = FontStyles.Bold;
+                UiTypography.Apply(stop.Number, UiFontRole.Emphasis);
                 stop.Ring.color = Ui(WithAlpha(accent, unlocked ? next ? .72f : done ? .40f : .24f : .12f));
                 stop.Glow.color = Ui(WithAlpha(accent, next ? .22f : 0f));
                 stop.Ornament.sprite = paint.Sprites[ornament];
@@ -282,6 +282,8 @@ namespace PipeMuzzle.UI
             item.transform.SetParent(parent, false);
             TMP_Text text = item.GetComponent<TMP_Text>();
             text.text = value;
+            UiTypography.Apply(text, name == "Number" ? UiFontRole.Emphasis :
+                name == "LevelJourneySubtitle" ? UiFontRole.Label : UiFontRole.Body);
             text.alignment = TextAlignmentOptions.Center;
             text.raycastTarget = false;
             return text;

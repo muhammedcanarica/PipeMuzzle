@@ -2,13 +2,23 @@ using UnityEngine;
 
 namespace PipeMuzzle.Data
 {
-    [CreateAssetMenu(fileName = "WorldGameplayTheme", menuName = "PipeMuzzle/World Gameplay Theme")]
+    [CreateAssetMenu(fileName = "WorldGameplayTheme", menuName = "Ruilay/World Gameplay Theme")]
     public sealed class WorldGameplayTheme : ScriptableObject
     {
         [Header("Gameplay")]
         [SerializeField] private Sprite backgroundSprite;
         [SerializeField] private Color cameraBackgroundColor = Color.black;
         [SerializeField] private Color boardPanelColor = new(1f, 1f, 1f, .75f);
+
+        [Header("Optional gameplay overrides")]
+        [Tooltip("-1 inherits GameController's hint budget. Zero disables hints in this world.")]
+        [SerializeField, Min(-1)] private int maxHintsPerLevel = -1;
+        [SerializeField] private AudioClip pipeRotateClip;
+        [SerializeField] private AudioClip levelCompleteClip;
+
+        public int HintLimitOverride => maxHintsPerLevel;
+        public AudioClip PipeRotateClip => pipeRotateClip;
+        public AudioClip LevelCompleteClip => levelCompleteClip;
 
         [Header("HUD")]
         [SerializeField] private Color textColor = Color.white;

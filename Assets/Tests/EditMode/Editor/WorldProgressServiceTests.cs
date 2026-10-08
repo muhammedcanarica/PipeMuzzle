@@ -46,6 +46,18 @@ namespace PipeMuzzle.Tests.EditMode
         }
 
         [Test]
+        public void UnlockFeedbackDecisionIsTrueOnlyOnFirstRealUnlock()
+        {
+            WorldProgressService progress = new();
+            Assert.That(progress.MarkWorldCompleted(WorldId.BambooWorkshop), Is.False);
+            Assert.That(progress.MarkWorldCompleted(WorldId.SakuraGarden), Is.True);
+            Assert.That(new WorldProgressService().MarkWorldCompleted(WorldId.SakuraGarden), Is.False);
+            Assert.That(progress.MarkWorldCompleted(WorldId.BambooWorkshop), Is.True);
+            Assert.That(progress.MarkWorldCompleted(WorldId.BambooWorkshop), Is.False);
+            Assert.That(progress.MarkWorldCompleted(WorldId.MoonShrine), Is.False);
+        }
+
+        [Test]
         public void FirstLaunchUnlocksOnlySakuraAndPersistsIt()
         {
             WorldProgressService progress = new();

@@ -6,7 +6,7 @@ namespace PipeMuzzle.Editor
 {
     public static class PipeMuzzleTutorialDebugMenu
     {
-        [MenuItem("PipeMuzzle/Debug/Reset Tutorial")]
+        [MenuItem("Ruilay/Debug/Reset Tutorial")]
         public static void ResetTutorial() => BasicRotationTutorialProgress.Reset();
     }
 }

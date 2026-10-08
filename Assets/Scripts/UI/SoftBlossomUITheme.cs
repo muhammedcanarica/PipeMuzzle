@@ -415,7 +415,7 @@ namespace PipeMuzzle.UI
             }
 
             text.color = color;
-            text.fontStyle = FontStyles.Bold;
+            UiTypography.Apply(text, text.name == "TitleText" ? UiFontRole.Title : UiFontRole.Emphasis);
             text.alignment = TextAlignmentOptions.Center;
             text.enableAutoSizing = true;
             text.fontSizeMin = 18f;

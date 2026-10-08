@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using PipeMuzzle.Board;
 using PipeMuzzle.Data;
+using PipeMuzzle.UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace PipeMuzzle.View
 {
-    public class TileView : MonoBehaviour, IPointerClickHandler
+    public class TileView : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler,
+        IPointerDownHandler, IPointerUpHandler
     {
         [Header("References")]
         [SerializeField]
@@ -220,9 +222,15 @@ namespace PipeMuzzle.View
             StartGlowPulse(pulseScale, pulseDuration, 0.18f);
         }
 
+        public void OnPointerEnter(PointerEventData data) => CursorManager.EnterTile(this, data);
+        public void OnPointerExit(PointerEventData data) => CursorManager.ExitTarget(this, data);
+        public void OnPointerDown(PointerEventData data) => CursorManager.Press(data);
+        public void OnPointerUp(PointerEventData data) => CursorManager.ReleasePress(data);
+
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (eventData == null ||
+            if (tileState == null || tileState.IsLocked || tileState.IsHintLocked ||
+                tileState.Shape == TileShape.Empty || HasPendingRotation || eventData == null ||
                 eventData.button != PointerEventData.InputButton.Left)
             {
                 return;
@@ -304,6 +312,13 @@ namespace PipeMuzzle.View
 
         private void LateUpdate()
         {
+            if (tileState?.Role == TileRole.Source && glowRenderer != null &&
+                powerCoroutine == null && completionCoroutine == null)
+            {
+                Color idle = GetGlowColor(true);
+                idle.a *= 1f + .08f * Mathf.Sin(Time.time * 2f);
+                glowRenderer.color = idle;
+            }
             if (roleRenderer != null && roleRenderer.enabled)
                 roleRenderer.transform.localRotation = Quaternion.Inverse(transform.localRotation);
             if (endpointWaterRenderer != null)
@@ -349,7 +364,9 @@ namespace PipeMuzzle.View
 
         private void RefreshBaseColor()
         {
-            spriteRenderer.color = tileState.IsLocked
+            spriteRenderer.color = tileState.IsHintLocked
+                ? Color.Lerp(normalColor, poweredGlowColor, .10f)
+                : tileState.IsLocked
                 ? MultiplyColors(normalColor, lockedTint)
                 : normalColor;
         }
@@ -372,13 +389,18 @@ namespace PipeMuzzle.View
 
                 case TileRole.Target:
                     color = targetGlowColor;
-                    color.a *= targetReached ? .18f : 0f;
+                    color.a *= targetReached ? .18f : .025f;
                     break;
 
                 default:
                     color = powered ? poweredGlowColor : Color.clear;
                     // Connection preview highlights the body softly; the channel stays empty.
                     color.a *= .18f;
+                    if (tileState.IsHintLocked && !powered)
+                    {
+                        color = poweredGlowColor;
+                        color.a *= .14f;
+                    }
                     break;
             }
 
@@ -435,6 +457,7 @@ namespace PipeMuzzle.View
             }
 
             rotationCoroutine = null;
+            RefreshBaseColor();
         }
 
         private IEnumerator AnimateGlowColor(Color startColor, Color targetColor)
@@ -549,6 +572,10 @@ namespace PipeMuzzle.View
             );
         }
 
-        private void OnDisable() => StopVisualCoroutines();
+        private void OnDisable()
+        {
+            CursorManager.ReleaseTarget(this);
+            StopVisualCoroutines();
+        }
     }
 }

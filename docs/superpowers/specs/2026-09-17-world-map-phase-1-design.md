@@ -1,4 +1,4 @@
-# PipeMuzzle World Map Phase 1 Design
+# Ruilay World Map Phase 1 Design
 
 ## Scope
 

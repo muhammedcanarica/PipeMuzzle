@@ -181,6 +181,7 @@ namespace PipeMuzzle.UI
             hint = label.GetComponent<TMP_Text>();
             hint.text = "CLICK TO ROTATE";
             hint.fontSize = 20f;
+            UiTypography.Apply(hint, UiFontRole.Label);
             hint.characterSpacing = 1.2f;
             hint.alignment = TextAlignmentOptions.Center;
             hint.color = new Color(.53f, .32f, .40f, .82f);

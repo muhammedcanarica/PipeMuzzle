@@ -190,7 +190,7 @@ namespace PipeMuzzle.UI
                 lockedArtworkMaterial.SetFloat("_EdgeSoftness", 0f);
             }
             else Debug.LogError("WorldMapUI missing Resources/WorldMap/WorldMapArtwork shader; using muted tint fallback.");
-            brandTitle = CreateText("BrandTitle", "PIPE MUZZLE", root, 40f, new Color32(83, 65, 76, 255));
+            brandTitle = CreateText("BrandTitle", "Ruilay", root, 40f, new Color32(83, 65, 76, 255));
             journeyLabel = CreateText("JourneyLabel", "JOURNEY", root, 17f, new Color32(148, 118, 116, 255));
             journeyLabel.characterSpacing = 8f;
             // Path graphics are behind the art, and never intercept destination input.
@@ -486,7 +486,8 @@ namespace PipeMuzzle.UI
             TextMeshProUGUI text = item.GetComponent<TextMeshProUGUI>();
             text.text = value;
             text.fontSize = size;
-            text.fontStyle = FontStyles.Bold;
+            UiTypography.Apply(text, name == "BrandTitle" ? UiFontRole.Title :
+                name == "WorldName" ? UiFontRole.Emphasis : UiFontRole.Label);
             text.alignment = TextAlignmentOptions.Center;
             text.color = UiColor(color);
             text.raycastTarget = false;

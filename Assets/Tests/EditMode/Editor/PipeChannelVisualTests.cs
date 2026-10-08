@@ -92,7 +92,7 @@ namespace PipeMuzzle.Tests.EditMode
                 int completions = 0;
                 Vector3[] path = { Vector3.zero, Vector3.right, Vector3.right + Vector3.up };
                 Assert.That(flow.Play(path, target, () => completions++), Is.True);
-                Assert.That(flow.Duration, Is.InRange(.5f, 1.2f));
+                Assert.That(flow.Duration, Is.InRange(.9f, 1.7f));
                 LineRenderer fill = root.GetComponent<LineRenderer>();
                 Assert.That(fill.startWidth, Is.GreaterThanOrEqualTo(.17f), "Fill must occupy the channel, rather than a thin tracer.");
                 flow.Advance(.125f);
@@ -102,7 +102,7 @@ namespace PipeMuzzle.Tests.EditMode
                 flow.Advance(.375f);
                 Assert.That(fill.GetPosition(fill.positionCount - 1), Is.EqualTo(path[2]));
                 Assert.That(completions, Is.Zero, "Arrival must be visible before the result event.");
-                flow.Advance(.13f);
+                flow.Advance(.6f);
                 Assert.That(completions, Is.EqualTo(1));
                 Assert.That(fill.enabled, Is.True, "The solved channel stays filled.");
                 flow.StopAndClear();
@@ -117,9 +117,38 @@ namespace PipeMuzzle.Tests.EditMode
                 flow.Advance(.15f);
                 Assert.That(completions, Is.EqualTo(1),
                     "A slow frame crossing both timing thresholds must still show arrival before completion.");
-                flow.Advance(.13f);
+                flow.Advance(.6f);
                 Assert.That(completions, Is.EqualTo(2));
                 Assert.That(root.transform.childCount, Is.EqualTo(1), "Flow visuals are reused across levels.");
+            }
+            finally { Object.DestroyImmediate(root); Object.DestroyImmediate(targetObject); }
+        }
+
+        [Test]
+        public void FlowVisitsEachPipeInOrderOnceAndCancellationStopsFurtherVisits()
+        {
+            GameObject root = new("FlowVisitTest");
+            GameObject targetObject = Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/TilePrefab.prefab"));
+            try
+            {
+                TileView target = targetObject.GetComponent<TileView>();
+                target.Initialize(new TileState(2, 0, TileShape.Straight, TileRole.Target, 0, true));
+                EnergyFlowView flow = root.AddComponent<EnergyFlowView>();
+                List<int> visits = new();
+                Vector3[] path = { Vector3.zero, Vector3.right, Vector3.right * 2f };
+                Assert.That(flow.Play(path, target, null, "SakuraGarden", null, visits.Add), Is.True);
+                Assert.That(visits, Is.EqualTo(new[] { 0 }));
+                flow.Advance(.25f);
+                Assert.That(visits, Is.EqualTo(new[] { 0, 1 }));
+                flow.Advance(.25f);
+                flow.Advance(.6f);
+                flow.Advance(2f);
+                Assert.That(visits, Is.EqualTo(new[] { 0, 1, 2 }));
+                visits.Clear();
+                flow.Play(path, target, null, "SakuraGarden", null, visits.Add);
+                flow.StopAndClear();
+                flow.Advance(2f);
+                Assert.That(visits, Is.EqualTo(new[] { 0 }));
             }
             finally { Object.DestroyImmediate(root); Object.DestroyImmediate(targetObject); }
         }

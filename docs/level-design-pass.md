@@ -30,7 +30,7 @@ Full before/after measurements are in [level-difficulty.csv](level-difficulty.cs
 
 ## Development validation
 
-`PipeMuzzle > Validate All Levels` runs an Editor-only exhaustive simple-path solver. It assigns one consistent orientation to each visited tile and minimizes clockwise clicks, accounting for shape symmetry and locked endpoints. An edge-only reachability search could incorrectly reuse one corner with incompatible orientations; this validator forbids tile reuse. Searches stop at 200,000 nodes and report incomplete results rather than claiming solvability.
+`Ruilay > Validate All Levels` runs an Editor-only exhaustive simple-path solver. It assigns one consistent orientation to each visited tile and minimizes clockwise clicks, accounting for shape symmetry and locked endpoints. An edge-only reachability search could incorrectly reuse one corner with incompatible orientations; this validator forbids tile reuse. Searches stop at 200,000 nodes and report incomplete results rather than claiming solvability.
 
 Validation checks dimensions, every grid cell, duplicate/out-of-bounds coordinates, enum values, rotations, one locked nonempty source and target, outward spawn ports, initially solved boards and solvability. All 36 authored boards completed exhaustive search and have one valid route.
 

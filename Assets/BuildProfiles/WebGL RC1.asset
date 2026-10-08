@@ -38,7 +38,7 @@ MonoBehaviour:
     - line: '|   useOnDemandResources: 0'
     - line: '|   accelerometerFrequency: 60'
     - line: '|   companyName: DefaultCompany'
-    - line: '|   productName: PipeMuzzle'
+    - line: '|   productName: Ruilay'
     - line: '|   defaultCursor: {instanceID: 0}'
     - line: '|   cursorHotspot: {x: 0, y: 0}'
     - line: '|   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b:
@@ -524,6 +524,9 @@ MonoBehaviour:
     - line: '|   - m_BuildTarget: iPhone'
     - line: '|     m_StaticBatching: 1'
     - line: '|     m_DynamicBatching: 0'
+    - line: '|   - m_BuildTarget: WebGL'
+    - line: '|     m_StaticBatching: 0'
+    - line: '|     m_DynamicBatching: 0'
     - line: '|   m_BuildTargetShaderSettings: []'
     - line: '|   m_BuildTargetGraphicsJobs: []'
     - line: '|   m_BuildTargetGraphicsJobMode: []'
@@ -800,7 +803,7 @@ MonoBehaviour:
     - line: '|   webGLWasmArithmeticExceptions: 0'
     - line: '|   webGLLinkerTarget: 1'
     - line: '|   webGLThreadsSupport: 0'
-    - line: '|   webGLDecompressionFallback: 0'
+    - line: '|   webGLDecompressionFallback: 1'
     - line: '|   webGLInitialMemorySize: 32'
     - line: '|   webGLMaximumMemorySize: 2048'
     - line: '|   webGLMemoryGrowthMode: 2'
@@ -841,7 +844,7 @@ MonoBehaviour:
     - line: '|   metroCertificateSubject: '
     - line: '|   metroCertificateIssuer: '
     - line: '|   metroCertificateNotAfter: 0000000000000000'
-    - line: '|   metroApplicationDescription: PipeMuzzle'
+    - line: '|   metroApplicationDescription: Ruilay'
     - line: '|   wsaImages: {}'
     - line: '|   metroTileShortName: '
     - line: '|   metroTileShowName: 0'
@@ -952,6 +955,6 @@ MonoBehaviour:
           m_BuildProfileEngineDiagnosticsState: 2
         m_AdaptivePerformanceEnabled: 0
         m_CodeOptimization: 0
-        m_WebGLClientBrowserPath:
+        m_WebGLClientBrowserPath: 
         m_WebGLClientBrowserType: 0
         m_WebGLTextureSubtarget: 0

@@ -382,7 +382,8 @@ namespace PipeMuzzle.UI
             TextMeshProUGUI text = textObject.GetComponent<TextMeshProUGUI>();
             text.text = value;
             text.fontSize = fontSize;
-            text.fontStyle = FontStyles.Bold;
+            UiTypography.Apply(text, name == "Label" || name == "ContinueLabel" ? UiFontRole.Emphasis :
+                name == "PanelCounter" ? UiFontRole.Label : UiFontRole.Body);
             text.alignment = TextAlignmentOptions.Center;
             text.color = Color.white;
             return text;

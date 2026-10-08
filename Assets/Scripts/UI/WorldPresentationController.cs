@@ -1,4 +1,5 @@
 using PipeMuzzle.Data;
+using PipeMuzzle.Feedback;
 using PipeMuzzle.View;
 using UnityEngine;
 
@@ -23,6 +24,10 @@ namespace PipeMuzzle.UI
         private Texture2D boardPanelTexture;
         private Sprite boardPanelSprite;
         private WorldGameplayTheme activeTheme;
+        private readonly SpriteRenderer[] boardDetails = new SpriteRenderer[5];
+        private Texture2D detailTexture;
+        private Sprite detailSprite;
+        private WorldId activeWorldId;
 
         public WorldGameplayTheme ActiveTheme => activeTheme;
 
@@ -38,6 +43,7 @@ namespace PipeMuzzle.UI
         public void Configure(WorldDefinition world)
         {
             activeTheme = world != null ? world.GameplayTheme : null;
+            if (world != null) activeWorldId = world.WorldId;
             if (activeTheme == null) return;
 
             BoardView boardView = FindFirstObjectByType<BoardView>();
@@ -46,6 +52,7 @@ namespace PipeMuzzle.UI
             GameUI gameUi = GetComponent<GameUI>();
             if (gameUi != null) gameUi.ApplyTheme(activeTheme);
 
+            GameFeedback.SetAudioClips(activeTheme.PipeRotateClip, activeTheme.LevelCompleteClip);
             ApplyBackground(activeTheme);
             UpdateBoardPanel(Camera.main);
         }
@@ -70,12 +77,14 @@ namespace PipeMuzzle.UI
             BoardView boardView = FindFirstObjectByType<BoardView>();
             if (boardView == null || !boardView.TryGetGridBounds(out Bounds bounds))
             {
+                foreach (SpriteRenderer detail in boardDetails) if (detail != null) detail.enabled = false;
                 if (boardPanelRenderer != null) boardPanelRenderer.enabled = false;
                 if (boardPanelBorderRenderer != null)
                     boardPanelBorderRenderer.enabled = false;
                 return;
             }
 
+            UpdateBoardDetails(camera, bounds);
             boardPanelRenderer = FindOrCreateBoardPanelRenderer(
                 camera,
                 BoardPanelObjectName,
@@ -252,13 +261,72 @@ namespace PipeMuzzle.UI
             return boardPanelSprite;
         }
 
+        private void UpdateBoardDetails(Camera camera, Bounds bounds)
+        {
+            // Small painted petals/leaves/stones outside the grid; never tiles or colliders.
+            if (detailSprite == null)
+            {
+                const int size = 48;
+                detailTexture = new Texture2D(size, size, TextureFormat.RGBA32, false)
+                    { name = "Gameplay painted detail", filterMode = FilterMode.Bilinear,
+                        wrapMode = TextureWrapMode.Clamp, hideFlags = HideFlags.HideAndDontSave };
+                Color[] pixels = new Color[size * size];
+                for (int y = 0; y < size; y++)
+                for (int x = 0; x < size; x++)
+                {
+                    float u = (x + .5f) / size * 2f - 1f;
+                    float v = (y + .5f) / size * 2f - 1f;
+                    float edge = Mathf.Clamp01((1f - u * u - v * v) * 9f);
+                    float pigment = .88f + .12f * Mathf.PerlinNoise(x * .15f, y * .15f);
+                    pixels[y * size + x] = new Color(pigment, pigment, pigment, edge);
+                }
+                detailTexture.SetPixels(pixels);
+                detailTexture.Apply(false, true);
+                detailSprite = Sprite.Create(detailTexture, new Rect(0, 0, size, size), Vector2.one * .5f, size);
+                detailSprite.hideFlags = HideFlags.HideAndDontSave;
+            }
+            Color tint = activeWorldId == WorldId.SakuraGarden ? new Color(.86f, .52f, .64f, .52f)
+                : activeWorldId == WorldId.BambooWorkshop ? new Color(.43f, .60f, .39f, .52f)
+                : new Color(.52f, .62f, .78f, .48f);
+            for (int i = 0; i < boardDetails.Length; i++)
+            {
+                if (boardDetails[i] == null)
+                {
+                    GameObject detail = new("GameplayAmbientDetail");
+                    detail.transform.SetParent(camera.transform, false);
+                    boardDetails[i] = detail.AddComponent<SpriteRenderer>();
+                    boardDetails[i].sprite = detailSprite;
+                    boardDetails[i].sortingOrder = -9;
+                }
+                SpriteRenderer renderer = boardDetails[i];
+                float side = i % 2 == 0 ? -1f : 1f;
+                Vector3 position = bounds.center + new Vector3(side * (bounds.extents.x + .43f),
+                    bounds.extents.y * (.65f - i * .30f), 0f);
+                renderer.transform.position = position;
+                renderer.transform.localRotation = Quaternion.Euler(0, 0, side * (25f + i * 17f));
+                renderer.transform.localScale = activeWorldId == WorldId.MoonShrine
+                    ? new Vector3(.16f, .10f, 1f) : new Vector3(.19f, .075f, 1f);
+                renderer.color = tint;
+                renderer.enabled = true;
+            }
+        }
+
+        private void OnDisable()
+        {
+            foreach (SpriteRenderer detail in boardDetails) if (detail != null) detail.enabled = false;
+        }
+
         private void OnDestroy()
         {
+            foreach (SpriteRenderer detail in boardDetails)
+                if (detail != null) DestroyBackground(detail.gameObject);
+            if (detailSprite != null) DestroyBackground(detailSprite);
+            if (detailTexture != null) DestroyBackground(detailTexture);
             if (boardPanelSprite != null) Destroy(boardPanelSprite);
             if (boardPanelTexture != null) Destroy(boardPanelTexture);
         }
 
-        private static void DestroyBackground(GameObject background)
+        private static void DestroyBackground(Object background)
         {
             if (Application.isPlaying)
             {

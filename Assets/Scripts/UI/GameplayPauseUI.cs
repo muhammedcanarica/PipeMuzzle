@@ -83,6 +83,7 @@ namespace PipeMuzzle.UI
                 label.rectTransform.offsetMin = label.rectTransform.offsetMax = Vector2.zero;
             }
             label.text = "PAUSE";
+            UiTypography.Apply(label, UiFontRole.Emphasis);
             label.fontSize = label.fontSizeMax = 19f;
             label.fontSizeMin = 16f;
             label.color = Ink;
@@ -263,6 +264,7 @@ namespace PipeMuzzle.UI
             RectTransform rect = Rect(name, parent, position, new Vector2(300f, 48f));
             TMP_Text text = rect.gameObject.AddComponent<TextMeshProUGUI>();
             text.font = font;
+            UiTypography.Apply(text, name == "Title" ? UiFontRole.Heading : UiFontRole.Emphasis);
             text.text = value;
             text.fontSize = size;
             text.alignment = TextAlignmentOptions.Center;

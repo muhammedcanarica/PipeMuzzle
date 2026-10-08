@@ -17,7 +17,7 @@ namespace PipeMuzzle.View
         [Header("Target Arrival")]
         [SerializeField, Range(1f, 1.3f)] private float targetPulseScale = 1.06f;
         [SerializeField, Min(.01f)] private float targetPulseDuration = .22f;
-        [SerializeField, Min(0f)] private float arrivalHold = .12f;
+        [SerializeField, Min(0f)] private float arrivalHold = .55f;
 
         private readonly List<Vector3> pathPositions = new();
         private readonly List<float> cumulativeDistances = new();
@@ -27,6 +27,8 @@ namespace PipeMuzzle.View
         private TileView targetTile;
         private Action completed;
         private Action targetReachedCallback;
+        private Action<int> tileReachedCallback;
+        private int nextTileIndex;
         private float totalDistance;
         private float elapsed;
         private float travelDuration;
@@ -43,7 +45,7 @@ namespace PipeMuzzle.View
         }
 
         public bool Play(IReadOnlyList<Vector3> worldPath, TileView target, Action onCompleted = null,
-            string worldId = null, Action onTargetReached = null)
+            string worldId = null, Action onTargetReached = null, Action<int> onTileReached = null)
         {
             StopAndClear();
             if (!isActiveAndEnabled || worldPath == null || worldPath.Count < 2 || target == null)
@@ -63,6 +65,7 @@ namespace PipeMuzzle.View
             targetTile = target;
             completed = onCompleted;
             targetReachedCallback = onTargetReached;
+            tileReachedCallback = onTileReached;
             travelDuration = Mathf.Clamp(totalDistance / travelSpeed, .5f, 1.05f);
             playing = true;
             fillRenderer.enabled = true;
@@ -70,6 +73,7 @@ namespace PipeMuzzle.View
             ApplyColor();
             DrawSection(fillRenderer, 0f, 0f);
             GameFeedback.StartFlow(this, worldId, travelDuration);
+            VisitPassedTiles(0f);
             return true;
         }
 
@@ -83,6 +87,8 @@ namespace PipeMuzzle.View
             float distance = totalDistance * Mathf.Clamp01(elapsed / travelDuration);
             DrawSection(fillRenderer, 0f, distance);
             DrawSection(headRenderer, Mathf.Max(0f, distance - .18f), distance);
+            VisitPassedTiles(distance);
+            if (!playing) return;
             if (!arrived && elapsed >= travelDuration)
             {
                 arrived = true;
@@ -107,6 +113,15 @@ namespace PipeMuzzle.View
             callback?.Invoke();
         }
 
+        private void VisitPassedTiles(float distance)
+        {
+            while (playing && nextTileIndex < cumulativeDistances.Count && cumulativeDistances[nextTileIndex] <= distance)
+            {
+                int index = nextTileIndex++;
+                tileReachedCallback?.Invoke(index);
+            }
+        }
+
         public void StopAndClear()
         {
             GameFeedback.StopFlow(this);
@@ -114,6 +129,8 @@ namespace PipeMuzzle.View
             arrived = false;
             completed = null;
             targetReachedCallback = null;
+            tileReachedCallback = null;
+            nextTileIndex = 0;
             targetTile = null;
             elapsed = totalDistance = travelDuration = 0f;
             pathPositions.Clear();

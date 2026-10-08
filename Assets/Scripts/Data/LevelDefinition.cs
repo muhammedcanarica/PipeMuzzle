@@ -5,7 +5,7 @@ namespace PipeMuzzle.Data
 {
     [CreateAssetMenu(
             fileName = "Level_",
-            menuName = "PipeMuzzle/Level Definition"
+            menuName = "Ruilay/Level Definition"
     )]
 
     public class LevelDefinition : ScriptableObject

@@ -12,10 +12,13 @@ namespace PipeMuzzle.Board
 
         public int Rotation { get; private set; }
 
+        private readonly ConnectionMask? endpointConnection;
+
         public ConnectionMask Connections
         {
             get
             {
+                if (Role != TileRole.Normal && endpointConnection.HasValue) return endpointConnection.Value;
                 ConnectionMask connections = Shape.GetBaseConnections();
 
                 for (int i = 0; i < Rotation; i++)
@@ -31,14 +34,15 @@ namespace PipeMuzzle.Board
         public bool IsPowered { get; private set; }
 
         // alttaki constructor oluyor.
-        public TileState(int x, int y, TileShape shape, TileRole role, int rotation, bool isLocked)
+        public TileState(int x, int y, TileShape shape, TileRole role, int rotation, bool isLocked, ConnectionMask? endpointConnection = null)
         {
             X = x;
             Y = y;
             Shape = shape;
             Role = role;
             Rotation = rotation;
-            IsLocked = isLocked;
+            IsLocked = isLocked || role != TileRole.Normal;
+            this.endpointConnection = endpointConnection;
             IsPowered = false;
         }
 
